@@ -9,25 +9,38 @@
 VulkanInstance::VulkanInstance()
     : Instance(VK_NULL_HANDLE)
     , Device(nullptr)
+    , RenderOffscreen(false)
+    , EnableValidation(true)
+{
+}
+
+VulkanInstance::VulkanInstance(bool InRenderOffscreen, bool InEnableValidation)
+    : Instance(VK_NULL_HANDLE)
+    , Device(nullptr)
+    , RenderOffscreen(InRenderOffscreen)
+    , EnableValidation(InEnableValidation)
 {
 }
 
 
 void VulkanInstance::Init()
 {
+    GetInstanceExtensions(InstanceExtensions, EnableValidation, RenderOffscreen);
+    GetInstanceLayers(InstanceLayers, EnableValidation);
+
     VkApplicationInfo appInfo         = {.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO, .apiVersion = VK_API_VERSION_1_2};
     VkInstanceCreateInfo instanceInfo = {
         .sType                   = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
         .pApplicationInfo        = &appInfo,
-        .enabledLayerCount       = InstanceLayers.size(),
+        .enabledLayerCount       = static_cast<uint32_t>(InstanceLayers.size()),
         .ppEnabledLayerNames     = InstanceLayers.data(),
-        .enabledExtensionCount   = InstanceExtensions.size(),
+        .enabledExtensionCount   = static_cast<uint32_t>(InstanceExtensions.size()),
         .ppEnabledExtensionNames = InstanceExtensions.data(),
     };
     vkCreateInstance(&instanceInfo, nullptr, &Instance);
 }
 
-void VulkanInstance::Destroy()
+void VulkanInstance::Destroy() const
 {
     if (Instance != VK_NULL_HANDLE)
         vkDestroyInstance(Instance, nullptr);

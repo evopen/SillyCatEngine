@@ -1,4 +1,5 @@
 #pragma once
+#include <Engine/Platform/Platform.h>
 #include <vulkan/vulkan.h>
 
 #include <vector>
@@ -8,10 +9,11 @@ class VulkanDevice;
 class VulkanInstance
 {
 public:
-    VulkanInstance();
-    void Init();
-    void Destroy();
-    bool IsRenderOffscreen() const { return RenderOffscreen; }
+    API VulkanInstance();
+    API VulkanInstance(bool InRenderOffscreen, bool InEnableValidation);
+    API void Init();
+    API void Destroy() const;
+    API bool IsRenderOffscreen() const { return RenderOffscreen; }
 
 private:
     VkInstance Instance;
@@ -22,5 +24,6 @@ private:
     bool EnableValidation;
 
     static void GetInstanceLayers(std::vector<const char*>& instanceLayers, bool enableValidation);
-    static void GetInstanceExtensions(std::vector<const char*>& InstanceExtensions, bool RenderOffscreen);
+    static void GetInstanceExtensions(
+        std::vector<const char*>& InstanceExtensions, const bool enableValidation, bool RenderOffscreen);
 };

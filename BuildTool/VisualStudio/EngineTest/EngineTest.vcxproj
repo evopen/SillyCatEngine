@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{830d4e2a-95d8-4044-8719-6aa468398229}</ProjectGuid>
-    <RootNamespace>SillyCatEngine</RootNamespace>
+    <ProjectGuid>{ebb82968-5aa0-407e-9b22-2a2134fa183a}</ProjectGuid>
+    <RootNamespace>EngineTest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -59,19 +59,23 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\BuildTool\VisualStudio\Vulkan.props" />
+    <Import Project="..\SillyCatEngine.props" />
+    <Import Project="..\Vulkan.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\BuildTool\VisualStudio\Vulkan.props" />
+    <Import Project="..\SillyCatEngine.props" />
+    <Import Project="..\Vulkan.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\BuildTool\VisualStudio\Vulkan.props" />
+    <Import Project="..\SillyCatEngine.props" />
+    <Import Project="..\Vulkan.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\BuildTool\VisualStudio\Vulkan.props" />
+    <Import Project="..\SillyCatEngine.props" />
+    <Import Project="..\Vulkan.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -85,9 +89,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <VcpkgEnableManifest>true</VcpkgEnableManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -147,15 +148,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\.clang-format" />
-    <None Include="..\.gitignore" />
-    <None Include="..\vcpkg.json" />
+    <ClCompile Include="..\..\..\Test\Test.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="VulkanInstance.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="VulkanInstance.cpp" />
+    <ProjectReference Include="..\Engine\Engine.vcxproj">
+      <Project>{a53bac4c-0d5a-4c6d-a37b-f48bc6f54b3c}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

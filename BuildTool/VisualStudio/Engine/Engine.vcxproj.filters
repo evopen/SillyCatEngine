@@ -14,28 +14,34 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Project Configurations">
-      <UniqueIdentifier>{0801eb1e-803b-4b5d-97c2-250d4107d5bc}</UniqueIdentifier>
+      <UniqueIdentifier>{866efa43-8094-4770-8829-e6e860686ec2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{ae592eeb-0a57-4384-84d0-20b905dcf1bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Vulkan">
+      <UniqueIdentifier>{4b4f788c-8782-4970-b1f4-d75a9f37b8e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Platform">
+      <UniqueIdentifier>{2bc7811a-0bb4-49ab-8e6e-7d8a5a3634e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\.clang-format">
-      <Filter>Project Configurations</Filter>
-    </None>
-    <None Include="..\.gitignore">
-      <Filter>Project Configurations</Filter>
-    </None>
-    <None Include="..\vcpkg.json">
+    <None Include="vcpkg.json">
       <Filter>Project Configurations</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="VulkanInstance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="VulkanInstance.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.cpp">
+      <Filter>Engine\Vulkan</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">
+      <Filter>Engine\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Platform\Platform.h">
+      <Filter>Engine\Platform</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
