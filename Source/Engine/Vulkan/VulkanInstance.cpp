@@ -63,6 +63,8 @@ void VulkanInstance::GetInstanceExtensions(
     }
     if (!renderOffscreen)
     {
+        glfwInit();
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
         uint32_t glfwExtensionCount;
         const char** glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
         instanceExtensions.reserve(glfwExtensionCount);
