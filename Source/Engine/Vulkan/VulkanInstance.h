@@ -14,6 +14,7 @@ public:
     API void Init();
     API void Destroy() const;
     API bool IsRenderOffscreen() const { return RenderOffscreen; }
+    API VkInstance GetInstanceHandle() const { return Instance; }
 
 private:
     VkInstance Instance;

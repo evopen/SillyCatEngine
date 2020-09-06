@@ -1,3 +1,4 @@
+#include <Engine/Vulkan/VulkanDevice.h>
 #include <Engine/Vulkan/VulkanInstance.h>
 #include <gtest/gtest.h>
 
@@ -12,6 +13,13 @@ TEST(VulkanInstanceTest, Destruction)
     VulkanInstance instance;
     instance.Init();
     instance.Destroy();
+}
+
+TEST(VulkanDeviceTest, SelectDiscreteGPU)
+{
+    VulkanInstance instance;
+    instance.Init();
+    VulkanDevice::SelectPhysicalDevice(instance);
 }
 
 

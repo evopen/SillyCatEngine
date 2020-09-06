@@ -154,11 +154,14 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanDevice.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Platform\Platform.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanDevice.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
