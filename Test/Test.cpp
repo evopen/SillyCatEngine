@@ -1,5 +1,3 @@
-#include "../BuildTool/VisualStudio/Engine/vcpkg_installed/x64-windows/include/GLFW/glfw3.h"
-
 #include <Engine/Vulkan/VulkanDevice.h>
 #include <Engine/Vulkan/VulkanInstance.h>
 #include <Engine/Vulkan/VulkanSwapchain.h>
@@ -62,6 +60,7 @@ int main()
     device.Init();
     VulkanWindowSurface WindowSurface(&instance, &device, "numerous", 800, 600);
     VulkanSwapchain Swapchain(&instance, &device, &WindowSurface);
+    vkcreateRenderpa
 
     return 0;
 }

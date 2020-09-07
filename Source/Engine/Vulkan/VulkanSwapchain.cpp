@@ -25,8 +25,6 @@ VulkanSwapchain::VulkanSwapchain(
         .preTransform     = WindowSurface->SurfaceProperties.currentTransform,
         .compositeAlpha   = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
         .presentMode      = VK_PRESENT_MODE_MAILBOX_KHR,
-        .clipped          = VK_TRUE
-    };
+        .clipped          = VK_TRUE};
     CheckResult(vkCreateSwapchainKHR(Device->GetDeviceHandle(), &SwapchainInfo, nullptr, &Swapchain));
-    
 }
