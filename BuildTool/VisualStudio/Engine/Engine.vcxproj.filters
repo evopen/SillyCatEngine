@@ -53,6 +53,12 @@
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanRenderPass.cpp">
       <Filter>Engine\Vulkan</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanShader.cpp">
+      <Filter>Engine\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanShaderCompiler.cpp">
+      <Filter>Engine\Vulkan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">
@@ -80,6 +86,9 @@
       <Filter>Engine\Vulkan</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanRenderTargetLayout.h">
+      <Filter>Engine\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanShader.h">
       <Filter>Engine\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>

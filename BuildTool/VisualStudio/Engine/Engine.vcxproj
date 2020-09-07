@@ -165,6 +165,8 @@
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanQueue.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanRenderPass.cpp" />
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanShader.cpp" />
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanShaderCompiler.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanSwapchain.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanWindowSurface.cpp" />
   </ItemGroup>
@@ -175,6 +177,7 @@
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanQueue.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanRenderPass.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanRenderTargetLayout.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanShader.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanSwapchain.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanUtil.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanWindowSurface.h" />
