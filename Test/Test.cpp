@@ -1,5 +1,6 @@
 #include <Engine/Vulkan/VulkanDevice.h>
 #include <Engine/Vulkan/VulkanInstance.h>
+#include <Engine/Vulkan/VulkanShader.h>
 #include <Engine/Vulkan/VulkanSwapchain.h>
 #include <Engine/Vulkan/VulkanWindowSurface.h>
 #include <gtest/gtest.h>
@@ -60,7 +61,6 @@ int main()
     device.Init();
     VulkanWindowSurface WindowSurface(&instance, &device, "numerous", 800, 600);
     VulkanSwapchain Swapchain(&instance, &device, &WindowSurface);
-    
-
+    VulkanShader VertexShader(&device, "Test/Shaders/shader.vert");
     return 0;
 }

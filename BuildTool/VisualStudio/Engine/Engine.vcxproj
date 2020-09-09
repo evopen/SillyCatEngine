@@ -180,6 +180,7 @@
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanRenderPass.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanRenderTargetLayout.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanShader.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanShaderCompiler.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanSwapchain.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanUtil.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanWindowSurface.h" />

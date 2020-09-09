@@ -1,7 +1,12 @@
+#include "VulkanShaderCompiler.h"
+
 #include "Engine/Filesystem/FileUtil.h"
 #include "Engine/Render/Definitions.h"
 
 #include <SPIRV/GlslangToSpv.h>
+
+#include <map>
+#include <stdexcept>
 
 bool IsGlslangInitialized                      = false;
 const TBuiltInResource DefaultTBuiltInResource = {
@@ -88,31 +93,46 @@ const TBuiltInResource DefaultTBuiltInResource = {
     .maxCullDistances                          = 8,
     .maxCombinedClipAndCullDistances           = 8,
     .maxSamples                                = 4,
+    .limits =
+        {
+            .nonInductiveForLoops                 = 1,
+            .whileLoops                           = 1,
+            .doWhileLoops                         = 1,
+            .generalUniformIndexing               = 1,
+            .generalAttributeMatrixVectorIndexing = 1,
+            .generalVaryingIndexing               = 1,
+            .generalSamplerIndexing               = 1,
+            .generalVariableIndexing              = 1,
+            .generalConstantMatrixVectorIndexing  = 1,
+        },
 };
 
-static EShLanguage ToGlslangType(EShaderType EngineType)
+EShLanguage ToGlslangType(EShaderType EngineType)
 {
     const std::map<EShaderType, EShLanguage> ShaderTypeMap = {{EShaderType::Vertex, EShLangVertex},
         {EShaderType::Pixel, EShLangFragment}, {EShaderType::Compute, EShLangCompute}};
     return ShaderTypeMap.at(EngineType);
 }
 
-static std::vector<unsigned> CompileGLSL(EShaderType ShaderType, std::vector<char> GLSLCode)
+std::vector<unsigned> CompileGLSL(EShaderType ShaderType, std::vector<char> GLSLCode)
 {
-    if (!!IsGlslangInitialized)
+    if (!IsGlslangInitialized)
         glslang::InitializeProcess();
     const auto GlslangShaderType = ToGlslangType(ShaderType);
     glslang::TShader Shader(GlslangShaderType);
     const char* Str = GLSLCode.data();
 
     Shader.setStrings(&Str, 1);
-    Shader.setEnvInput(glslang::EShSourceGlsl, GlslangShaderType, glslang::EShClientVulkan, 120);
+    Shader.setEnvInput(glslang::EShSourceGlsl, GlslangShaderType, glslang::EShClientVulkan, 100);
     Shader.setEnvClient(glslang::EShClientVulkan, glslang::EShTargetVulkan_1_1);
     Shader.setEnvTarget(glslang::EShTargetSpv, glslang::EShTargetSpv_1_4);
     const EShMessages messages = static_cast<EShMessages>(EShMsgSpvRules | EShMsgVulkanRules);
-    if (!Shader.parse(&DefaultTBuiltInResource, 120, false, messages))
+    if (!Shader.parse(&DefaultTBuiltInResource, 100, false, messages))
     {
-        throw std::runtime_error("Failed to parse GLSL");
+        spdlog::error("Parse GLSL failed.");
+        spdlog::error(Shader.getInfoLog());
+        spdlog::error(Shader.getInfoDebugLog());
+        throw std::runtime_error("Parse GLSL failed.");
     }
     std::vector<unsigned> spirv;
     glslang::SpvOptions spvOptions;

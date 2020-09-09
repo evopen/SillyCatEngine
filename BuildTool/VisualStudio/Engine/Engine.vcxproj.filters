@@ -103,5 +103,8 @@
     <ClInclude Include="..\..\..\Source\Engine\Filesystem\FileUtil.h">
       <Filter>Engine\Filesystem</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanShaderCompiler.h">
+      <Filter>Engine\Vulkan</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

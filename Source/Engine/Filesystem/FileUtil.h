@@ -1,11 +1,21 @@
 #pragma once
+#include <spdlog/spdlog.h>
+
 #include <filesystem>
 #include <fstream>
 #include <vector>
 
-inline std::vector<char> loadFile(const std::filesystem::path& filename, bool is_binary)
+inline std::vector<char> LoadFile(const std::filesystem::path& FileName, bool IsBinary)
 {
-    std::fstream file(filename, std::ios::ate | std::ios::in | (is_binary ? std::ios::binary : 0));
+    auto CurrentDir = std::filesystem::current_path();
+    spdlog::info("Current directory: {}", CurrentDir.string());
+    std::fstream file(FileName, std::ios::ate | std::ios::in | (IsBinary ? std::ios::binary : 0));
+    if (!file.is_open())
+    {
+        char err[80];
+        strerror_s(err, 80, errno);
+        spdlog::error("Error: {}", err);
+    }
     const size_t FileSize = file.tellg();
     std::vector<char> buffer(FileSize);
     file.seekg(0);

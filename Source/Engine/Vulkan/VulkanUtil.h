@@ -7,6 +7,6 @@ static inline void CheckResult(VkBool32 Result)
 {
     if (Result != VK_SUCCESS)
     {
-        std::runtime_error("Vulkan function exception!");
+        throw std::runtime_error("Vulkan function exception!");
     }
 }
