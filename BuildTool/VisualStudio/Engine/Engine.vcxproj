@@ -171,7 +171,9 @@
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanWindowSurface.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Source\Engine\Filesystem\FileUtil.h" />
     <ClInclude Include="..\..\..\Source\Engine\Platform\Platform.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Render\Definitions.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanDevice.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanQueue.h" />

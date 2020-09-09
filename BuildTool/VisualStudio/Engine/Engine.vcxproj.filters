@@ -28,6 +28,12 @@
     <Filter Include="Engine\Window">
       <UniqueIdentifier>{ce07d63f-d3a0-4ffe-ad87-6104a239eaaf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Render">
+      <UniqueIdentifier>{e62675e0-e887-4265-b975-533e05d8cb0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Filesystem">
+      <UniqueIdentifier>{b6d65cda-61a4-478f-988b-16a3311e34a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -90,6 +96,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanShader.h">
       <Filter>Engine\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Render\Definitions.h">
+      <Filter>Engine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Filesystem\FileUtil.h">
+      <Filter>Engine\Filesystem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
