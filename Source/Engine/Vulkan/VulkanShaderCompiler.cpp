@@ -3,10 +3,12 @@
 #include "Engine/Filesystem/FileUtil.h"
 #include "Engine/Render/Definitions.h"
 
+#include <glslang/Public/ShaderLang.h>
 #include <SPIRV/GlslangToSpv.h>
 
 #include <map>
 #include <stdexcept>
+
 
 bool IsGlslangInitialized                      = false;
 const TBuiltInResource DefaultTBuiltInResource = {
@@ -117,17 +119,30 @@ EShLanguage ToGlslangType(EShaderType EngineType)
 std::vector<unsigned> CompileGLSL(EShaderType ShaderType, std::vector<char> GLSLCode)
 {
     if (!IsGlslangInitialized)
+    {
         glslang::InitializeProcess();
+        IsGlslangInitialized = true;
+    }
     const auto GlslangShaderType = ToGlslangType(ShaderType);
     glslang::TShader Shader(GlslangShaderType);
-    const char* Str = GLSLCode.data();
-
+    const char* Str          = GLSLCode.data();
+    const int DefaultVersion = 110;
     Shader.setStrings(&Str, 1);
-    Shader.setEnvInput(glslang::EShSourceGlsl, GlslangShaderType, glslang::EShClientVulkan, 100);
+    Shader.setEnvInput(glslang::EShSourceGlsl, GlslangShaderType, glslang::EShClientVulkan, DefaultVersion);
     Shader.setEnvClient(glslang::EShClientVulkan, glslang::EShTargetVulkan_1_1);
-    Shader.setEnvTarget(glslang::EShTargetSpv, glslang::EShTargetSpv_1_4);
-    const EShMessages messages = static_cast<EShMessages>(EShMsgSpvRules | EShMsgVulkanRules);
-    if (!Shader.parse(&DefaultTBuiltInResource, 100, false, messages))
+    Shader.setEnvTarget(glslang::EShTargetSpv, glslang::EShTargetSpv_1_3);
+    const EShMessages messages = EShMsgDefault;
+
+    if (!Shader.parse(&DefaultTBuiltInResource, DefaultVersion, ENoProfile, false, false, messages))
+    {
+        spdlog::error("Parse GLSL failed.");
+        spdlog::error(Shader.getInfoLog());
+        spdlog::error(Shader.getInfoDebugLog());
+        throw std::runtime_error("Parse GLSL failed.");
+    }
+    glslang::TProgram Program;
+    Program.addShader(&Shader);
+    if (!Program.link(messages))
     {
         spdlog::error("Parse GLSL failed.");
         spdlog::error(Shader.getInfoLog());
@@ -135,7 +150,10 @@ std::vector<unsigned> CompileGLSL(EShaderType ShaderType, std::vector<char> GLSL
         throw std::runtime_error("Parse GLSL failed.");
     }
     std::vector<unsigned> spirv;
-    glslang::SpvOptions spvOptions;
-    glslang::GlslangToSpv(*Shader.getIntermediate(), spirv, &spvOptions);
+    glslang::SpvOptions SpvOptions;
+    SpvOptions.validate         = true;
+    SpvOptions.disableOptimizer = true;
+    glslang::GlslangToSpv(*Program.getIntermediate(GlslangShaderType), spirv, &SpvOptions);
+
     return spirv;
 }

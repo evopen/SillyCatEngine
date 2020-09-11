@@ -1,3 +1,3 @@
-glslc.exe shader.vert -o vert.spv
-glslc.exe shader.frag -o frag.spv
+glslangValidator -V shader.vert -o vert.spv
+glslangValidator -V shader.frag -o frag.spv
 pause

@@ -161,6 +161,7 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Source\Engine\Filesystem\FileUtil.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanDevice.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanQueue.cpp" />
@@ -168,6 +169,7 @@
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanShader.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanShaderCompiler.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanSwapchain.cpp" />
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanUtil.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanWindowSurface.cpp" />
   </ItemGroup>
   <ItemGroup>

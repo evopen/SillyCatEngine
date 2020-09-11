@@ -5,6 +5,9 @@
 #include "VulkanQueue.h"
 #include "VulkanUtil.h"
 
+
+#include <GLFW/glfw3.h>
+
 #include <stdexcept>
 
 VulkanWindowSurface::VulkanWindowSurface(

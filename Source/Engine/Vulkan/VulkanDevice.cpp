@@ -7,6 +7,7 @@
 #include "VulkanUtil.h"
 
 #include <set>
+#include <stdexcept>
 
 
 VulkanDevice::VulkanDevice()

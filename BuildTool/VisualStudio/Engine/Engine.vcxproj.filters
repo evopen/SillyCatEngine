@@ -65,6 +65,12 @@
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanShaderCompiler.cpp">
       <Filter>Engine\Vulkan</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Filesystem\FileUtil.cpp">
+      <Filter>Engine\Filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanUtil.cpp">
+      <Filter>Engine\Vulkan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">

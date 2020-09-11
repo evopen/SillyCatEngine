@@ -1,13 +1,13 @@
 #pragma once
 
-#define GLFW_INCLUDE_VULKAN
+
 #include "Engine/Platform/Platform.h"
 
-#include <GLFW/glfw3.h>
-#include <vulkan/vulkan.h>
+#undef CreateWindowW
 
+class GLFWwindow;
 #include <string>
-#include <vector>
+#include <vulkan/vulkan.h>
 
 class VulkanDevice;
 class VulkanInstance;

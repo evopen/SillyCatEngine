@@ -7,17 +7,20 @@
 
 VulkanShader::VulkanShader(VulkanDevice* InDevice, std::filesystem::path InFilePath)
     : Device(InDevice)
-    , FilePath(std::move(InFilePath))
-    , ShaderModule(nullptr)
+      , FilePath(std::move(InFilePath))
+      , ShaderModule(VK_NULL_HANDLE)
 {
     ShaderType = ToShaderType(FilePath.extension().string());
     GLSL       = LoadFile(FilePath, false);
-    Spirv      = CompileGLSL(ShaderType, GLSL);
 
-    VkShaderModuleCreateInfo ShaderModuleInfo = {
-        .sType    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
-        .codeSize = Spirv.size() * 4,
-        .pCode    = Spirv.data(),
-    };
-    CheckResult(vkCreateShaderModule(Device->GetDeviceHandle(), &ShaderModuleInfo, nullptr, &ShaderModule));
+    Spirv = CompileGLSL(ShaderType, GLSL);
+
+    VkShaderModuleCreateInfo ShaderModuleInfo = {};
+    ShaderModuleInfo.sType                    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+    ShaderModuleInfo.codeSize                 = Spirv.size() * 4;
+    ShaderModuleInfo.pCode                    = Spirv.data();
+
+    
+
+    vkCreateShaderModule(Device->GetDeviceHandle(), &ShaderModuleInfo, nullptr, &ShaderModule);
 }

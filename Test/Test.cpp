@@ -1,3 +1,7 @@
+#include "Engine/Filesystem/FileUtil.h"
+#include "Engine/Vulkan/VulkanUtil.h"
+
+
 #include <Engine/Vulkan/VulkanDevice.h>
 #include <Engine/Vulkan/VulkanInstance.h>
 #include <Engine/Vulkan/VulkanShader.h>
@@ -57,10 +61,14 @@ int main()
     instance.Init();
     auto [physicalDevice, deviceProp] = VulkanDevice::SelectPhysicalDevice(instance);
     spdlog::info("select: {}", deviceProp.deviceName);
-    VulkanDevice device(&instance, physicalDevice, false);
-    device.Init();
-    VulkanWindowSurface WindowSurface(&instance, &device, "numerous", 800, 600);
-    VulkanSwapchain Swapchain(&instance, &device, &WindowSurface);
-    VulkanShader VertexShader(&device, "Test/Shaders/shader.vert");
+    VulkanDevice Device(&instance, physicalDevice, false);
+    Device.Init();
+    VulkanWindowSurface WindowSurface(&instance, &Device, "numerous", 800, 600);
+    VulkanSwapchain Swapchain(&instance, &Device, &WindowSurface);
+
+    VulkanShader VertexShader(&Device, "Test/Shaders/shader.vert");
+
+    VkGraphicsPipelineCreateInfo PipelineInfo = {};
+    PipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
     return 0;
 }
