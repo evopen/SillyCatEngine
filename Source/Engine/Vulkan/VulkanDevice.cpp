@@ -1,13 +1,9 @@
-#pragma once
+#include "Engine/pch.h"
 
 #include "VulkanDevice.h"
-
 #include "VulkanInstance.h"
 #include "VulkanQueue.h"
 #include "VulkanUtil.h"
-
-#include <set>
-#include <stdexcept>
 
 
 VulkanDevice::VulkanDevice()

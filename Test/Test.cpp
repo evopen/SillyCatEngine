@@ -1,14 +1,7 @@
-#include "Engine/Filesystem/FileUtil.h"
-#include "Engine/Vulkan/VulkanUtil.h"
+#include "pch.h"
 
 
-#include <Engine/Vulkan/VulkanDevice.h>
-#include <Engine/Vulkan/VulkanInstance.h>
-#include <Engine/Vulkan/VulkanShader.h>
-#include <Engine/Vulkan/VulkanSwapchain.h>
-#include <Engine/Vulkan/VulkanWindowSurface.h>
-#include <gtest/gtest.h>
-#include <spdlog/spdlog.h>
+
 
 TEST(VulkanInstanceTest, Initialization)
 {
@@ -55,6 +48,8 @@ TEST(SelfTest, EQUAL)
 //    return RUN_ALL_TESTS();
 //}
 
+using namespace std::chrono_literals;
+
 int main()
 {
     VulkanInstance instance;
@@ -67,8 +62,7 @@ int main()
     VulkanSwapchain Swapchain(&instance, &Device, &WindowSurface);
 
     VulkanShader VertexShader(&Device, "Test/Shaders/shader.vert");
-
-    VkGraphicsPipelineCreateInfo PipelineInfo = {};
-    PipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+    VulkanShader FragmentShader(&Device, "Test/Shaders/shader.frag");
+    std::cout << "hellfffffsfdddfbbdsfd" << std::endl;
     return 0;
 }

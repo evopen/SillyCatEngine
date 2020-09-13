@@ -133,6 +133,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Engine/pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -161,32 +163,67 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Source\Engine\Filesystem\FileUtil.cpp" />
-    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanDevice.cpp" />
-    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.cpp" />
-    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanPipeline.cpp" />
-    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanPipelineLayout.cpp" />
-    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanQueue.cpp" />
-    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanRenderPass.cpp" />
-    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanShader.cpp" />
-    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanShaderCompiler.cpp" />
-    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanSwapchain.cpp" />
-    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanUtil.cpp" />
-    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanWindowSurface.cpp" />
+    <ClCompile Include="..\..\..\Source\Engine\Filesystem\FileUtil.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Engine/pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanDescriptorSets.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanDevice.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanPipeline.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanPipelineLayout.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanQueue.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanRenderPass.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanShader.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanShaderCompiler.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanSwapchain.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanUtil.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanWindowSurface.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Filesystem\FileUtil.h" />
+    <ClInclude Include="..\..\..\Source\Engine\pch.h" />
     <ClInclude Include="..\..\..\Source\Engine\Platform\Platform.h" />
     <ClInclude Include="..\..\..\Source\Engine\Render\Definitions.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanDescriptorSets.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanDevice.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanPipeline.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanPipelineLayout.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanPipelineState.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanQueue.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanRenderPass.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanRenderTargetLayout.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanShader.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanShaderCompiler.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanShaderProgram.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanSwapchain.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanUtil.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanWindowSurface.h" />

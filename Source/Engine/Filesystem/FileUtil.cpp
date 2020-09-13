@@ -1,3 +1,4 @@
+#include "Engine/pch.h"
 #include "FileUtil.h"
 
 std::vector<char> LoadFile(const std::filesystem::path& FileName, bool IsBinary)

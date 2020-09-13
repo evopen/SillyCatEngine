@@ -6,6 +6,7 @@ class VulkanDevice;
 
 class VulkanPipelineLayout
 {
+public:
     VulkanPipelineLayout(VulkanDevice* InDevice);
 private:
     VkPipelineLayout Layout;

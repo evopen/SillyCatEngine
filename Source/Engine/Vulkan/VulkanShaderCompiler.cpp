@@ -1,13 +1,8 @@
-#include "VulkanShaderCompiler.h"
+#include "Engine/pch.h"
 
 #include "Engine/Filesystem/FileUtil.h"
 #include "Engine/Render/Definitions.h"
-
-#include <glslang/Public/ShaderLang.h>
-#include <SPIRV/GlslangToSpv.h>
-
-#include <map>
-#include <stdexcept>
+#include "VulkanShaderCompiler.h"
 
 
 bool IsGlslangInitialized                      = false;
@@ -144,7 +139,7 @@ std::vector<unsigned> CompileGLSL(EShaderType ShaderType, std::vector<char> GLSL
     Program.addShader(&Shader);
     if (!Program.link(messages))
     {
-        spdlog::error("Parse GLSL failed.");
+        spdlog::error("Parse GLSL failed.d");
         spdlog::error(Shader.getInfoLog());
         spdlog::error(Shader.getInfoDebugLog());
         throw std::runtime_error("Parse GLSL failed.");

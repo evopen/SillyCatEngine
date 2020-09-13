@@ -7,13 +7,13 @@
 class VulkanRenderTargetLayout
 {
 public:
-    uint32_t GetAttachmentDescriptionCount() { return Descriptions.size(); }
+    uint32_t GetAttachmentDescriptionCount() const { return static_cast<uint32_t>(Descriptions.size()); }
     VkAttachmentDescription* GetAttachmentDescriptions() { return Descriptions.data(); }
 
-    uint32_t GetInputAttachmentReferenceCount() { return InputReferences.size(); }
+    uint32_t GetInputAttachmentReferenceCount() const { return static_cast<uint32_t>(InputReferences.size()); }
     VkAttachmentReference* GetInputAttachmentReferences() { return InputReferences.data(); }
 
-    uint32_t GetColorAttachmentReferenceCount() { return ColorReferences.size(); }
+    uint32_t GetColorAttachmentReferenceCount() const { return static_cast<uint32_t>(ColorReferences.size()); }
     VkAttachmentReference* GetColorAttachmentReferences() { return ColorReferences.data(); }
     VkAttachmentReference* GetResolveAttachmentReferences() { return ResolveReferences.data(); }
 

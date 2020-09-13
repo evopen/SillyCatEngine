@@ -1,7 +1,10 @@
+#include "Engine/pch.h"
+
 #include "VulkanPipelineLayout.h"
 
 VulkanPipelineLayout::VulkanPipelineLayout(VulkanDevice* InDevice)
-    : Layout(VK_NULL_HANDLE), Device(InDevice)
+    : Layout(VK_NULL_HANDLE)
+    , Device(InDevice)
 {
 }
 

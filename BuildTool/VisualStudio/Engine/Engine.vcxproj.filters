@@ -77,6 +77,12 @@
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanPipelineLayout.cpp">
       <Filter>Engine\Vulkan</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanDescriptorSets.cpp">
+      <Filter>Engine\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\pch.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">
@@ -123,6 +129,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanPipelineLayout.h">
       <Filter>Engine\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanDescriptorSets.h">
+      <Filter>Engine\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanPipelineState.h">
+      <Filter>Engine\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanShaderProgram.h">
+      <Filter>Engine\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\pch.h">
+      <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
