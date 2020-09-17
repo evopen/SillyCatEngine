@@ -22,3 +22,14 @@ static EShaderType ToShaderType(std::string FileExtension)
         throw std::invalid_argument("Invalid file type");
     return Map.at(FileExtension);
 }
+
+static VkShaderStageFlagBits ToVulkanShaderType(EShaderType InShaderType)
+{
+    std::map<EShaderType, VkShaderStageFlagBits> Map = {
+        {EShaderType::Vertex, VK_SHADER_STAGE_VERTEX_BIT},
+        {EShaderType::Pixel, VK_SHADER_STAGE_FRAGMENT_BIT},
+        {EShaderType::Compute, VK_SHADER_STAGE_COMPUTE_BIT},
+    };
+
+    return Map.at(InShaderType);
+}

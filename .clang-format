@@ -29,7 +29,7 @@ AlignTrailingComments: false
 # AllowAllArgumentsOnNextLine: true
 # AllowAllConstructorInitializersOnNextLine: true
 # AllowAllParametersOfDeclarationOnNextLine: true
-# AllowShortBlocksOnASingleLine: false
+AllowShortBlocksOnASingleLine: false
 # AllowShortCaseLabelsOnASingleLine: false
 
 # AllowShortFunctionsOnASingleLine: All
@@ -101,7 +101,7 @@ BreakConstructorInitializers: BeforeComma
 # BreakStringLiterals: true
 
 # ColumnLimit:     80
-ColumnLimit:     120
+ColumnLimit:     0
 
 # CommentPragmas:  '^ IWYU pragma:'
 # CompactNamespaces: false
