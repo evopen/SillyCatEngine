@@ -79,9 +79,9 @@ void VulkanDevice::CreateDevice()
 
     CheckResult(vkCreateDevice(PhysicalDevice, &deviceInfo, nullptr, &Device));
 
-    GraphicsQueue = new VulkanQueue(this, GraphicsFamilyIndex);
-    TransferQueue = new VulkanQueue(this, TransferFamilyIndex);
-    ComputeQueue  = new VulkanQueue(this, ComputeFamilyIndex);
+    GraphicsQueue = std::make_shared<VulkanQueue>(this, GraphicsFamilyIndex);
+    TransferQueue = std::make_shared<VulkanQueue>(this, TransferFamilyIndex);
+    ComputeQueue  = std::make_shared<VulkanQueue>(this, ComputeFamilyIndex);
 }
 
 void VulkanDevice::Init()

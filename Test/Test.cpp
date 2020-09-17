@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "Engine/Vulkan/VulkanFramebuffer.h"
 #include "Engine/Vulkan/VulkanPipeline.h"
 #include "Engine/Vulkan/VulkanPipelineLayout.h"
 #include "Engine/Vulkan/VulkanPipelineState.h"
@@ -58,14 +59,14 @@ int main()
 {
     try
     {
-        VulkanInstance instance;
-        instance.Init();
-        auto [physicalDevice, deviceProp] = VulkanDevice::SelectPhysicalDevice(instance);
+        VulkanInstance Instance;
+        Instance.Init();
+        auto [physicalDevice, deviceProp] = VulkanDevice::SelectPhysicalDevice(Instance);
         spdlog::info("select: {}", deviceProp.deviceName);
-        VulkanDevice Device(&instance, physicalDevice, false);
+        VulkanDevice Device(&Instance, physicalDevice, false);
         Device.Init();
-        VulkanWindowSurface WindowSurface(&instance, &Device, "numerous", 800, 600);
-        VulkanSwapchain Swapchain(&instance, &Device, &WindowSurface);
+        VulkanWindowSurface WindowSurface(&Instance, &Device, "numerous", 800, 600);
+        VulkanSwapchain Swapchain(&Instance, &Device, &WindowSurface);
 
         VulkanVertexShader VertexShader(&Device, "Test/Shaders/shader.vert");
         VulkanPixelShader FragmentShader(&Device, "Test/Shaders/shader.frag");
@@ -75,6 +76,7 @@ int main()
         VulkanRenderPass Renderpass(&Device, &RTLayout);
         VulkanGraphicsPipelineLayout PipelineLayout(&Device);
         VulkanGraphicsPipeline(&Device, &PipelineLayout, &Renderpass, &TrianglePipelineState);
+        VulkanFramebuffer(&Device, &Renderpass, 800, 600);
     }
     catch (std::exception& e)
     {

@@ -11,4 +11,9 @@ VulkanQueue::VulkanQueue(VulkanDevice* inDevice, uint32_t inFamilyIndex)
 
 {
     vkGetDeviceQueue(Device->GetDeviceHandle(), FamilyIndex, QueueIndex, &Queue);
+    VkCommandPoolCreateInfo CommandPoolInfo = {
+        .sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
+        .queueFamilyIndex = FamilyIndex,
+    };
+    vkCreateCommandPool(Device->GetDeviceHandle(), &CommandPoolInfo, nullptr, &CommandPool);
 }

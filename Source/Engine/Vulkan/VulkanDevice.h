@@ -19,15 +19,15 @@ public:
     API static std::tuple<VkPhysicalDevice, VkPhysicalDeviceProperties> SelectPhysicalDevice(VulkanInstance instance);
     VkDevice GetDeviceHandle() const { return Device; }
     VkPhysicalDevice GetPhysicalDeviceHandle() const { return PhysicalDevice; }
-    VulkanQueue* GetGraphicsQueue() { return GraphicsQueue; }
+    VulkanQueue* GetGraphicsQueue() { return GraphicsQueue.get(); }
 
 private:
     VulkanInstance* Instance;
     VkDevice Device;
     VkPhysicalDevice PhysicalDevice;
-    VulkanQueue* GraphicsQueue;
-    VulkanQueue* TransferQueue;
-    VulkanQueue* ComputeQueue;
+    std::shared_ptr<VulkanQueue> GraphicsQueue;
+    std::shared_ptr<VulkanQueue> TransferQueue;
+    std::shared_ptr<VulkanQueue> ComputeQueue;
     bool OffscreenRender;
     std::vector<const char*> DeviceExtensions;
     std::vector<const char*> DeviceLayers;
