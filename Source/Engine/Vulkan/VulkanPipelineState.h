@@ -19,7 +19,7 @@ private:
 class VulkanGraphicsPipelineState : public VulkanPipelineState
 {
 public:
-    VulkanGraphicsPipelineState(VulkanShaderProgram* InShaderProgram);
+    API VulkanGraphicsPipelineState(VulkanShaderProgram* InShaderProgram);
 
 private:
 };

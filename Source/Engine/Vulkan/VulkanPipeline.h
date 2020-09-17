@@ -12,7 +12,7 @@ class VulkanComputePipelineState;
 class VulkanPipeline
 {
 public:
-    VulkanPipeline(VulkanDevice* InDevice);
+    API VulkanPipeline(VulkanDevice* InDevice);
 
     API VkPipeline* GetPipelineHandle() { return &Pipeline; }
 
@@ -25,7 +25,7 @@ protected:
 class VulkanGraphicsPipeline : VulkanPipeline
 {
 public:
-    VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanGraphicsPipelineState* InVulkanGraphicsPipelineState);
+    API VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanGraphicsPipelineState* InVulkanGraphicsPipelineState);
 
 private:
     VulkanGraphicsPipelineState* PipelineState;

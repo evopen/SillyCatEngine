@@ -40,6 +40,11 @@ void VulkanInstance::Init()
         .ppEnabledExtensionNames = InstanceExtensions.data(),
     };
     vkCreateInstance(&instanceInfo, nullptr, &Instance);
+
+    if (EnableValidation)
+    {
+        SetupDebugLayerCallback();     
+    }
 }
 
 void VulkanInstance::Destroy() const

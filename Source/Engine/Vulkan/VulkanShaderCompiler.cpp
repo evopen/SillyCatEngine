@@ -4,7 +4,6 @@
 #include "Engine/Render/Definitions.h"
 #include "VulkanShaderCompiler.h"
 
-
 bool IsGlslangInitialized                      = false;
 const TBuiltInResource DefaultTBuiltInResource = {
     .maxLights                                 = 32,
@@ -149,6 +148,6 @@ std::vector<unsigned> CompileGLSL(EShaderType ShaderType, std::vector<char> GLSL
     SpvOptions.validate         = true;
     SpvOptions.disableOptimizer = true;
     glslang::GlslangToSpv(*Program.getIntermediate(GlslangShaderType), spirv, &SpvOptions);
-
+    Program.buildReflection();
     return spirv;
 }

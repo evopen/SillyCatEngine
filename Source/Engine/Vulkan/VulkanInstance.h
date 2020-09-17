@@ -27,4 +27,7 @@ private:
     static void GetInstanceLayers(std::vector<const char*>& instanceLayers, bool enableValidation);
     static void GetInstanceExtensions(
         std::vector<const char*>& InstanceExtensions, const bool enableValidation, bool RenderOffscreen);
+    void SetupDebugLayerCallback();
+
+    VkDebugUtilsMessengerEXT DebugMessenger;
 };

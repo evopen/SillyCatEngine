@@ -9,10 +9,10 @@ class VulkanComputeShader;
 class VulkanShaderProgram
 {
 public:
-    VulkanShaderProgram();
+    API VulkanShaderProgram() = default;
 
     VkPipelineShaderStageCreateInfo* GetPipelineShaderStageCreateInfos() { return PipelineStageInfos.data(); }
-    uint32_t GetStageCount() const { return PipelineStageInfos.size(); }
+    uint32_t GetStageCount() const { return static_cast<uint32_t>(PipelineStageInfos.size()); }
 
 protected:
     std::vector<VkPipelineShaderStageCreateInfo> PipelineStageInfos;
@@ -21,7 +21,8 @@ protected:
 class VulkanGraphicsShaderProgram : public VulkanShaderProgram
 {
 public:
-    VulkanGraphicsShaderProgram(VulkanVertexShader* InVertexShader, VulkanPixelShader* InPixelShader);
+    API VulkanGraphicsShaderProgram(VulkanVertexShader* InVertexShader, VulkanPixelShader* InPixelShader);
+
 private:
     VulkanVertexShader* VertexShader;
     VulkanPixelShader* PixelShader;
@@ -30,7 +31,7 @@ private:
 class VulkanComputeShaderProgram : public VulkanShaderProgram
 {
 public:
-    VulkanComputeShaderProgram(VulkanComputeShader* InComputeShader);
+    API VulkanComputeShaderProgram(VulkanComputeShader* InComputeShader);
 
 private:
     VulkanComputeShader* ComputeShader;

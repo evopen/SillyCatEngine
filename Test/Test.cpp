@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "Engine/Vulkan/VulkanPipelineState.h"
-
+#include "Engine/Vulkan/VulkanPipeline.h"
 
 
 TEST(VulkanInstanceTest, Initialization)
@@ -53,17 +53,29 @@ using namespace std::chrono_literals;
 
 int main()
 {
-    VulkanInstance instance;
-    instance.Init();
-    auto [physicalDevice, deviceProp] = VulkanDevice::SelectPhysicalDevice(instance);
-    spdlog::info("select: {}", deviceProp.deviceName);
-    VulkanDevice Device(&instance, physicalDevice, false);
-    Device.Init();
-    VulkanWindowSurface WindowSurface(&instance, &Device, "numerous", 800, 600);
-    VulkanSwapchain Swapchain(&instance, &Device, &WindowSurface);
+    try
+    {
+        VulkanInstance instance;
+        instance.Init();
+        auto [physicalDevice, deviceProp] = VulkanDevice::SelectPhysicalDevice(instance);
+        spdlog::info("select: {}", deviceProp.deviceName);
+        VulkanDevice Device(&instance, physicalDevice, false);
+        Device.Init();
+        VulkanWindowSurface WindowSurface(&instance, &Device, "numerous", 800, 600);
+        VulkanSwapchain Swapchain(&instance, &Device, &WindowSurface);
 
-    VulkanShader VertexShader(&Device, "Test/Shaders/shader.vert");
-    VulkanShader FragmentShader(&Device, "Test/Shaders/shader.frag");
-    std::cout << "hellfffffsfdddfbbdsfd" << std::endl;
+        VulkanVertexShader VertexShader(&Device, "Test/Shaders/shader.vert");
+        VulkanPixelShader FragmentShader(&Device, "Test/Shaders/shader.frag");
+        VulkanGraphicsShaderProgram TriangleProgram(&VertexShader, &FragmentShader);
+        VulkanGraphicsPipelineState TrianglePipelineState(&TriangleProgram);
+        VulkanGraphicsPipeline(&Device, &TrianglePipelineState);
+
+
+    }
+    catch (std::exception& e)
+    {
+        spdlog::critical(e.what());
+    }
+
     return 0;
 }
