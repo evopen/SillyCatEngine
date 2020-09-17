@@ -2,17 +2,21 @@
 
 #include "VulkanDevice.h"
 #include "VulkanPipeline.h"
+#include "VulkanPipelineLayout.h"
 #include "VulkanPipelineState.h"
+#include "VulkanRenderPass.h"
 
-VulkanPipeline::VulkanPipeline(VulkanDevice* InDevice)
+VulkanPipeline::VulkanPipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout)
     : Pipeline(VK_NULL_HANDLE)
     , Device(InDevice)
+    , Layout(InLayout)
 {
 }
 
-VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanGraphicsPipelineState* InVulkanGraphicsPipelineState)
-    : VulkanPipeline(InDevice)
+VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout, VulkanRenderPass* InRenderPass, VulkanGraphicsPipelineState* InVulkanGraphicsPipelineState)
+    : VulkanPipeline(InDevice, InLayout)
     , PipelineState(InVulkanGraphicsPipelineState)
+    , RenderPass(InRenderPass)
 {
     VkPipelineVertexInputStateCreateInfo VertexInputInfo = {
         .sType                           = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO,
@@ -35,17 +39,25 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanGra
         .lineWidth   = 1.f,
     };
 
-    VkViewport Viewport = {
-        .x = 0.f,
-        .y = 0.f,
-    };
-
     VkPipelineViewportStateCreateInfo ViewportInfo = {
         .sType         = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO,
         .viewportCount = 1,
-        .pViewports    = nullptr,
         .scissorCount  = 1,
-        .pScissors     = nullptr,
+    };
+
+    std::vector<VkDynamicState> DynamicStates = {
+        VK_DYNAMIC_STATE_VIEWPORT,
+        VK_DYNAMIC_STATE_SCISSOR};
+
+    VkPipelineDynamicStateCreateInfo DynamicStateInfo = {
+        .sType             = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO,
+        .dynamicStateCount = static_cast<uint32_t>(DynamicStates.size()),
+        .pDynamicStates    = DynamicStates.data(),
+    };
+
+    VkPipelineMultisampleStateCreateInfo MultisampleInfo = {
+        .sType                = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO,
+        .rasterizationSamples = VK_SAMPLE_COUNT_1_BIT,
     };
 
     VkGraphicsPipelineCreateInfo PipelineInfo = {
@@ -55,13 +67,15 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanGra
         .pVertexInputState   = &VertexInputInfo,
         .pInputAssemblyState = &InputAssemblyInfo,
         .pTessellationState  = nullptr,
-        .pViewportState      = nullptr,
+        .pViewportState      = &ViewportInfo,
         .pRasterizationState = &RasterizationInfo,
-        .pMultisampleState   = nullptr,
+        .pMultisampleState   = &MultisampleInfo,
         .pDepthStencilState  = nullptr,
         .pColorBlendState    = nullptr,
-        .pDynamicState       = nullptr,
-
+        .pDynamicState       = &DynamicStateInfo,
+        .layout              = Layout->GetLayoutHandle(),
+        .renderPass          = RenderPass->GetRenderPassHandle(),
     };
+
     vkCreateGraphicsPipelines(Device->GetDeviceHandle(), nullptr, 1, &PipelineInfo, nullptr, &Pipeline);
 }

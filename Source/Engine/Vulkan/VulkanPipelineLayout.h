@@ -7,8 +7,10 @@ class VulkanDevice;
 class VulkanPipelineLayout
 {
 public:
-    VulkanPipelineLayout(VulkanDevice* InDevice);
-private:
+    API VulkanPipelineLayout(VulkanDevice* InDevice);
+    API VkPipelineLayout GetLayoutHandle() { return Layout; }
+
+protected:
     VkPipelineLayout Layout;
     VulkanDevice* Device;
 };
@@ -16,10 +18,12 @@ private:
 
 class VulkanComputePipelineLayout : public VulkanPipelineLayout
 {
-    VulkanComputePipelineLayout(VulkanDevice* InDevice);
+public:
+    API VulkanComputePipelineLayout(VulkanDevice* InDevice);
 };
 
 class VulkanGraphicsPipelineLayout : public VulkanPipelineLayout
 {
-     VulkanGraphicsPipelineLayout(VulkanDevice* InDevice);
+public:
+    API VulkanGraphicsPipelineLayout(VulkanDevice* InDevice);
 };

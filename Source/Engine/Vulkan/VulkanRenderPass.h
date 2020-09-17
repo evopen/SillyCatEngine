@@ -9,10 +9,10 @@ class VulkanRenderPass
 {
 public:
     API VulkanRenderPass(VulkanDevice* InDevice, VulkanRenderTargetLayout* InRTLayout);
+    VkRenderPass GetRenderPassHandle() { return RenderPass; }
 
 private:
     VkRenderPass RenderPass;
     VulkanDevice* Device;
     VulkanRenderTargetLayout* RTLayout;
-
 };

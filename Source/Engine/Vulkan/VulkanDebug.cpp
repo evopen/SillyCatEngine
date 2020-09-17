@@ -25,7 +25,7 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL DebugUtilsCallback(VkDebugUtilsMessageSeve
         Severity = spdlog::level::critical;
         break;
     }
-    spdlog::log(Severity, "{}", CallbackData->pMessage);
+    spdlog::log(Severity, "[VVL] {}", CallbackData->pMessage);
 
     return VK_FALSE;
 }

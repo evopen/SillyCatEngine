@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "Engine/Vulkan/VulkanPipeline.h"
+#include "Engine/Vulkan/VulkanPipelineLayout.h"
 #include "Engine/Vulkan/VulkanPipelineState.h"
 #include "Engine/Vulkan/VulkanRenderPass.h"
 #include "Engine/Vulkan/VulkanRenderTargetLayout.h"
@@ -70,10 +71,10 @@ int main()
         VulkanPixelShader FragmentShader(&Device, "Test/Shaders/shader.frag");
         VulkanGraphicsShaderProgram TriangleProgram(&VertexShader, &FragmentShader);
         VulkanGraphicsPipelineState TrianglePipelineState(&TriangleProgram);
-        //VulkanGraphicsPipeline(&Device, &TrianglePipelineState);
         VulkanRenderTargetLayout RTLayout;
-        VulkanRenderPass(&Device, &RTLayout);
-
+        VulkanRenderPass Renderpass(&Device, &RTLayout);
+        VulkanGraphicsPipelineLayout PipelineLayout(&Device);
+        VulkanGraphicsPipeline(&Device, &PipelineLayout, &Renderpass, &TrianglePipelineState);
     }
     catch (std::exception& e)
     {
