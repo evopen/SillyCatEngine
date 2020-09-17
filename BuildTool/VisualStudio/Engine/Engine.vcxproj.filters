@@ -95,6 +95,12 @@
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanFramebuffer.cpp">
       <Filter>Engine\Vulkan</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanSemaphore.cpp">
+      <Filter>Engine\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanFence.cpp">
+      <Filter>Engine\Vulkan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">
@@ -155,6 +161,12 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanFramebuffer.h">
+      <Filter>Engine\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanSemaphore.h">
+      <Filter>Engine\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanFence.h">
       <Filter>Engine\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>

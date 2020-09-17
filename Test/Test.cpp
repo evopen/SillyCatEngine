@@ -1,11 +1,13 @@
 #include "pch.h"
 
+#include "Engine/Vulkan/VulkanFence.h"
 #include "Engine/Vulkan/VulkanFramebuffer.h"
 #include "Engine/Vulkan/VulkanPipeline.h"
 #include "Engine/Vulkan/VulkanPipelineLayout.h"
 #include "Engine/Vulkan/VulkanPipelineState.h"
 #include "Engine/Vulkan/VulkanRenderPass.h"
 #include "Engine/Vulkan/VulkanRenderTargetLayout.h"
+#include "Engine/Vulkan/VulkanSemaphore.h"
 
 
 TEST(VulkanInstanceTest, Initialization)
@@ -55,6 +57,7 @@ TEST(SelfTest, EQUAL)
 
 using namespace std::chrono_literals;
 
+
 int main()
 {
     try
@@ -77,6 +80,22 @@ int main()
         VulkanGraphicsPipelineLayout PipelineLayout(&Device);
         VulkanGraphicsPipeline(&Device, &PipelineLayout, &Renderpass, &TrianglePipelineState);
         VulkanFramebuffer(&Device, &Renderpass, 800, 600);
+        VulkanSemaphore WaitImageSemaphore(&Device);
+        VulkanFence WaitImageFence(&Device);
+
+        while (true)
+        {
+            uint32_t ImageIndex;
+            vkAcquireNextImageKHR(Device.GetDeviceHandle(),
+                Swapchain.GetSwapchainHandle(),
+                std::numeric_limits<uint32_t>::max(),
+                VK_NULL_HANDLE,
+                *WaitImageFence.GetHandle(),
+                &ImageIndex);
+            vkWaitForFences(Device.GetDeviceHandle(), 1, WaitImageFence.GetHandle(), VK_TRUE, UINT64_MAX);
+            vkResetFences(Device.GetDeviceHandle(), 1, WaitImageFence.GetHandle());
+            spdlog::info(ImageIndex);
+        }
     }
     catch (std::exception& e)
     {
