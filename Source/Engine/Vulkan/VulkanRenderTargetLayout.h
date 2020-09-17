@@ -7,6 +7,8 @@
 class VulkanRenderTargetLayout
 {
 public:
+    API VulkanRenderTargetLayout() = default;
+
     uint32_t GetAttachmentDescriptionCount() const { return static_cast<uint32_t>(Descriptions.size()); }
     VkAttachmentDescription* GetAttachmentDescriptions() { return Descriptions.data(); }
 
@@ -17,7 +19,17 @@ public:
     VkAttachmentReference* GetColorAttachmentReferences() { return ColorReferences.data(); }
     VkAttachmentReference* GetResolveAttachmentReferences() { return ResolveReferences.data(); }
 
-    VkAttachmentReference* GetDepthStencilAttachmentReference() { return &DepthStencilReference; }
+    VkAttachmentReference* GetDepthStencilAttachmentReference()
+    {
+        if (bHasDepthStencilAttachment)
+        {
+            return &DepthStencilReference;
+        }
+        else
+        {
+            return nullptr;
+        }
+    }
 
 
 private:
@@ -28,5 +40,7 @@ private:
     std::vector<VkAttachmentReference> ColorReferences;
     std::vector<VkAttachmentReference> InputReferences;
     std::vector<VkAttachmentReference> ResolveReferences;
-    VkAttachmentReference DepthStencilReference;
+
+    bool bHasDepthStencilAttachment             = false;
+    VkAttachmentReference DepthStencilReference = {};
 };

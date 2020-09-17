@@ -21,12 +21,11 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL DebugUtilsCallback(VkDebugUtilsMessageSeve
     case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
         Severity = spdlog::level::debug;
         break;
-    case VK_DEBUG_UTILS_MESSAGE_SEVERITY_FLAG_BITS_MAX_ENUM_EXT:
-        break;
     default:
+        Severity = spdlog::level::critical;
         break;
     }
-    spdlog::log(Severity, "[VulkanValidation] {}", CallbackData->pMessage);
+    spdlog::log(Severity, "{}", CallbackData->pMessage);
 
     return VK_FALSE;
 }

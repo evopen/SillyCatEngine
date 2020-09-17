@@ -1,8 +1,8 @@
 #include "Engine/pch.h"
 
+#include "VulkanDevice.h"
 #include "VulkanPipeline.h"
 #include "VulkanPipelineState.h"
-#include "VulkanDevice.h"
 
 VulkanPipeline::VulkanPipeline(VulkanDevice* InDevice)
     : Pipeline(VK_NULL_HANDLE)
@@ -23,10 +23,30 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanGra
     };
 
     VkPipelineInputAssemblyStateCreateInfo InputAssemblyInfo = {
-        .sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO,
+        .sType    = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO,
         .topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST,
     };
 
+    VkPipelineRasterizationStateCreateInfo RasterizationInfo = {
+        .sType       = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO,
+        .polygonMode = VK_POLYGON_MODE_FILL,
+        .cullMode    = VK_CULL_MODE_BACK_BIT,
+        .frontFace   = VK_FRONT_FACE_CLOCKWISE,
+        .lineWidth   = 1.f,
+    };
+
+    VkViewport Viewport = {
+        .x = 0.f,
+        .y = 0.f,
+    };
+
+    VkPipelineViewportStateCreateInfo ViewportInfo = {
+        .sType         = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO,
+        .viewportCount = 1,
+        .pViewports    = nullptr,
+        .scissorCount  = 1,
+        .pScissors     = nullptr,
+    };
 
     VkGraphicsPipelineCreateInfo PipelineInfo = {
         .sType               = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO,
@@ -36,12 +56,12 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanGra
         .pInputAssemblyState = &InputAssemblyInfo,
         .pTessellationState  = nullptr,
         .pViewportState      = nullptr,
-        .pRasterizationState = nullptr,
-        .pMultisampleState = nullptr,
-        .pDepthStencilState = nullptr,
-        .pColorBlendState = nullptr,
-        .pDynamicState = nullptr,
-        
+        .pRasterizationState = &RasterizationInfo,
+        .pMultisampleState   = nullptr,
+        .pDepthStencilState  = nullptr,
+        .pColorBlendState    = nullptr,
+        .pDynamicState       = nullptr,
+
     };
     vkCreateGraphicsPipelines(Device->GetDeviceHandle(), nullptr, 1, &PipelineInfo, nullptr, &Pipeline);
 }

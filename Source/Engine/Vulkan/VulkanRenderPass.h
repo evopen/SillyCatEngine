@@ -8,7 +8,7 @@ class VulkanRenderTargetLayout;
 class VulkanRenderPass
 {
 public:
-    VulkanRenderPass(VulkanDevice* InDevice, VulkanRenderTargetLayout* InRTLayout);
+    API VulkanRenderPass(VulkanDevice* InDevice, VulkanRenderTargetLayout* InRTLayout);
 
 private:
     VkRenderPass RenderPass;
