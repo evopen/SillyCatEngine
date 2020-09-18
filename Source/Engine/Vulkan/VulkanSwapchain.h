@@ -14,6 +14,8 @@ public:
 
     API VkSwapchainKHR GetSwapchainHandle() { return Swapchain; }
     API VkImage GetImage(uint32_t Index) { return Images[Index]; }
+    API uint32_t GetRenderIndex() const { return RenderIndex; }
+    API uint32_t GetPresentIndex() const { return PresentIndex; }
 
 private:
     VkSwapchainKHR Swapchain;
@@ -21,4 +23,7 @@ private:
     VulkanWindowSurface* WindowSurface;
     VulkanInstance* Instance;
     std::vector<VkImage> Images;
+
+    uint32_t RenderIndex;
+    uint32_t PresentIndex;
 };

@@ -11,6 +11,8 @@ VulkanSwapchain::VulkanSwapchain(
     VulkanInstance* InInstance, VulkanDevice* InDevice, VulkanWindowSurface* InWindowSurface)
     : WindowSurface(InWindowSurface)
     , Instance(InInstance)
+    , RenderIndex(0)
+    , PresentIndex(0)
     , Device(InDevice)
 {
     VkSwapchainCreateInfoKHR SwapchainInfo = {.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,

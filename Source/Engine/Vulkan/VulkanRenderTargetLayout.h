@@ -21,14 +21,7 @@ public:
 
     VkAttachmentReference* GetDepthStencilAttachmentReference()
     {
-        if (bHasDepthStencilAttachment)
-        {
-            return &DepthStencilReference;
-        }
-        else
-        {
-            return nullptr;
-        }
+        return DepthStencilReference.get();
     }
 
 
@@ -41,6 +34,6 @@ private:
     std::vector<VkAttachmentReference> InputReferences;
     std::vector<VkAttachmentReference> ResolveReferences;
 
-    bool bHasDepthStencilAttachment             = false;
-    VkAttachmentReference DepthStencilReference = {};
+    bool bHasDepthStencilAttachment = false;
+    std::shared_ptr<VkAttachmentReference> DepthStencilReference;
 };

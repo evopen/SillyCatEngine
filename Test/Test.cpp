@@ -6,6 +6,7 @@
 #include "Engine/Vulkan/VulkanPipeline.h"
 #include "Engine/Vulkan/VulkanPipelineLayout.h"
 #include "Engine/Vulkan/VulkanPipelineState.h"
+#include "Engine/Vulkan/VulkanPresenter.h"
 #include "Engine/Vulkan/VulkanQueue.h"
 #include "Engine/Vulkan/VulkanRenderPass.h"
 #include "Engine/Vulkan/VulkanRenderTargetLayout.h"
@@ -85,6 +86,7 @@ int main()
         VulkanSemaphore WaitImageSemaphore(&Device);
         VulkanFence WaitFence(&Device);
         VulkanCommandBuffer CmdBuffer(&Device, Device.GetGraphicsQueue());
+        VulkanPresenter Presenter(Device.GetPresentQueue(), &Swapchain);
 
 
         while (!glfwWindowShouldClose(WindowSurface.GetWindowHandle()))
@@ -107,7 +109,7 @@ int main()
             {
                 CmdBuffer.Begin();
                 CmdBuffer.BeginRenderPass(&Renderpass, &Framebuffer);
-                
+
 
                 vkCmdBindPipeline(CmdBuffer.GetHandle(), VK_PIPELINE_BIND_POINT_GRAPHICS, Pipeline.GetPipelineHandle());
                 VkViewport Viewport = {
@@ -167,14 +169,7 @@ int main()
             CmdBuffer.Submit({}, {}, {}, &WaitFence);
             WaitFence.Wait();
             WaitFence.Reset();
-            std::vector<VkSwapchainKHR> Swapchains = {Swapchain.GetSwapchainHandle()};
-            VkPresentInfoKHR PresentInfo           = {
-                .sType          = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
-                .swapchainCount = 1,
-                .pSwapchains    = Swapchains.data(),
-                .pImageIndices  = &ImageIndex,
-            };
-            vkQueuePresentKHR(Device.GetPresentQueue()->GetHandle(), &PresentInfo);
+            Presenter.Present();
         }
     }
     catch (std::exception& e)
