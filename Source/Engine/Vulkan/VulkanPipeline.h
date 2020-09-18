@@ -33,3 +33,12 @@ private:
     VulkanGraphicsPipelineState* PipelineState;
     VulkanRenderPass* RenderPass;
 };
+
+class VulkanComputePipeline : VulkanPipeline
+{
+public:
+    API VulkanComputePipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout, VulkanComputePipelineState* InComputePipelineState);
+
+private:
+    VulkanComputePipelineState* PipelineState;
+};

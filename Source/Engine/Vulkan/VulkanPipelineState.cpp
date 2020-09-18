@@ -11,3 +11,8 @@ VulkanGraphicsPipelineState::VulkanGraphicsPipelineState(VulkanShaderProgram* In
     : VulkanPipelineState(InShaderProgram)
 {
 }
+
+VulkanComputePipelineState::VulkanComputePipelineState(VulkanShaderProgram* InShaderProgram)
+    : VulkanPipelineState(InShaderProgram)
+{
+}

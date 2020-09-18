@@ -5,6 +5,7 @@
 #include "Engine/Platform/Platform.h"
 
 #undef CreateWindowW
+#undef CreateWindow
 
 
 class VulkanDevice;

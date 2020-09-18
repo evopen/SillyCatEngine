@@ -23,3 +23,11 @@ public:
 
 private:
 };
+
+class VulkanComputePipelineState : public VulkanPipelineState
+{
+public:
+    API VulkanComputePipelineState(VulkanShaderProgram* InShaderProgram);
+
+private:
+};

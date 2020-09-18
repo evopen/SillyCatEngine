@@ -79,3 +79,15 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanPip
 
     vkCreateGraphicsPipelines(Device->GetDeviceHandle(), nullptr, 1, &PipelineInfo, nullptr, &Pipeline);
 }
+
+VulkanComputePipeline::VulkanComputePipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout, VulkanComputePipelineState* InComputePipelineState)
+    : VulkanPipeline(InDevice, InLayout)
+    , PipelineState(InComputePipelineState)
+{
+    VkComputePipelineCreateInfo PipelineInfo = {
+        .sType  = VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO,
+        .stage  = PipelineState->GetPipelineShaderStageCreateInfos(),
+        .layout = Layout->GetLayoutHandle(),
+    };
+    vkCreateComputePipelines(Device->GetDeviceHandle(), nullptr, 1, &PipelineInfo, nullptr, &Pipeline);
+}
