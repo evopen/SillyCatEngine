@@ -28,4 +28,10 @@ VulkanSwapchain::VulkanSwapchain(
         .presentMode      = VK_PRESENT_MODE_MAILBOX_KHR,
         .clipped          = VK_TRUE};
     CheckResult(vkCreateSwapchainKHR(Device->GetDeviceHandle(), &SwapchainInfo, nullptr, &Swapchain));
+
+    uint32_t ImageCount;
+    vkGetSwapchainImagesKHR(Device->GetDeviceHandle(), Swapchain, &ImageCount, nullptr);
+    spdlog::info("Swapchain has {} images.", ImageCount);
+    Images.resize(ImageCount);
+    vkGetSwapchainImagesKHR(Device->GetDeviceHandle(), Swapchain, &ImageCount, Images.data());
 }

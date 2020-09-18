@@ -19,4 +19,5 @@ private:
     VulkanDevice* Device;
     VulkanWindowSurface* WindowSurface;
     VulkanInstance* Instance;
+    std::vector<VkImage> Images;
 };

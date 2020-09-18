@@ -90,10 +90,11 @@ int main()
                 Swapchain.GetSwapchainHandle(),
                 std::numeric_limits<uint32_t>::max(),
                 VK_NULL_HANDLE,
-                *WaitImageFence.GetHandle(),
+                WaitImageFence.GetHandle(),
                 &ImageIndex);
-            vkWaitForFences(Device.GetDeviceHandle(), 1, WaitImageFence.GetHandle(), VK_TRUE, UINT64_MAX);
-            vkResetFences(Device.GetDeviceHandle(), 1, WaitImageFence.GetHandle());
+            std::vector<VkFence> FencesToWait{WaitImageFence.GetHandle()};
+            vkWaitForFences(Device.GetDeviceHandle(), 1, FencesToWait.data(), VK_TRUE, UINT64_MAX);
+            vkResetFences(Device.GetDeviceHandle(), 1, FencesToWait.data());
             spdlog::info(ImageIndex);
         }
     }

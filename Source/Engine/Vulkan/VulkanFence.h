@@ -7,7 +7,7 @@ class VulkanFence
 {
 public:
     API VulkanFence(VulkanDevice* InDevice);
-    VkFence* GetHandle() { return &Fence; }
+    VkFence GetHandle() { return Fence; }
 
 private:
     VulkanDevice* Device;
