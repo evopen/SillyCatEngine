@@ -12,3 +12,13 @@ VulkanFence::VulkanFence(VulkanDevice* InDevice)
     };
     vkCreateFence(Device->GetDeviceHandle(), &FenceInfo, nullptr, &Fence);
 }
+
+void VulkanFence::Wait() const
+{
+    vkWaitForFences(Device->GetDeviceHandle(), 1, &Fence, VK_TRUE, std::numeric_limits<uint64_t>::max());
+}
+
+void VulkanFence::Reset() const
+{
+    vkResetFences(Device->GetDeviceHandle(), 1, &Fence);
+}

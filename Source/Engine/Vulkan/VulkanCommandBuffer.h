@@ -3,6 +3,7 @@
 
 #include "Engine/Platform/Platform.h"
 
+class VulkanFence;
 class VulkanFramebuffer;
 class VulkanRenderPass;
 class VulkanQueue;
@@ -13,10 +14,12 @@ class VulkanCommandBuffer
 public:
     API VulkanCommandBuffer(VulkanDevice* InDevice, VulkanQueue* InQueue);
 
-    void Begin() const;
-    void End() const;
-    void BeginRenderPass(VulkanRenderPass* InRenderPass, VulkanFramebuffer* InFramebuffer) const;
-    void EndRenderPass() const;
+    API void Begin() const;
+    API void End() const;
+    API void BeginRenderPass(VulkanRenderPass* InRenderPass, VulkanFramebuffer* InFramebuffer) const;
+    API void EndRenderPass() const;
+
+    API void Submit(std::vector<VkSemaphore> InWaitSemaphores = {}, std::vector<VkPipelineStageFlags> InWaitStages = {}, std::vector<VkSemaphore> InSignalSemaphores = {}, VulkanFence* Fence = nullptr) const;
 
 private:
     VulkanDevice* Device;

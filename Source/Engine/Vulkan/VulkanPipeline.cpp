@@ -86,7 +86,7 @@ VulkanComputePipeline::VulkanComputePipeline(VulkanDevice* InDevice, VulkanPipel
 {
     VkComputePipelineCreateInfo PipelineInfo = {
         .sType  = VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO,
-        .stage  = PipelineState->GetPipelineShaderStageCreateInfos(),
+        .stage  = PipelineState->GetPipelineShaderStageCreateInfo(),
         .layout = Layout->GetLayoutHandle(),
     };
     vkCreateComputePipelines(Device->GetDeviceHandle(), nullptr, 1, &PipelineInfo, nullptr, &Pipeline);

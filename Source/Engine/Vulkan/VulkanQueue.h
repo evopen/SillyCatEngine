@@ -10,6 +10,7 @@ public:
     VulkanQueue(VulkanDevice* inDevice, uint32_t inFamilyIndex);
     uint32_t GetFamilyIndex() const { return FamilyIndex; }
     VkCommandPool GetCommandPoolHandle() { return CommandPool; }
+    VkQueue GetHandle() { return Queue; }
 
 private:
     VkQueue Queue;

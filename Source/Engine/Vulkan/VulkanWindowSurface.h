@@ -19,6 +19,7 @@ public:
     void CreateWindow();
     void CreateSurface();
     VkSurfaceKHR GetSurfaceHandle() { return Surface; }
+    API GLFWwindow* GetWindowHandle() { return Window; }
     VkSurfaceCapabilitiesKHR SurfaceProperties;
 
 private:

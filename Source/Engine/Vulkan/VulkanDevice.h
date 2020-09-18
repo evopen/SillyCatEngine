@@ -20,6 +20,9 @@ public:
     VkDevice GetDeviceHandle() const { return Device; }
     VkPhysicalDevice GetPhysicalDeviceHandle() const { return PhysicalDevice; }
     VulkanQueue* GetGraphicsQueue() { return GraphicsQueue.get(); }
+    VulkanQueue* GetPresentQueue() { return GraphicsQueue.get(); }
+    VulkanQueue* GetComputeQueue() { return ComputeQueue.get(); }
+    VulkanQueue* GetTransferQueue() { return TransferQueue.get(); }
 
 private:
     VulkanInstance* Instance;

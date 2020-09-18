@@ -1,10 +1,12 @@
 #include "pch.h"
 
+#include "Engine/Vulkan/VulkanCommandBuffer.h"
 #include "Engine/Vulkan/VulkanFence.h"
 #include "Engine/Vulkan/VulkanFramebuffer.h"
 #include "Engine/Vulkan/VulkanPipeline.h"
 #include "Engine/Vulkan/VulkanPipelineLayout.h"
 #include "Engine/Vulkan/VulkanPipelineState.h"
+#include "Engine/Vulkan/VulkanQueue.h"
 #include "Engine/Vulkan/VulkanRenderPass.h"
 #include "Engine/Vulkan/VulkanRenderTargetLayout.h"
 #include "Engine/Vulkan/VulkanSemaphore.h"
@@ -79,23 +81,41 @@ int main()
         VulkanRenderPass Renderpass(&Device, &RTLayout);
         VulkanGraphicsPipelineLayout PipelineLayout(&Device);
         VulkanGraphicsPipeline(&Device, &PipelineLayout, &Renderpass, &TrianglePipelineState);
-        VulkanFramebuffer(&Device, &Renderpass, 800, 600);
+        VulkanFramebuffer Framebuffer(&Device, &Renderpass, 800, 600);
         VulkanSemaphore WaitImageSemaphore(&Device);
-        VulkanFence WaitImageFence(&Device);
+        VulkanFence WaitFence(&Device);
+        VulkanCommandBuffer CmdBuffer(&Device, Device.GetGraphicsQueue());
 
-        while (true)
+        CmdBuffer.Begin();
+        CmdBuffer.BeginRenderPass(&Renderpass, &Framebuffer);
+        CmdBuffer.EndRenderPass();
+        CmdBuffer.End();
+
+        while (!glfwWindowShouldClose(WindowSurface.GetWindowHandle()))
         {
+            glfwPollEvents();
             uint32_t ImageIndex;
             vkAcquireNextImageKHR(Device.GetDeviceHandle(),
                 Swapchain.GetSwapchainHandle(),
                 std::numeric_limits<uint32_t>::max(),
                 VK_NULL_HANDLE,
-                WaitImageFence.GetHandle(),
+                WaitFence.GetHandle(),
                 &ImageIndex);
-            std::vector<VkFence> FencesToWait{WaitImageFence.GetHandle()};
-            vkWaitForFences(Device.GetDeviceHandle(), 1, FencesToWait.data(), VK_TRUE, UINT64_MAX);
-            vkResetFences(Device.GetDeviceHandle(), 1, FencesToWait.data());
+            std::vector<VkFence> FencesToWait{WaitFence.GetHandle()};
+            WaitFence.Wait();
+            WaitFence.Reset();
             spdlog::info(ImageIndex);
+            CmdBuffer.Submit({}, {}, {}, &WaitFence);
+            WaitFence.Wait();
+            WaitFence.Reset();
+            std::vector<VkSwapchainKHR> Swapchains = {Swapchain.GetSwapchainHandle()};
+            VkPresentInfoKHR PresentInfo           = {
+                .sType          = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
+                .swapchainCount = 1,
+                .pSwapchains    = Swapchains.data(),
+                .pImageIndices  = &ImageIndex,
+            };
+            vkQueuePresentKHR(Device.GetPresentQueue()->GetHandle(), &PresentInfo);
         }
     }
     catch (std::exception& e)

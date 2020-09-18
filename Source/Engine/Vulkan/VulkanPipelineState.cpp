@@ -2,17 +2,16 @@
 
 #include "VulkanPipelineState.h"
 
-VulkanPipelineState::VulkanPipelineState(VulkanShaderProgram* InShaderProgram)
+VulkanPipelineState::VulkanPipelineState()
+{
+}
+
+VulkanGraphicsPipelineState::VulkanGraphicsPipelineState(VulkanGraphicsShaderProgram* InShaderProgram)
     : ShaderProgram(InShaderProgram)
 {
 }
 
-VulkanGraphicsPipelineState::VulkanGraphicsPipelineState(VulkanShaderProgram* InShaderProgram)
-    : VulkanPipelineState(InShaderProgram)
-{
-}
-
-VulkanComputePipelineState::VulkanComputePipelineState(VulkanShaderProgram* InShaderProgram)
-    : VulkanPipelineState(InShaderProgram)
+VulkanComputePipelineState::VulkanComputePipelineState(VulkanComputeShaderProgram* InShaderProgram)
+    : ShaderProgram(InShaderProgram)
 {
 }
