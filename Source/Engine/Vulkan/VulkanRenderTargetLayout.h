@@ -19,10 +19,7 @@ public:
     VkAttachmentReference* GetColorAttachmentReferences() { return ColorReferences.data(); }
     VkAttachmentReference* GetResolveAttachmentReferences() { return ResolveReferences.data(); }
 
-    VkAttachmentReference* GetDepthStencilAttachmentReference()
-    {
-        return DepthStencilReference.get();
-    }
+    VkAttachmentReference* GetDepthStencilAttachmentReference() { return DepthStencilReference.get(); }
 
 
 private:

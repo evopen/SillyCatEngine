@@ -113,6 +113,9 @@
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanComputer.cpp">
       <Filter>Engine\Vulkan</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanImageView.cpp">
+      <Filter>Engine\Vulkan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">
@@ -191,6 +194,9 @@
       <Filter>Engine\Vulkan</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanComputer.h">
+      <Filter>Engine\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanImageView.h">
       <Filter>Engine\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>

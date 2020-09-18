@@ -6,4 +6,6 @@ class VulkanRenderer
 {
 public:
     VulkanRenderer();
+private:
+
 };
