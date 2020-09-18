@@ -7,6 +7,7 @@
 #include <vulkan/vulkan.h>
 
 #define KHRONOS_VALIDATION_LAYER_NAME "VK_LAYER_KHRONOS_validation"
+#define FPS_COUNTER_LAYER_NAME        "VK_LAYER_LUNARG_monitor"
 
 VulkanInstance::VulkanInstance()
     : Instance(VK_NULL_HANDLE)
@@ -43,7 +44,7 @@ void VulkanInstance::Init()
 
     if (EnableValidation)
     {
-        SetupDebugLayerCallback();     
+        SetupDebugLayerCallback();
     }
 }
 
@@ -58,6 +59,7 @@ void VulkanInstance::GetInstanceLayers(std::vector<const char*>& instanceLayers,
     if (enableValidation)
     {
         instanceLayers.push_back(KHRONOS_VALIDATION_LAYER_NAME);
+        instanceLayers.push_back(FPS_COUNTER_LAYER_NAME);
     }
 }
 

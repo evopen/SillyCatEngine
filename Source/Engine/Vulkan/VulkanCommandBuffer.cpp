@@ -59,6 +59,11 @@ void VulkanCommandBuffer::EndRenderPass() const
     vkCmdEndRenderPass(CommandBuffer);
 }
 
+void VulkanCommandBuffer::Reset() const
+{
+    vkResetCommandBuffer(CommandBuffer, 0);
+}
+
 void VulkanCommandBuffer::Submit(std::vector<VkSemaphore> InWaitSemaphores, std::vector<VkPipelineStageFlags> InWaitStages, std::vector<VkSemaphore> InSignalSemaphores, VulkanFence* Fence) const
 {
     VkSubmitInfo SubmitInfo = {

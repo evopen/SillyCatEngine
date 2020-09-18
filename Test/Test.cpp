@@ -86,13 +86,11 @@ int main()
         VulkanFence WaitFence(&Device);
         VulkanCommandBuffer CmdBuffer(&Device, Device.GetGraphicsQueue());
 
-        CmdBuffer.Begin();
-        CmdBuffer.BeginRenderPass(&Renderpass, &Framebuffer);
-        CmdBuffer.EndRenderPass();
-        CmdBuffer.End();
 
         while (!glfwWindowShouldClose(WindowSurface.GetWindowHandle()))
         {
+
+
             glfwPollEvents();
             uint32_t ImageIndex;
             vkAcquireNextImageKHR(Device.GetDeviceHandle(),
@@ -105,6 +103,38 @@ int main()
             WaitFence.Wait();
             WaitFence.Reset();
             spdlog::info(ImageIndex);
+
+            {
+                CmdBuffer.Begin();
+                CmdBuffer.BeginRenderPass(&Renderpass, &Framebuffer);
+                CmdBuffer.EndRenderPass();
+
+
+                VkImageMemoryBarrier ImgMemBarrier = {
+                    .sType            = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,
+                    .srcAccessMask    = 0,
+                    .dstAccessMask    = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT,
+                    .oldLayout        = VK_IMAGE_LAYOUT_UNDEFINED,
+                    .newLayout        = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+                    .image            = Swapchain.GetImage(ImageIndex),
+                    .subresourceRange = {
+                        .aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT,
+                        .baseMipLevel   = 0,
+                        .levelCount     = 1,
+                        .baseArrayLayer = 0,
+                        .layerCount     = 1,
+                    },
+                };
+                vkCmdPipelineBarrier(CmdBuffer.GetHandle(),
+                    VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+                    0,
+                    0, nullptr,
+                    0, nullptr,
+                    1, &ImgMemBarrier);
+
+                CmdBuffer.End();
+            }
+
             CmdBuffer.Submit({}, {}, {}, &WaitFence);
             WaitFence.Wait();
             WaitFence.Reset();

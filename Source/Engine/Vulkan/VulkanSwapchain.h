@@ -12,7 +12,8 @@ class VulkanSwapchain
 public:
     API VulkanSwapchain(VulkanInstance* InInstance, VulkanDevice* InDevice, VulkanWindowSurface* InWindowSurface);
 
-    VkSwapchainKHR GetSwapchainHandle() { return Swapchain; }
+    API VkSwapchainKHR GetSwapchainHandle() { return Swapchain; }
+    API VkImage GetImage(uint32_t Index) { return Images[Index]; }
 
 private:
     VkSwapchainKHR Swapchain;

@@ -18,6 +18,9 @@ public:
     API void End() const;
     API void BeginRenderPass(VulkanRenderPass* InRenderPass, VulkanFramebuffer* InFramebuffer) const;
     API void EndRenderPass() const;
+    API void Reset() const;
+
+    API VkCommandBuffer GetHandle() { return CommandBuffer; }
 
     API void Submit(std::vector<VkSemaphore> InWaitSemaphores = {}, std::vector<VkPipelineStageFlags> InWaitStages = {}, std::vector<VkSemaphore> InSignalSemaphores = {}, VulkanFence* Fence = nullptr) const;
 
