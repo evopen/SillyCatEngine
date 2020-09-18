@@ -80,7 +80,7 @@ int main()
         VulkanRenderTargetLayout RTLayout;
         VulkanRenderPass Renderpass(&Device, &RTLayout);
         VulkanGraphicsPipelineLayout PipelineLayout(&Device);
-        VulkanGraphicsPipeline(&Device, &PipelineLayout, &Renderpass, &TrianglePipelineState);
+        VulkanGraphicsPipeline Pipeline(&Device, &PipelineLayout, &Renderpass, &TrianglePipelineState);
         VulkanFramebuffer Framebuffer(&Device, &Renderpass, 800, 600);
         VulkanSemaphore WaitImageSemaphore(&Device);
         VulkanFence WaitFence(&Device);
@@ -107,7 +107,32 @@ int main()
             {
                 CmdBuffer.Begin();
                 CmdBuffer.BeginRenderPass(&Renderpass, &Framebuffer);
-                CmdBuffer.EndRenderPass();
+                
+
+                vkCmdBindPipeline(CmdBuffer.GetHandle(), VK_PIPELINE_BIND_POINT_GRAPHICS, Pipeline.GetPipelineHandle());
+                VkViewport Viewport = {
+                    .x        = 0,
+                    .y        = 0,
+                    .width    = static_cast<float>(WindowSurface.GetWidth()),
+                    .height   = static_cast<float>(WindowSurface.GetHeight()),
+                    .minDepth = 0.f,
+                    .maxDepth = 1.f,
+                };
+                VkRect2D Scissor = {
+                    .offset = {
+                        .x = 0,
+                        .y = 0,
+                    },
+                    .extent = {
+                        .width  = WindowSurface.GetWidth(),
+                        .height = WindowSurface.GetHeight(),
+                    },
+                };
+                vkCmdSetViewport(CmdBuffer.GetHandle(), 0, 1, &Viewport);
+                vkCmdSetScissor(CmdBuffer.GetHandle(), 0, 1, &Scissor);
+
+
+                vkCmdDraw(CmdBuffer.GetHandle(), 3, 1, 0, 0);
 
 
                 VkImageMemoryBarrier ImgMemBarrier = {
@@ -125,6 +150,10 @@ int main()
                         .layerCount     = 1,
                     },
                 };
+
+
+                CmdBuffer.EndRenderPass();
+
                 vkCmdPipelineBarrier(CmdBuffer.GetHandle(),
                     VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
                     0,

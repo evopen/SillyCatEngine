@@ -16,7 +16,7 @@ class VulkanPipeline
 public:
     API VulkanPipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout);
 
-    API VkPipeline* GetPipelineHandle() { return &Pipeline; }
+    API VkPipeline GetPipelineHandle() { return Pipeline; }
 
 protected:
     VkPipeline Pipeline;
@@ -24,7 +24,7 @@ protected:
     VulkanPipelineLayout* Layout;
 };
 
-class VulkanGraphicsPipeline : VulkanPipeline
+class VulkanGraphicsPipeline : public VulkanPipeline
 {
 public:
     API VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout, VulkanRenderPass* InRenderPass, VulkanGraphicsPipelineState* InVulkanGraphicsPipelineState);
@@ -34,7 +34,7 @@ private:
     VulkanRenderPass* RenderPass;
 };
 
-class VulkanComputePipeline : VulkanPipeline
+class VulkanComputePipeline : public VulkanPipeline
 {
 public:
     API VulkanComputePipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout, VulkanComputePipelineState* InComputePipelineState);

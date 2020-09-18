@@ -22,6 +22,9 @@ public:
     API GLFWwindow* GetWindowHandle() { return Window; }
     VkSurfaceCapabilitiesKHR SurfaceProperties;
 
+    API uint32_t GetWidth() const { return Width; }
+    API uint32_t GetHeight() const { return Height; }
+
 private:
     VkSurfaceKHR Surface;
     VulkanInstance* Instance;
