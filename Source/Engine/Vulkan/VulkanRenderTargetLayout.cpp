@@ -1,14 +1,18 @@
+#include "Engine/pch.h"
+
 #include "VulkanRenderTargetLayout.h"
 
-VulkanRenderTargetLayout::VulkanRenderTargetLayout(uint32_t NumColorRenderTarget)
+VulkanRenderTargetLayout::VulkanRenderTargetLayout(uint32_t ColorRenderTargetCount)
 {
-    ColorReferences.reserve(NumColorRenderTarget);
-    Descriptions.reserve(NumColorRenderTarget);
+    ColorReferences.reserve(ColorRenderTargetCount);
+    Descriptions.reserve(ColorRenderTargetCount);
 
-    for (uint32_t i = 0; i < NumColorRenderTarget; i++)
+    for (uint32_t i = 0; i < ColorRenderTargetCount; i++)
     {
         VkAttachmentReference ColorAttachmentRef = {
-            .attachment = i, .layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL};
+            .attachment = i,
+            .layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+        };
         ColorReferences.push_back(ColorAttachmentRef);
 
         VkAttachmentDescription ColorAttachmentDesc = {

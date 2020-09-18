@@ -1,13 +1,14 @@
 #pragma once
 
-#include <vulkan/vulkan.h>
+#include "Engine/pch.h"
 
-#include <vector>
+#include "Engine/Platform/Platform.h"
+
 
 class VulkanRenderTargetLayout
 {
 public:
-    API VulkanRenderTargetLayout() = default;
+    API VulkanRenderTargetLayout(uint32_t ColorRenderTargetCount);
 
     uint32_t GetAttachmentDescriptionCount() const { return static_cast<uint32_t>(Descriptions.size()); }
     VkAttachmentDescription* GetAttachmentDescriptions() { return Descriptions.data(); }
@@ -23,8 +24,6 @@ public:
 
 
 private:
-    VkExtent2D Extent;
-
     std::vector<VkAttachmentDescription> Descriptions;
 
     std::vector<VkAttachmentReference> ColorReferences;

@@ -5,6 +5,7 @@
 #include "VulkanPipelineLayout.h"
 #include "VulkanPipelineState.h"
 #include "VulkanRenderPass.h"
+#include "VulkanRenderTargetLayout.h"
 
 VulkanPipeline::VulkanPipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout)
     : Pipeline(VK_NULL_HANDLE)
@@ -61,6 +62,20 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanPip
         .rasterizationSamples = VK_SAMPLE_COUNT_1_BIT,
     };
 
+    std::vector<VkPipelineColorBlendAttachmentState> ColorBlendStates(RenderPass->GetRenderTargetLayout()->GetColorAttachmentReferenceCount());
+    for (auto& State : ColorBlendStates)
+    {
+        State.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+        State.blendEnable    = VK_FALSE;
+    }
+
+    VkPipelineColorBlendStateCreateInfo ColorBlendInfo = {
+        .sType           = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO,
+        .logicOpEnable   = VK_FALSE,
+        .attachmentCount = RenderPass->GetRenderTargetLayout()->GetColorAttachmentReferenceCount(),
+        .pAttachments    = ColorBlendStates.data(),
+    };
+
     VkGraphicsPipelineCreateInfo PipelineInfo = {
         .sType               = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO,
         .stageCount          = PipelineState->GetStageCount(),
@@ -72,7 +87,7 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanPip
         .pRasterizationState = &RasterizationInfo,
         .pMultisampleState   = &MultisampleInfo,
         .pDepthStencilState  = nullptr,
-        .pColorBlendState    = nullptr,
+        .pColorBlendState    = &ColorBlendInfo,
         .pDynamicState       = &DynamicStateInfo,
         .layout              = Layout->GetLayoutHandle(),
         .renderPass          = RenderPass->GetRenderPassHandle(),

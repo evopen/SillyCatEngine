@@ -11,6 +11,8 @@ public:
     API VulkanRenderPass(VulkanDevice* InDevice, VulkanRenderTargetLayout* InRTLayout);
     VkRenderPass GetRenderPassHandle() { return RenderPass; }
 
+    VulkanRenderTargetLayout* GetRenderTargetLayout() { return RTLayout; }
+
 private:
     VkRenderPass RenderPass;
     VulkanDevice* Device;

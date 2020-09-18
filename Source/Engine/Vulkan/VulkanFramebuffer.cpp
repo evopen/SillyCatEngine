@@ -3,6 +3,7 @@
 #include "VulkanDevice.h"
 #include "VulkanFramebuffer.h"
 #include "VulkanRenderPass.h"
+#include "VulkanRenderTargetLayout.h"
 
 VulkanFramebuffer::VulkanFramebuffer(VulkanDevice* InDevice, VulkanRenderPass* InRenderPass, uint32_t InWidth, uint32_t InHeight)
     : Device(InDevice)
@@ -12,12 +13,13 @@ VulkanFramebuffer::VulkanFramebuffer(VulkanDevice* InDevice, VulkanRenderPass* I
     , Height(InHeight)
 {
     VkFramebufferCreateInfo FramebufferInfo = {
-        .sType      = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
-        .renderPass = RenderPass->GetRenderPassHandle(),
-        .width      = Width,
-        .height     = Height,
-        .layers     = 1,
-    };
+        .sType           = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
+        .renderPass      = RenderPass->GetRenderPassHandle(),
+        .width           = Width,
+        .height          = Height,
+        .layers          = 1,
+        .attachmentCount = RenderPass->GetRenderTargetLayout()->GetAttachmentDescriptionCount(),
+    .};
 
     vkCreateFramebuffer(Device->GetDeviceHandle(), &FramebufferInfo, nullptr, &Framebuffer);
 }

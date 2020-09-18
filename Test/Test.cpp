@@ -78,7 +78,7 @@ int main()
         VulkanPixelShader FragmentShader(&Device, "Test/Shaders/shader.frag");
         VulkanGraphicsShaderProgram TriangleProgram(&VertexShader, &FragmentShader);
         VulkanGraphicsPipelineState TrianglePipelineState(&TriangleProgram);
-        VulkanRenderTargetLayout RTLayout;
+        VulkanRenderTargetLayout RTLayout(1);
         VulkanRenderPass Renderpass(&Device, &RTLayout);
         VulkanGraphicsPipelineLayout PipelineLayout(&Device);
         VulkanGraphicsPipeline Pipeline(&Device, &PipelineLayout, &Renderpass, &TrianglePipelineState);
