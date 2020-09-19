@@ -10,6 +10,7 @@
 
 class VulkanDevice;
 class VulkanInstance;
+class VulkanSwapchain;
 
 class VulkanWindowSurface
 {
@@ -25,6 +26,11 @@ public:
     API uint32_t GetWidth() const { return Width; }
     API uint32_t GetHeight() const { return Height; }
 
+    void AddSwapchain(VulkanSwapchain* InSwapchain) { Swapchains.insert(InSwapchain); }
+    void RemoveSwapchain(VulkanSwapchain* InSwapchain) { Swapchains.erase(InSwapchain); }
+
+    std::set<VulkanSwapchain*> GetSwapchains() { return Swapchains; }
+
 private:
     VkSurfaceKHR Surface;
     VulkanInstance* Instance;
@@ -34,4 +40,9 @@ private:
     uint32_t Height;
     std::string WindowName;
     VkBool32 SupportPresent;
+
+    std::set<VulkanSwapchain*> Swapchains;
+
+    void FramebufferResizeCallback(int InWidth, int InHeight);
+    static void StaticFramebufferResizeCallback(GLFWwindow* Window, int InWidth, int InHeight);
 };

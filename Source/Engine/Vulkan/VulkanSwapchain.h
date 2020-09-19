@@ -11,12 +11,15 @@ class VulkanSwapchain
 {
 public:
     API VulkanSwapchain(VulkanInstance* InInstance, VulkanDevice* InDevice, VulkanWindowSurface* InWindowSurface);
+    API ~VulkanSwapchain();
 
     API VkSwapchainKHR GetSwapchainHandle() { return Swapchain; }
     API VkImage GetImage(uint32_t Index) { return Images[Index]; }
     API uint32_t GetRenderIndex() const { return RenderIndex; }
     API uint32_t GetImageCount() const { return static_cast<uint32_t>(Images.size()); }
     API void AcquireNextImage(VkSemaphore InSignalSemaphore, VkFence InSignalFence);
+
+    void FramebufferResizeCallback();
 
 private:
     VkSwapchainKHR Swapchain;
@@ -26,4 +29,7 @@ private:
     std::vector<VkImage> Images;
 
     uint32_t RenderIndex;
+
+    void Create();
+    void Destroy();
 };

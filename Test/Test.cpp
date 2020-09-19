@@ -89,22 +89,23 @@ int main()
         VulkanCommandBuffer CmdBuffer(&Device, Device.GetGraphicsQueue());
         VulkanPresenter Presenter(Device.GetPresentQueue(), &Swapchain);
 
-        std::vector<std::shared_ptr<VulkanImageView>> SwapchainImageViews;
-        SwapchainImageViews.reserve(Swapchain.GetImageCount());
-        std::vector<std::shared_ptr<VulkanFramebuffer>> Framebuffers;
-        Framebuffers.reserve(Swapchain.GetImageCount());
-
-        for (uint32_t i = 0; i < Swapchain.GetImageCount(); i++)
-        {
-            SwapchainImageViews.emplace_back(std::make_shared<VulkanImageView>(&Device, Swapchain.GetImage(i)));
-
-            Framebuffers.emplace_back(std::make_shared<VulkanFramebuffer>(&Device, &Renderpass, std::vector<std::shared_ptr<VulkanImageView>>{SwapchainImageViews[i]}, 800, 600));
-        }
-
 
         while (!glfwWindowShouldClose(WindowSurface.GetWindowHandle()))
         {
             glfwPollEvents();
+
+            std::vector<std::shared_ptr<VulkanImageView>> SwapchainImageViews;
+            SwapchainImageViews.reserve(Swapchain.GetImageCount());
+            std::vector<std::shared_ptr<VulkanFramebuffer>> Framebuffers;
+            Framebuffers.reserve(Swapchain.GetImageCount());
+
+            for (uint32_t i = 0; i < Swapchain.GetImageCount(); i++)
+            {
+                SwapchainImageViews.emplace_back(std::make_shared<VulkanImageView>(&Device, Swapchain.GetImage(i)));
+
+                Framebuffers.emplace_back(std::make_shared<VulkanFramebuffer>(&Device, &Renderpass, std::vector<std::shared_ptr<VulkanImageView>>{SwapchainImageViews[i]}, WindowSurface.GetWidth(), WindowSurface.GetHeight()));
+
+            }
 
             Swapchain.AcquireNextImage(ImageAvailable.get()->GetHandle(), VK_NULL_HANDLE);
 
@@ -142,6 +143,8 @@ int main()
 
                 vkCmdDraw(CmdBuffer.GetHandle(), 3, 1, 0, 0);
 
+                CmdBuffer.EndRenderPass();
+
 
                 VkImageMemoryBarrier ImgMemBarrier = {
                     .sType            = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,
@@ -158,9 +161,6 @@ int main()
                         .layerCount     = 1,
                     },
                 };
-
-
-                CmdBuffer.EndRenderPass();
 
                 vkCmdPipelineBarrier(CmdBuffer.GetHandle(),
                     VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,

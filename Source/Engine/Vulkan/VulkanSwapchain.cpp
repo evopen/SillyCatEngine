@@ -5,14 +5,38 @@
 #include "VulkanUtil.h"
 #include "VulkanWindowSurface.h"
 
-#include <vulkan/vulkan.h>
-
 VulkanSwapchain::VulkanSwapchain(
     VulkanInstance* InInstance, VulkanDevice* InDevice, VulkanWindowSurface* InWindowSurface)
     : WindowSurface(InWindowSurface)
     , Instance(InInstance)
     , RenderIndex(0)
     , Device(InDevice)
+{
+    Create();
+
+    WindowSurface->AddSwapchain(this);
+}
+
+VulkanSwapchain::~VulkanSwapchain()
+{
+    WindowSurface->RemoveSwapchain(this);
+}
+
+void VulkanSwapchain::AcquireNextImage(VkSemaphore InSignalSemaphore, VkFence InSignalFence)
+{
+    auto Result = vkAcquireNextImageKHR(Device->GetDeviceHandle(), Swapchain, std::numeric_limits<uint32_t>::max(), InSignalSemaphore, InSignalFence, &RenderIndex);
+    if (Result == VK_ERROR_OUT_OF_DATE_KHR || VK_SUBOPTIMAL_KHR)
+    {
+    }
+}
+
+void VulkanSwapchain::FramebufferResizeCallback()
+{
+    Destroy();
+    Create();
+}
+
+void VulkanSwapchain::Create()
 {
     VkSwapchainCreateInfoKHR SwapchainInfo = {
         .sType            = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
@@ -30,7 +54,7 @@ VulkanSwapchain::VulkanSwapchain(
         .presentMode      = VK_PRESENT_MODE_FIFO_KHR,
         .clipped          = VK_TRUE,
     };
-    CheckResult(vkCreateSwapchainKHR(Device->GetDeviceHandle(), &SwapchainInfo, nullptr, &Swapchain));
+    vkCreateSwapchainKHR(Device->GetDeviceHandle(), &SwapchainInfo, nullptr, &Swapchain);
 
     uint32_t ImageCount;
     vkGetSwapchainImagesKHR(Device->GetDeviceHandle(), Swapchain, &ImageCount, nullptr);
@@ -39,7 +63,7 @@ VulkanSwapchain::VulkanSwapchain(
     vkGetSwapchainImagesKHR(Device->GetDeviceHandle(), Swapchain, &ImageCount, Images.data());
 }
 
-void VulkanSwapchain::AcquireNextImage(VkSemaphore InSignalSemaphore, VkFence InSignalFence)
+void VulkanSwapchain::Destroy()
 {
-    vkAcquireNextImageKHR(Device->GetDeviceHandle(), Swapchain, std::numeric_limits<uint32_t>::max(), InSignalSemaphore, InSignalFence, &RenderIndex);
+    vkDestroySwapchainKHR(Device->GetDeviceHandle(), Swapchain, nullptr);
 }
