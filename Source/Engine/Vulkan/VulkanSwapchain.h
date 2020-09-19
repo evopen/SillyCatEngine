@@ -15,8 +15,8 @@ public:
     API VkSwapchainKHR GetSwapchainHandle() { return Swapchain; }
     API VkImage GetImage(uint32_t Index) { return Images[Index]; }
     API uint32_t GetRenderIndex() const { return RenderIndex; }
-    API uint32_t GetPresentIndex() const { return PresentIndex; }
     API uint32_t GetImageCount() const { return static_cast<uint32_t>(Images.size()); }
+    API void AcquireNextImage(VkSemaphore InSignalSemaphore, VkFence InSignalFence);
 
 private:
     VkSwapchainKHR Swapchain;
@@ -26,5 +26,4 @@ private:
     std::vector<VkImage> Images;
 
     uint32_t RenderIndex;
-    uint32_t PresentIndex;
 };

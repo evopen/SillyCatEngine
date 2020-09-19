@@ -3,6 +3,7 @@
 
 #include "Engine/Platform/Platform.h"
 
+class VulkanSemaphore;
 class VulkanFence;
 class VulkanFramebuffer;
 class VulkanRenderPass;
@@ -22,7 +23,7 @@ public:
 
     API VkCommandBuffer GetHandle() { return CommandBuffer; }
 
-    API void Submit(std::vector<VkSemaphore> InWaitSemaphores = {}, std::vector<VkPipelineStageFlags> InWaitStages = {}, std::vector<VkSemaphore> InSignalSemaphores = {}, VulkanFence* Fence = nullptr) const;
+    API void Submit(std::vector<VkSemaphore> InWaitSemaphores = {}, std::vector<VkPipelineStageFlags> InWaitStages = {}, std::vector<std::shared_ptr<VulkanSemaphore>> InSignalSemaphores = {}, VulkanFence* Fence = nullptr) const;
 
 private:
     VulkanDevice* Device;

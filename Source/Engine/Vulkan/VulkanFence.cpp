@@ -9,6 +9,7 @@ VulkanFence::VulkanFence(VulkanDevice* InDevice)
 {
     VkFenceCreateInfo FenceInfo = {
         .sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO,
+        .flags = VK_FENCE_CREATE_SIGNALED_BIT,
     };
     vkCreateFence(Device->GetDeviceHandle(), &FenceInfo, nullptr, &Fence);
 }

@@ -83,7 +83,8 @@ int main()
         VulkanRenderPass Renderpass(&Device, &RTLayout);
         VulkanGraphicsPipelineLayout PipelineLayout(&Device);
         VulkanGraphicsPipeline Pipeline(&Device, &PipelineLayout, &Renderpass, &TrianglePipelineState);
-        VulkanSemaphore WaitImageSemaphore(&Device);
+        std::shared_ptr<VulkanSemaphore> RenderFinished = std::make_shared<VulkanSemaphore>(&Device);
+        std::shared_ptr<VulkanSemaphore> ImageAvailable = std::make_shared<VulkanSemaphore>(&Device);
         VulkanFence WaitFence(&Device);
         VulkanCommandBuffer CmdBuffer(&Device, Device.GetGraphicsQueue());
         VulkanPresenter Presenter(Device.GetPresentQueue(), &Swapchain);
@@ -103,24 +104,17 @@ int main()
 
         while (!glfwWindowShouldClose(WindowSurface.GetWindowHandle()))
         {
-
-
             glfwPollEvents();
-            uint32_t ImageIndex;
-            vkAcquireNextImageKHR(Device.GetDeviceHandle(),
-                Swapchain.GetSwapchainHandle(),
-                std::numeric_limits<uint32_t>::max(),
-                VK_NULL_HANDLE,
-                WaitFence.GetHandle(),
-                &ImageIndex);
-            std::vector<VkFence> FencesToWait{WaitFence.GetHandle()};
+
+            Swapchain.AcquireNextImage(ImageAvailable.get()->GetHandle(), VK_NULL_HANDLE);
+
+
             WaitFence.Wait();
             WaitFence.Reset();
-            spdlog::info(ImageIndex);
 
             {
                 CmdBuffer.Begin();
-                CmdBuffer.BeginRenderPass(&Renderpass, Framebuffers[ImageIndex]);
+                CmdBuffer.BeginRenderPass(&Renderpass, Framebuffers[Swapchain.GetRenderIndex()]);
 
 
                 vkCmdBindPipeline(CmdBuffer.GetHandle(), VK_PIPELINE_BIND_POINT_GRAPHICS, Pipeline.GetPipelineHandle());
@@ -155,7 +149,7 @@ int main()
                     .dstAccessMask    = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT,
                     .oldLayout        = VK_IMAGE_LAYOUT_UNDEFINED,
                     .newLayout        = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
-                    .image            = Swapchain.GetImage(ImageIndex),
+                    .image            = Swapchain.GetImage(Swapchain.GetRenderIndex()),
                     .subresourceRange = {
                         .aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT,
                         .baseMipLevel   = 0,
@@ -178,10 +172,8 @@ int main()
                 CmdBuffer.End();
             }
 
-            CmdBuffer.Submit({}, {}, {}, &WaitFence);
-            WaitFence.Wait();
-            WaitFence.Reset();
-            Presenter.Present();
+            CmdBuffer.Submit({ImageAvailable.get()->GetHandle()}, {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT}, {RenderFinished}, &WaitFence);
+            Presenter.Present({RenderFinished});
         }
     }
     catch (std::exception& e)
