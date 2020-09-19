@@ -16,7 +16,7 @@ public:
 
     API void Begin() const;
     API void End() const;
-    API void BeginRenderPass(VulkanRenderPass* InRenderPass, VulkanFramebuffer* InFramebuffer) const;
+    API void BeginRenderPass(VulkanRenderPass* InRenderPass, std::shared_ptr<VulkanFramebuffer> InFramebuffer) const;
     API void EndRenderPass() const;
     API void Reset() const;
 

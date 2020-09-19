@@ -6,6 +6,7 @@
 #include "VulkanFramebuffer.h"
 #include "VulkanQueue.h"
 #include "VulkanRenderPass.h"
+#include "VulkanRenderTargetLayout.h"
 
 VulkanCommandBuffer::VulkanCommandBuffer(VulkanDevice* InDevice, VulkanQueue* InQueue)
     : Device(InDevice)
@@ -34,8 +35,11 @@ void VulkanCommandBuffer::End() const
     vkEndCommandBuffer(CommandBuffer);
 }
 
-void VulkanCommandBuffer::BeginRenderPass(VulkanRenderPass* InRenderPass, VulkanFramebuffer* InFramebuffer) const
+void VulkanCommandBuffer::BeginRenderPass(VulkanRenderPass* InRenderPass, std::shared_ptr<VulkanFramebuffer> InFramebuffer) const
 {
+    std::vector<VkClearValue> ClearValues(InRenderPass->GetRenderTargetLayout()->GetColorAttachmentReferenceCount(),
+        {1, 1, 1, 1});
+
     VkRenderPassBeginInfo BeginInfo = {
         .sType       = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
         .renderPass  = InRenderPass->GetRenderPassHandle(),
@@ -50,6 +54,8 @@ void VulkanCommandBuffer::BeginRenderPass(VulkanRenderPass* InRenderPass, Vulkan
                 .height = InFramebuffer->GetHeight(),
             },
         },
+        .clearValueCount = static_cast<uint32_t>(ClearValues.size()),
+        .pClearValues    = ClearValues.data(),
     };
     vkCmdBeginRenderPass(CommandBuffer, &BeginInfo, VK_SUBPASS_CONTENTS_INLINE);
 }

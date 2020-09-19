@@ -4,11 +4,12 @@
 
 class VulkanDevice;
 class VulkanRenderPass;
+class VulkanImageView;
 
 class VulkanFramebuffer
 {
 public:
-    API VulkanFramebuffer(VulkanDevice* InDevice, VulkanRenderPass* InRenderPass, uint32_t InWidth, uint32_t InHeight);
+    API VulkanFramebuffer(VulkanDevice* InDevice, VulkanRenderPass* InRenderPass, std::vector<std::shared_ptr<VulkanImageView>> InImageViews, uint32_t InWidth, uint32_t InHeight);
 
     VkFramebuffer GetHandle() { return Framebuffer; }
     uint32_t GetWidth() const { return Width; }
@@ -19,4 +20,5 @@ private:
     VulkanRenderPass* RenderPass;
     VkFramebuffer Framebuffer;
     uint32_t Width, Height;
+    std::vector<std::shared_ptr<VulkanImageView>> ImageViews;
 };

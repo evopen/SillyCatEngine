@@ -16,6 +16,7 @@ public:
     API VkImage GetImage(uint32_t Index) { return Images[Index]; }
     API uint32_t GetRenderIndex() const { return RenderIndex; }
     API uint32_t GetPresentIndex() const { return PresentIndex; }
+    API uint32_t GetImageCount() const { return static_cast<uint32_t>(Images.size()); }
 
 private:
     VkSwapchainKHR Swapchain;

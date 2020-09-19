@@ -3,6 +3,7 @@
 #include "Engine/Vulkan/VulkanCommandBuffer.h"
 #include "Engine/Vulkan/VulkanFence.h"
 #include "Engine/Vulkan/VulkanFramebuffer.h"
+#include "Engine/Vulkan/VulkanImageView.h"
 #include "Engine/Vulkan/VulkanPipeline.h"
 #include "Engine/Vulkan/VulkanPipelineLayout.h"
 #include "Engine/Vulkan/VulkanPipelineState.h"
@@ -82,11 +83,22 @@ int main()
         VulkanRenderPass Renderpass(&Device, &RTLayout);
         VulkanGraphicsPipelineLayout PipelineLayout(&Device);
         VulkanGraphicsPipeline Pipeline(&Device, &PipelineLayout, &Renderpass, &TrianglePipelineState);
-        VulkanFramebuffer Framebuffer(&Device, &Renderpass, 800, 600);
         VulkanSemaphore WaitImageSemaphore(&Device);
         VulkanFence WaitFence(&Device);
         VulkanCommandBuffer CmdBuffer(&Device, Device.GetGraphicsQueue());
         VulkanPresenter Presenter(Device.GetPresentQueue(), &Swapchain);
+
+        std::vector<std::shared_ptr<VulkanImageView>> SwapchainImageViews;
+        SwapchainImageViews.reserve(Swapchain.GetImageCount());
+        std::vector<std::shared_ptr<VulkanFramebuffer>> Framebuffers;
+        Framebuffers.reserve(Swapchain.GetImageCount());
+
+        for (uint32_t i = 0; i < Swapchain.GetImageCount(); i++)
+        {
+            SwapchainImageViews.emplace_back(std::make_shared<VulkanImageView>(&Device, Swapchain.GetImage(i)));
+
+            Framebuffers.emplace_back(std::make_shared<VulkanFramebuffer>(&Device, &Renderpass, std::vector<std::shared_ptr<VulkanImageView>>{SwapchainImageViews[i]}, 800, 600));
+        }
 
 
         while (!glfwWindowShouldClose(WindowSurface.GetWindowHandle()))
@@ -108,7 +120,7 @@ int main()
 
             {
                 CmdBuffer.Begin();
-                CmdBuffer.BeginRenderPass(&Renderpass, &Framebuffer);
+                CmdBuffer.BeginRenderPass(&Renderpass, Framebuffers[ImageIndex]);
 
 
                 vkCmdBindPipeline(CmdBuffer.GetHandle(), VK_PIPELINE_BIND_POINT_GRAPHICS, Pipeline.GetPipelineHandle());

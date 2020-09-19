@@ -7,7 +7,8 @@ class VulkanDevice;
 class VulkanImageView
 {
 public:
-    VulkanImageView(VulkanDevice* Device, VkImage InImage);
+    API VulkanImageView(VulkanDevice* Device, VkImage InImage);
+    VkImageView GetHandle() const { return ImageView; }
 
 private:
     VkImageView ImageView;
