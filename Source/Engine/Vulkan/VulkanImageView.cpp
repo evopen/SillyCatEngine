@@ -30,3 +30,8 @@ VulkanImageView::VulkanImageView(VulkanDevice* InDevice, VkImage InImage)
 
     vkCreateImageView(Device->GetDeviceHandle(), &ImageViewInfo, nullptr, &ImageView);
 }
+
+VulkanImageView::~VulkanImageView()
+{
+    vkDestroyImageView(Device->GetDeviceHandle(), ImageView, nullptr);
+}

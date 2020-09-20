@@ -32,3 +32,8 @@ VulkanFramebuffer::VulkanFramebuffer(VulkanDevice* InDevice, VulkanRenderPass* I
 
     vkCreateFramebuffer(Device->GetDeviceHandle(), &FramebufferInfo, nullptr, &Framebuffer);
 }
+
+VulkanFramebuffer::~VulkanFramebuffer()
+{
+    vkDestroyFramebuffer(Device->GetDeviceHandle(), Framebuffer, nullptr);
+}

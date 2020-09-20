@@ -32,6 +32,7 @@ VulkanCommandBuffer::~VulkanCommandBuffer()
 
 void VulkanCommandBuffer::Begin()
 {
+    Reset();
     VkCommandBufferBeginInfo BeginInfo = {
         .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
     };
@@ -47,7 +48,7 @@ void VulkanCommandBuffer::End()
     bIsRecording = false;
 }
 
-void VulkanCommandBuffer::BeginRenderPass(VulkanRenderPass* InRenderPass, std::shared_ptr<VulkanFramebuffer> InFramebuffer) const
+void VulkanCommandBuffer::BeginRenderPass(VulkanRenderPass* InRenderPass, std::shared_ptr<VulkanFramebuffer> InFramebuffer)
 {
     std::vector<VkClearValue> ClearValues(InRenderPass->GetRenderTargetLayout()->GetColorAttachmentReferenceCount(),
         {1, 1, 1, 1});
@@ -70,6 +71,7 @@ void VulkanCommandBuffer::BeginRenderPass(VulkanRenderPass* InRenderPass, std::s
         .pClearValues    = ClearValues.data(),
     };
     vkCmdBeginRenderPass(CommandBuffer, &BeginInfo, VK_SUBPASS_CONTENTS_INLINE);
+    Framebuffers.push_back(InFramebuffer);
 }
 
 void VulkanCommandBuffer::EndRenderPass() const
@@ -77,9 +79,10 @@ void VulkanCommandBuffer::EndRenderPass() const
     vkCmdEndRenderPass(CommandBuffer);
 }
 
-void VulkanCommandBuffer::Reset() const
+void VulkanCommandBuffer::Reset()
 {
     vkResetCommandBuffer(CommandBuffer, 0);
+    Framebuffers.clear();
 }
 
 void VulkanCommandBuffer::Wait() const

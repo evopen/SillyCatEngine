@@ -10,6 +10,7 @@ class VulkanFramebuffer
 {
 public:
     API VulkanFramebuffer(VulkanDevice* InDevice, VulkanRenderPass* InRenderPass, std::vector<std::shared_ptr<VulkanImageView>> InImageViews, uint32_t InWidth, uint32_t InHeight);
+    API ~VulkanFramebuffer();
 
     VkFramebuffer GetHandle() { return Framebuffer; }
     uint32_t GetWidth() const { return Width; }

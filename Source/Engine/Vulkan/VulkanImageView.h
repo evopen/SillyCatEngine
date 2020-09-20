@@ -8,6 +8,7 @@ class VulkanImageView
 {
 public:
     API VulkanImageView(VulkanDevice* Device, VkImage InImage);
+    API ~VulkanImageView();
     VkImageView GetHandle() const { return ImageView; }
 
 private:
