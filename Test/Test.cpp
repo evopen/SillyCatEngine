@@ -83,7 +83,6 @@ int main()
         VulkanGraphicsPipeline Pipeline(&Device, &PipelineLayout, &Renderpass, &TrianglePipelineState);
         std::shared_ptr<VulkanSemaphore> RenderFinished = std::make_shared<VulkanSemaphore>(&Device);
         std::shared_ptr<VulkanSemaphore> ImageAvailable = std::make_shared<VulkanSemaphore>(&Device);
-        VulkanFence WaitFence(&Device);
         VulkanCommandBuffer CmdBuffer(&Device, Device.GetGraphicsQueue());
         VulkanPresenter Presenter(Device.GetPresentQueue(), &Swapchain);
         std::shared_ptr<Model> Triangle = std::make_shared<Model>("Test/Resources/Triangle/Triangle.obj");
@@ -110,8 +109,7 @@ int main()
             Swapchain.AcquireNextImage(ImageAvailable.get()->GetHandle(), VK_NULL_HANDLE);
 
 
-            WaitFence.Wait();
-            WaitFence.Reset();
+            CmdBuffer.Wait();
 
             {
                 CmdBuffer.Begin();
@@ -157,7 +155,7 @@ int main()
                 CmdBuffer.End();
             }
 
-            CmdBuffer.Submit({ImageAvailable.get()->GetHandle()}, {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT}, {RenderFinished}, &WaitFence);
+            CmdBuffer.Submit({ImageAvailable.get()->GetHandle()}, {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT}, {RenderFinished});
             Presenter.Present({RenderFinished});
         }
     }

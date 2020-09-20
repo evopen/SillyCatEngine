@@ -21,15 +21,17 @@ public:
     API void BeginRenderPass(VulkanRenderPass* InRenderPass, std::shared_ptr<VulkanFramebuffer> InFramebuffer) const;
     API void EndRenderPass() const;
     API void Reset() const;
-    API bool IsRecording() const { return bIsRecording; };
+    API bool IsRecording() const { return bIsRecording; }
+    API void Wait() const;
 
     API VkCommandBuffer GetHandle() { return CommandBuffer; }
 
-    API void Submit(std::vector<VkSemaphore> InWaitSemaphores = {}, std::vector<VkPipelineStageFlags> InWaitStages = {}, std::vector<std::shared_ptr<VulkanSemaphore>> InSignalSemaphores = {}, VulkanFence* Fence = nullptr) const;
+    API void Submit(std::vector<VkSemaphore> InWaitSemaphores = {}, std::vector<VkPipelineStageFlags> InWaitStages = {}, std::vector<std::shared_ptr<VulkanSemaphore>> InSignalSemaphores = {}) const;
 
 private:
     VulkanDevice* Device;
     VulkanQueue* Queue;
     VkCommandBuffer CommandBuffer;
     bool bIsRecording;
+    std::unique_ptr<VulkanFence> Fence;
 };

@@ -68,15 +68,12 @@ void VulkanMemoryManager::CopyBuffer(VkBuffer SrcBuffer, VkBuffer DstBuffer)
         .dstOffset = 0,
         .size      = Buffers.at(SrcBuffer).Size};
 
-    VulkanFence Fence(Device);
-    Fence.Reset();
-
     VulkanCommandBuffer CmdBuffer(Device, Device->GetTransferQueue());
     CmdBuffer.Begin();
     vkCmdCopyBuffer(CmdBuffer.GetHandle(), SrcBuffer, DstBuffer, 1, &CopyRegion);
     CmdBuffer.End();
-    CmdBuffer.Submit({}, {}, {}, &Fence);
-    Fence.Wait();
+    CmdBuffer.Submit();
+    CmdBuffer.Wait();
 }
 
 void VulkanMemoryManager::FreeBuffer(VkBuffer InBuffer)

@@ -13,6 +13,7 @@ VulkanCommandBuffer::VulkanCommandBuffer(VulkanDevice* InDevice, VulkanQueue* In
     : Device(InDevice)
     , Queue(InQueue)
     , CommandBuffer(VK_NULL_HANDLE)
+    , Fence(std::make_unique<VulkanFence>(InDevice))
 {
     VkCommandBufferAllocateInfo AllocateInfo = {
         .sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
@@ -25,6 +26,7 @@ VulkanCommandBuffer::VulkanCommandBuffer(VulkanDevice* InDevice, VulkanQueue* In
 
 VulkanCommandBuffer::~VulkanCommandBuffer()
 {
+    Fence->Wait();
     vkFreeCommandBuffers(Device->GetDeviceHandle(), Queue->GetCommandPoolHandle(), 1, &CommandBuffer);
 }
 
@@ -80,8 +82,13 @@ void VulkanCommandBuffer::Reset() const
     vkResetCommandBuffer(CommandBuffer, 0);
 }
 
+void VulkanCommandBuffer::Wait() const
+{
+    Fence->Wait();
+}
 
-void VulkanCommandBuffer::Submit(std::vector<VkSemaphore> InWaitSemaphores, std::vector<VkPipelineStageFlags> InWaitStages, std::vector<std::shared_ptr<VulkanSemaphore>> InSignalSemaphores, VulkanFence* Fence) const
+
+void VulkanCommandBuffer::Submit(std::vector<VkSemaphore> InWaitSemaphores, std::vector<VkPipelineStageFlags> InWaitStages, std::vector<std::shared_ptr<VulkanSemaphore>> InSignalSemaphores) const
 {
     std::vector<VkSemaphore> SignalSemaphores(InSignalSemaphores.size());
     for (uint32_t i = 0; i < InSignalSemaphores.size(); i++)
@@ -98,5 +105,6 @@ void VulkanCommandBuffer::Submit(std::vector<VkSemaphore> InWaitSemaphores, std:
         .signalSemaphoreCount = static_cast<uint32_t>(SignalSemaphores.size()),
         .pSignalSemaphores    = SignalSemaphores.data(),
     };
-    vkQueueSubmit(Queue->GetHandle(), 1, &SubmitInfo, Fence ? Fence->GetHandle() : VK_NULL_HANDLE);
+    Fence->Reset();
+    vkQueueSubmit(Queue->GetHandle(), 1, &SubmitInfo, Fence->GetHandle());
 }
