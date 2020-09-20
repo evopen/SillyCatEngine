@@ -1,6 +1,10 @@
 #pragma once
 
 #include <SPIRV/GlslangToSpv.h>
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
+#include <assimp/scene.h>
+#include <glm/glm.hpp>
 #include <glslang/Public/ShaderLang.h>
 #include <spdlog/spdlog.h>
 #include <vulkan/vulkan.h>
@@ -12,3 +16,4 @@
 #include <set>
 #include <stdexcept>
 #include <vector>
+#include <unordered_map>

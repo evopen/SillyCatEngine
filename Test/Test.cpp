@@ -1,18 +1,5 @@
 #include "pch.h"
 
-#include "Engine/Vulkan/VulkanCommandBuffer.h"
-#include "Engine/Vulkan/VulkanFence.h"
-#include "Engine/Vulkan/VulkanFramebuffer.h"
-#include "Engine/Vulkan/VulkanImageView.h"
-#include "Engine/Vulkan/VulkanPipeline.h"
-#include "Engine/Vulkan/VulkanPipelineLayout.h"
-#include "Engine/Vulkan/VulkanPipelineState.h"
-#include "Engine/Vulkan/VulkanPresenter.h"
-#include "Engine/Vulkan/VulkanQueue.h"
-#include "Engine/Vulkan/VulkanRenderPass.h"
-#include "Engine/Vulkan/VulkanRenderTargetLayout.h"
-#include "Engine/Vulkan/VulkanSemaphore.h"
-
 
 TEST(VulkanInstanceTest, Initialization)
 {
@@ -61,6 +48,16 @@ TEST(SelfTest, EQUAL)
 
 using namespace std::chrono_literals;
 
+struct Vertex
+{
+    glm::vec2 pos;
+    glm::vec3 color;
+};
+
+const std::vector<Vertex> vertices = {
+    {{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+    {{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
+    {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}};
 
 int main()
 {
@@ -88,6 +85,9 @@ int main()
         VulkanFence WaitFence(&Device);
         VulkanCommandBuffer CmdBuffer(&Device, Device.GetGraphicsQueue());
         VulkanPresenter Presenter(Device.GetPresentQueue(), &Swapchain);
+        std::shared_ptr<Model> Triangle = std::make_shared<Model>("Test/Resources/Triangle/Triangle.obj");
+        World MyWorld;
+        MyWorld.AddModel(Triangle, {0, 0, 0}, {0, 0, 0}, {1, 1, 1});
 
 
         while (!glfwWindowShouldClose(WindowSurface.GetWindowHandle()))
@@ -102,9 +102,7 @@ int main()
             for (uint32_t i = 0; i < Swapchain.GetImageCount(); i++)
             {
                 SwapchainImageViews.emplace_back(std::make_shared<VulkanImageView>(&Device, Swapchain.GetImage(i)));
-
                 Framebuffers.emplace_back(std::make_shared<VulkanFramebuffer>(&Device, &Renderpass, std::vector<std::shared_ptr<VulkanImageView>>{SwapchainImageViews[i]}, WindowSurface.GetWidth(), WindowSurface.GetHeight()));
-
             }
 
             Swapchain.AcquireNextImage(ImageAvailable.get()->GetHandle(), VK_NULL_HANDLE);
@@ -145,29 +143,7 @@ int main()
 
                 CmdBuffer.EndRenderPass();
 
-
-                VkImageMemoryBarrier ImgMemBarrier = {
-                    .sType            = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,
-                    .srcAccessMask    = 0,
-                    .dstAccessMask    = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT,
-                    .oldLayout        = VK_IMAGE_LAYOUT_UNDEFINED,
-                    .newLayout        = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
-                    .image            = Swapchain.GetImage(Swapchain.GetRenderIndex()),
-                    .subresourceRange = {
-                        .aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT,
-                        .baseMipLevel   = 0,
-                        .levelCount     = 1,
-                        .baseArrayLayer = 0,
-                        .layerCount     = 1,
-                    },
-                };
-
-                vkCmdPipelineBarrier(CmdBuffer.GetHandle(),
-                    VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                    0,
-                    0, nullptr,
-                    0, nullptr,
-                    1, &ImgMemBarrier);
+                Swapchain.CmdTransitImagePresentSrc(&CmdBuffer);
 
                 CmdBuffer.End();
             }

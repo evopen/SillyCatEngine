@@ -7,9 +7,6 @@
 #include "VulkanUtil.h"
 #include "VulkanWindowSurface.h"
 
-#include <GLFW/glfw3.h>
-
-#include <stdexcept>
 
 VulkanWindowSurface::VulkanWindowSurface(
     VulkanInstance* InInstance, VulkanDevice* InDevice, std::string InWindowName, uint32_t InWidth, uint32_t InHeight)
@@ -49,7 +46,7 @@ void VulkanWindowSurface::CreateSurface()
 
 void VulkanWindowSurface::FramebufferResizeCallback(int InWidth, int InHeight)
 {
-    Width = InWidth;
+    Width  = InWidth;
     Height = InHeight;
     vkGetPhysicalDeviceSurfaceCapabilitiesKHR(Device->GetPhysicalDeviceHandle(), Surface, &SurfaceProperties);
     for (VulkanSwapchain* Swapchain : static_cast<VulkanWindowSurface*>(glfwGetWindowUserPointer(Window))->GetSwapchains())

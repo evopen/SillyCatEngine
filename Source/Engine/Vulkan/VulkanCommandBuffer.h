@@ -15,11 +15,12 @@ class VulkanCommandBuffer
 public:
     API VulkanCommandBuffer(VulkanDevice* InDevice, VulkanQueue* InQueue);
 
-    API void Begin() const;
-    API void End() const;
+    API void Begin();
+    API void End();
     API void BeginRenderPass(VulkanRenderPass* InRenderPass, std::shared_ptr<VulkanFramebuffer> InFramebuffer) const;
     API void EndRenderPass() const;
     API void Reset() const;
+    API bool IsRecording() const { return bIsRecording; };
 
     API VkCommandBuffer GetHandle() { return CommandBuffer; }
 
@@ -29,5 +30,5 @@ private:
     VulkanDevice* Device;
     VulkanQueue* Queue;
     VkCommandBuffer CommandBuffer;
-    bool bHasBegun;
+    bool bIsRecording;
 };

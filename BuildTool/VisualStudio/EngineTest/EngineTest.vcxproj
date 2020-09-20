@@ -170,6 +170,8 @@
   <ItemGroup>
     <None Include="..\..\..\Test\Shaders\shader.frag" />
     <None Include="..\..\..\Test\Shaders\shader.vert" />
+    <None Include="..\..\..\Test\Shaders\VertexInput\shader.frag" />
+    <None Include="..\..\..\Test\Shaders\VertexInput\shader.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Test\pch.h" />

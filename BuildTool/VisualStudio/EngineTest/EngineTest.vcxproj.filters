@@ -16,6 +16,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{f6320757-004d-4773-8792-7463469df019}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\VertexInput">
+      <UniqueIdentifier>{01026dd0-9cce-4066-ae2c-4756ff50612a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Test\Test.cpp">
@@ -31,6 +34,12 @@
     </None>
     <None Include="..\..\..\Test\Shaders\shader.vert">
       <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\..\Test\Shaders\VertexInput\shader.vert">
+      <Filter>Shaders\VertexInput</Filter>
+    </None>
+    <None Include="..\..\..\Test\Shaders\VertexInput\shader.frag">
+      <Filter>Shaders\VertexInput</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

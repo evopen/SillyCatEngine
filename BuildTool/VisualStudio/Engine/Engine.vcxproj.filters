@@ -34,6 +34,9 @@
     <Filter Include="Engine\Filesystem">
       <UniqueIdentifier>{b6d65cda-61a4-478f-988b-16a3311e34a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Model">
+      <UniqueIdentifier>{831db479-bdc4-426b-84e2-d37b7ea476b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -119,6 +122,12 @@
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanRenderTargetLayout.cpp">
       <Filter>Engine\Vulkan</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Model\Model.cpp">
+      <Filter>Engine\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Model\World.cpp">
+      <Filter>Engine\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">
@@ -201,6 +210,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanImageView.h">
       <Filter>Engine\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Include\SillyCatEngine.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Model\Model.h">
+      <Filter>Engine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Model\World.h">
+      <Filter>Engine\Model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

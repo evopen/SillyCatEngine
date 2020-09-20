@@ -23,17 +23,21 @@ VulkanCommandBuffer::VulkanCommandBuffer(VulkanDevice* InDevice, VulkanQueue* In
     vkAllocateCommandBuffers(Device->GetDeviceHandle(), &AllocateInfo, &CommandBuffer);
 }
 
-void VulkanCommandBuffer::Begin() const
+void VulkanCommandBuffer::Begin()
 {
     VkCommandBufferBeginInfo BeginInfo = {
         .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
     };
     vkBeginCommandBuffer(CommandBuffer, &BeginInfo);
+
+    bIsRecording = true;
 }
 
-void VulkanCommandBuffer::End() const
+void VulkanCommandBuffer::End()
 {
     vkEndCommandBuffer(CommandBuffer);
+
+    bIsRecording = false;
 }
 
 void VulkanCommandBuffer::BeginRenderPass(VulkanRenderPass* InRenderPass, std::shared_ptr<VulkanFramebuffer> InFramebuffer) const
@@ -70,6 +74,7 @@ void VulkanCommandBuffer::Reset() const
 {
     vkResetCommandBuffer(CommandBuffer, 0);
 }
+
 
 void VulkanCommandBuffer::Submit(std::vector<VkSemaphore> InWaitSemaphores, std::vector<VkPipelineStageFlags> InWaitStages, std::vector<std::shared_ptr<VulkanSemaphore>> InSignalSemaphores, VulkanFence* Fence) const
 {

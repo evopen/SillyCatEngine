@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Platform/Platform.h"
 
-#include <vulkan/vulkan.h>
+class VulkanCommandBuffer;
 
 class VulkanDevice;
 class VulkanInstance;
@@ -18,6 +18,8 @@ public:
     API uint32_t GetRenderIndex() const { return RenderIndex; }
     API uint32_t GetImageCount() const { return static_cast<uint32_t>(Images.size()); }
     API void AcquireNextImage(VkSemaphore InSignalSemaphore, VkFence InSignalFence);
+
+    API void CmdTransitImagePresentSrc(VulkanCommandBuffer* CmdBuffer);
 
     void FramebufferResizeCallback();
 

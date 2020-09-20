@@ -1,5 +1,6 @@
 #include "Engine/pch.h"
 
+#include "VulkanCommandBuffer.h"
 #include "VulkanDevice.h"
 #include "VulkanSwapchain.h"
 #include "VulkanUtil.h"
@@ -28,6 +29,36 @@ void VulkanSwapchain::AcquireNextImage(VkSemaphore InSignalSemaphore, VkFence In
     if (Result == VK_ERROR_OUT_OF_DATE_KHR || VK_SUBOPTIMAL_KHR)
     {
     }
+}
+
+void VulkanSwapchain::CmdTransitImagePresentSrc(VulkanCommandBuffer* CmdBuffer)
+{
+    if (!CmdBuffer->IsRecording())
+    {
+        throw std::invalid_argument("CommandBuffer is not currently recording");
+    }
+    VkImageMemoryBarrier ImgMemBarrier = {
+        .sType            = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,
+        .srcAccessMask    = 0,
+        .dstAccessMask    = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT,
+        .oldLayout        = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+        .newLayout        = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+        .image            = Images[RenderIndex],
+        .subresourceRange = {
+            .aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT,
+            .baseMipLevel   = 0,
+            .levelCount     = 1,
+            .baseArrayLayer = 0,
+            .layerCount     = 1,
+        },
+    };
+
+    vkCmdPipelineBarrier(CmdBuffer->GetHandle(),
+        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+        0,
+        0, nullptr,
+        0, nullptr,
+        1, &ImgMemBarrier);
 }
 
 void VulkanSwapchain::FramebufferResizeCallback()

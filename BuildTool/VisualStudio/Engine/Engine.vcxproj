@@ -166,6 +166,8 @@
     <ClCompile Include="..\..\..\Source\Engine\Filesystem\FileUtil.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Model\Model.cpp" />
+    <ClCompile Include="..\..\..\Source\Engine\Model\World.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Engine/pch.h</PrecompiledHeaderFile>
@@ -221,6 +223,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Filesystem\FileUtil.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Include\SillyCatEngine.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Model\Model.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Model\World.h" />
     <ClInclude Include="..\..\..\Source\Engine\pch.h" />
     <ClInclude Include="..\..\..\Source\Engine\Platform\Platform.h" />
     <ClInclude Include="..\..\..\Source\Engine\Render\Definitions.h" />
