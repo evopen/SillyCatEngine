@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Engine/Model/Model.h"
 #include "Engine/Platform/Platform.h"
 #include "VulkanShaderProgram.h"
 
-#include <vulkan/vulkan.h>
 
 class VulkanPipelineState
 {
@@ -20,6 +20,9 @@ public:
     API VulkanGraphicsPipelineState(VulkanGraphicsShaderProgram* InShaderProgram);
     uint32_t GetStageCount() const { return static_cast<VulkanGraphicsShaderProgram*>(ShaderProgram)->GetStageCount(); }
     VkPipelineShaderStageCreateInfo* GetPipelineShaderStageCreateInfos() const { return ShaderProgram->GetPipelineShaderStageCreateInfos(); }
+
+    static std::vector<VkVertexInputBindingDescription> GetVertexInputBindingDescriptions() { return Model::GetVertexInputBindingDescriptions(); }
+    static std::vector<VkVertexInputAttributeDescription> GetVertexInputAttributeDescriptions() { return VulkanGraphicsShaderProgram::GetVertexInputAttributeDescriptions(); }
 
 private:
     VulkanGraphicsShaderProgram* ShaderProgram;

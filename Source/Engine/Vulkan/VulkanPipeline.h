@@ -32,6 +32,8 @@ public:
 private:
     VulkanGraphicsPipelineState* PipelineState;
     VulkanRenderPass* RenderPass;
+    std::vector<VkVertexInputBindingDescription> VertexInputBindingDescriptions;
+    std::vector<VkVertexInputAttributeDescription> VertexInputAttributeDescriptions;
 };
 
 class VulkanComputePipeline : public VulkanPipeline

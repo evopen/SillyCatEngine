@@ -24,6 +24,8 @@ public:
     VkPipelineShaderStageCreateInfo* GetPipelineShaderStageCreateInfos() { return PipelineStageInfos.data(); }
     uint32_t GetStageCount() const { return static_cast<uint32_t>(PipelineStageInfos.size()); }
 
+    static std::vector<VkVertexInputAttributeDescription> GetVertexInputAttributeDescriptions();
+
 private:
     VulkanVertexShader* VertexShader;
     VulkanPixelShader* PixelShader;

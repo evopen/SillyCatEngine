@@ -18,13 +18,15 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanPip
     : VulkanPipeline(InDevice, InLayout)
     , PipelineState(InVulkanGraphicsPipelineState)
     , RenderPass(InRenderPass)
+    , VertexInputBindingDescriptions(VulkanGraphicsPipelineState::GetVertexInputBindingDescriptions())
+    , VertexInputAttributeDescriptions(VulkanGraphicsPipelineState::GetVertexInputAttributeDescriptions())
 {
     VkPipelineVertexInputStateCreateInfo VertexInputInfo = {
         .sType                           = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO,
-        .vertexBindingDescriptionCount   = 0,
-        .pVertexBindingDescriptions      = nullptr,
-        .vertexAttributeDescriptionCount = 0,
-        .pVertexAttributeDescriptions    = nullptr,
+        .vertexBindingDescriptionCount   = static_cast<uint32_t>(VertexInputBindingDescriptions.size()),
+        .pVertexBindingDescriptions      = VertexInputBindingDescriptions.data(),
+        .vertexAttributeDescriptionCount = static_cast<uint32_t>(VertexInputAttributeDescriptions.size()),
+        .pVertexAttributeDescriptions    = VertexInputAttributeDescriptions.data(),
     };
 
     VkPipelineInputAssemblyStateCreateInfo InputAssemblyInfo = {
