@@ -187,6 +187,7 @@
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanMemoryManager.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanPipeline.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
@@ -237,6 +238,7 @@
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanFramebuffer.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanImageView.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanMemoryManager.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanPipeline.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanPipelineLayout.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanPipelineState.h" />

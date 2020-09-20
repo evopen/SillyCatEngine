@@ -23,6 +23,11 @@ VulkanCommandBuffer::VulkanCommandBuffer(VulkanDevice* InDevice, VulkanQueue* In
     vkAllocateCommandBuffers(Device->GetDeviceHandle(), &AllocateInfo, &CommandBuffer);
 }
 
+VulkanCommandBuffer::~VulkanCommandBuffer()
+{
+    vkFreeCommandBuffers(Device->GetDeviceHandle(), Queue->GetCommandPoolHandle(), 1, &CommandBuffer);
+}
+
 void VulkanCommandBuffer::Begin()
 {
     VkCommandBufferBeginInfo BeginInfo = {

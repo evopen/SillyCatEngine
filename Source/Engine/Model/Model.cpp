@@ -1,8 +1,11 @@
 #include "Engine/pch.h"
 
+#include "Engine/Vulkan/VulkanMemoryManager.h"
 #include "Model.h"
 
 Model::Model(std::filesystem::path InFilePath)
+    : VertexBuffer(VK_NULL_HANDLE)
+    , ColorBuffer(VK_NULL_HANDLE)
 {
     Assimp::Importer Importer;
     const aiScene* Scene = Importer.ReadFile(InFilePath.string().c_str(), aiProcess_Triangulate);
@@ -52,6 +55,39 @@ Model::Model(std::filesystem::path InFilePath)
         }
     }
 }
+
+VkBuffer Model::GetVertexBuffer(VulkanMemoryManager* InMemoryManager)
+{
+    if (VertexBuffer == VK_NULL_HANDLE)
+    {
+        size_t BufferSize      = sizeof(glm::vec3) * Vertices.size();
+        VkBuffer StagingBuffer = InMemoryManager->CreateBuffer(BufferSize, VMA_MEMORY_USAGE_CPU_ONLY, VK_BUFFER_USAGE_TRANSFER_SRC_BIT);
+        void* Data             = InMemoryManager->MapBuffer(StagingBuffer);
+        std::memcpy(Data, Vertices.data(), Vertices.size() * sizeof(glm::vec3));
+        InMemoryManager->UnMapBuffer(StagingBuffer);
+        VertexBuffer = InMemoryManager->CreateBuffer(BufferSize, VMA_MEMORY_USAGE_GPU_ONLY, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT);
+        InMemoryManager->CopyBuffer(StagingBuffer, VertexBuffer);
+        InMemoryManager->FreeBuffer(StagingBuffer);
+    }
+    return VertexBuffer;
+}
+
+VkBuffer Model::GetColorBuffer(VulkanMemoryManager* InMemoryManager)
+{
+    if (ColorBuffer == VK_NULL_HANDLE)
+    {
+        size_t BufferSize      = sizeof(glm::vec4) * Colors.size();
+        VkBuffer StagingBuffer = InMemoryManager->CreateBuffer(BufferSize, VMA_MEMORY_USAGE_CPU_ONLY, VK_BUFFER_USAGE_TRANSFER_SRC_BIT);
+        void* Data             = InMemoryManager->MapBuffer(StagingBuffer);
+        std::memcpy(Data, Colors.data(), Colors.size() * sizeof(glm::vec4));
+        InMemoryManager->UnMapBuffer(StagingBuffer);
+        ColorBuffer = InMemoryManager->CreateBuffer(BufferSize, VMA_MEMORY_USAGE_GPU_ONLY, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT);
+        InMemoryManager->CopyBuffer(StagingBuffer, ColorBuffer);
+        InMemoryManager->FreeBuffer(StagingBuffer);
+    }
+    return ColorBuffer;
+}
+
 
 std::vector<VkVertexInputBindingDescription> Model::GetVertexInputBindingDescriptions()
 {

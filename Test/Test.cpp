@@ -69,11 +69,12 @@ int main()
         spdlog::info("select: {}", deviceProp.deviceName);
         VulkanDevice Device(&Instance, physicalDevice, false);
         Device.Init();
+        VulkanMemoryManager MemManager(&Device, &Instance);
         VulkanWindowSurface WindowSurface(&Instance, &Device, "numerous", 800, 600);
         VulkanSwapchain Swapchain(&Instance, &Device, &WindowSurface);
 
-        VulkanVertexShader VertexShader(&Device, "Test/Shaders/shader.vert");
-        VulkanPixelShader FragmentShader(&Device, "Test/Shaders/shader.frag");
+        VulkanVertexShader VertexShader(&Device, "Test/Shaders/VertexInput/shader.vert");
+        VulkanPixelShader FragmentShader(&Device, "Test/Shaders/VertexInput/shader.frag");
         VulkanGraphicsShaderProgram TriangleProgram(&VertexShader, &FragmentShader);
         VulkanGraphicsPipelineState TrianglePipelineState(&TriangleProgram);
         VulkanRenderTargetLayout RTLayout(1);
@@ -86,6 +87,7 @@ int main()
         VulkanCommandBuffer CmdBuffer(&Device, Device.GetGraphicsQueue());
         VulkanPresenter Presenter(Device.GetPresentQueue(), &Swapchain);
         std::shared_ptr<Model> Triangle = std::make_shared<Model>("Test/Resources/Triangle/Triangle.obj");
+
         World MyWorld;
         MyWorld.AddModel(Triangle, {0, 0, 0}, {0, 0, 0}, {1, 1, 1});
 
@@ -117,11 +119,18 @@ int main()
 
 
                 vkCmdBindPipeline(CmdBuffer.GetHandle(), VK_PIPELINE_BIND_POINT_GRAPHICS, Pipeline.GetPipelineHandle());
+                VkBuffer VertexBuffer               = Triangle->GetVertexBuffer(&MemManager);
+                VkBuffer ColorBuffer                = Triangle->GetColorBuffer(&MemManager);
+                std::vector<VkBuffer> VertexBuffers = {VertexBuffer, ColorBuffer};
+
+                std::vector<VkDeviceSize> Offsets(2, 0);
+                vkCmdBindVertexBuffers(CmdBuffer.GetHandle(), 0, static_cast<uint32_t>(VertexBuffers.size()), VertexBuffers.data(), Offsets.data());
+
                 VkViewport Viewport = {
                     .x        = 0,
-                    .y        = 0,
+                    .y        = static_cast<float>(WindowSurface.GetHeight()),
                     .width    = static_cast<float>(WindowSurface.GetWidth()),
-                    .height   = static_cast<float>(WindowSurface.GetHeight()),
+                    .height   = -static_cast<float>(WindowSurface.GetHeight()),
                     .minDepth = 0.f,
                     .maxDepth = 1.f,
                 };

@@ -14,6 +14,7 @@ class VulkanCommandBuffer
 {
 public:
     API VulkanCommandBuffer(VulkanDevice* InDevice, VulkanQueue* InQueue);
+    API ~VulkanCommandBuffer();
 
     API void Begin();
     API void End();

@@ -128,6 +128,9 @@
     <ClCompile Include="..\..\..\Source\Engine\Model\World.cpp">
       <Filter>Engine\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanMemoryManager.cpp">
+      <Filter>Engine\Vulkan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">
@@ -219,6 +222,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\Model\World.h">
       <Filter>Engine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanMemoryManager.h">
+      <Filter>Engine\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

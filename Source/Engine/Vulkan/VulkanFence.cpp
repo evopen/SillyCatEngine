@@ -14,6 +14,11 @@ VulkanFence::VulkanFence(VulkanDevice* InDevice)
     vkCreateFence(Device->GetDeviceHandle(), &FenceInfo, nullptr, &Fence);
 }
 
+VulkanFence::~VulkanFence()
+{
+    vkDestroyFence(Device->GetDeviceHandle(), Fence, nullptr);
+}
+
 void VulkanFence::Wait() const
 {
     vkWaitForFences(Device->GetDeviceHandle(), 1, &Fence, VK_TRUE, std::numeric_limits<uint64_t>::max());

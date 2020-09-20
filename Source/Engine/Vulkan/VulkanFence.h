@@ -7,6 +7,7 @@ class VulkanFence
 {
 public:
     API VulkanFence(VulkanDevice* InDevice);
+    API ~VulkanFence();
     VkFence GetHandle() { return Fence; }
     API void Wait() const;
     API void Reset() const;
