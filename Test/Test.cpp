@@ -78,9 +78,9 @@ int main()
         VulkanGraphicsShaderProgram TriangleProgram(&VertexShader, &FragmentShader);
         VulkanGraphicsPipelineState TrianglePipelineState(&TriangleProgram);
         VulkanRenderTargetLayout RTLayout(1);
-        VulkanRenderPass Renderpass(&Device, &RTLayout);
+        VulkanRenderPass RenderPass(&Device, &RTLayout);
         VulkanGraphicsPipelineLayout PipelineLayout(&Device);
-        VulkanGraphicsPipeline Pipeline(&Device, &PipelineLayout, &Renderpass, &TrianglePipelineState);
+        VulkanGraphicsPipeline Pipeline(&Device, &PipelineLayout, &RenderPass, &TrianglePipelineState);
         std::shared_ptr<VulkanSemaphore> RenderFinished = std::make_shared<VulkanSemaphore>(&Device);
         std::shared_ptr<VulkanSemaphore> ImageAvailable = std::make_shared<VulkanSemaphore>(&Device);
         VulkanCommandBuffer CmdBuffer(&Device, Device.GetGraphicsQueue());
@@ -103,17 +103,17 @@ int main()
             for (uint32_t i = 0; i < Swapchain.GetImageCount(); i++)
             {
                 SwapchainImageViews.emplace_back(std::make_shared<VulkanImageView>(&Device, Swapchain.GetImage(i)));
-                Framebuffers.emplace_back(std::make_shared<VulkanFramebuffer>(&Device, &Renderpass, std::vector<std::shared_ptr<VulkanImageView>>{SwapchainImageViews[i]}, WindowSurface.GetWidth(), WindowSurface.GetHeight()));
+                Framebuffers.emplace_back(std::make_shared<VulkanFramebuffer>(&Device, &RenderPass, std::vector<std::shared_ptr<VulkanImageView>>{SwapchainImageViews[i]}, WindowSurface.GetWidth(), WindowSurface.GetHeight()));
             }
 
             Swapchain.AcquireNextImage(ImageAvailable.get()->GetHandle(), VK_NULL_HANDLE);
-
+            
 
             CmdBuffer.Wait();
 
             {
                 CmdBuffer.Begin();
-                CmdBuffer.BeginRenderPass(&Renderpass, Framebuffers[Swapchain.GetRenderIndex()]);
+                CmdBuffer.BeginRenderPass(&RenderPass, Framebuffers[Swapchain.GetRenderIndex()]);
 
 
                 vkCmdBindPipeline(CmdBuffer.GetHandle(), VK_PIPELINE_BIND_POINT_GRAPHICS, Pipeline.GetPipelineHandle());

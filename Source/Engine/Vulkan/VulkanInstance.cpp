@@ -22,6 +22,7 @@ VulkanInstance::VulkanInstance(bool InRenderOffscreen, bool InEnableValidation)
     , Device(nullptr)
     , RenderOffscreen(InRenderOffscreen)
     , EnableValidation(InEnableValidation)
+    , DebugMessenger(VK_NULL_HANDLE)
 {
 }
 
@@ -31,7 +32,10 @@ void VulkanInstance::Init()
     GetInstanceExtensions(InstanceExtensions, EnableValidation, RenderOffscreen);
     GetInstanceLayers(InstanceLayers, EnableValidation);
 
-    VkApplicationInfo appInfo         = {.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO, .apiVersion = VK_API_VERSION_1_2};
+    VkApplicationInfo appInfo = {
+        .sType      = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+        .apiVersion = VK_API_VERSION_1_2,
+    };
     VkInstanceCreateInfo instanceInfo = {
         .sType                   = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
         .pApplicationInfo        = &appInfo,
