@@ -26,6 +26,8 @@ public:
     API uint32_t GetWidth() const { return Width; }
     API uint32_t GetHeight() const { return Height; }
 
+    API void CenterWindow();
+
     void AddSwapchain(VulkanSwapchain* InSwapchain) { Swapchains.insert(InSwapchain); }
     void RemoveSwapchain(VulkanSwapchain* InSwapchain) { Swapchains.erase(InSwapchain); }
 

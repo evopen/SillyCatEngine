@@ -30,7 +30,7 @@ void VulkanWindowSurface::CreateWindow()
     Window = glfwCreateWindow(Width, Height, WindowName.c_str(), nullptr, nullptr);
     if (!Window)
         throw std::runtime_error("Failed to create window");
-
+    CenterWindow();
     glfwSetWindowUserPointer(Window, this);
     glfwSetFramebufferSizeCallback(Window, StaticFramebufferResizeCallback);
 }
@@ -41,6 +41,17 @@ void VulkanWindowSurface::CreateSurface()
     vkGetPhysicalDeviceSurfaceCapabilitiesKHR(Device->GetPhysicalDeviceHandle(), Surface, &SurfaceProperties);
     vkGetPhysicalDeviceSurfaceSupportKHR(
         Device->GetPhysicalDeviceHandle(), Device->GetGraphicsQueue()->GetFamilyIndex(), Surface, &SupportPresent);
+}
+
+void VulkanWindowSurface::CenterWindow()
+{
+    GLFWmonitor* Monitor = glfwGetPrimaryMonitor();
+    auto Mode            = glfwGetVideoMode(Monitor);
+    int monitorX, monitorY;
+    glfwGetMonitorPos(Monitor, &monitorX, &monitorY);
+    glfwSetWindowPos(Window,
+        monitorX + (Mode->width - Width) / 2,
+        monitorY + (Mode->height - Height) / 2);
 }
 
 
