@@ -170,6 +170,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\Test\Shaders\Camera\shader.vert" />
     <None Include="..\..\..\Test\Shaders\shader.frag" />
     <None Include="..\..\..\Test\Shaders\shader.vert" />
     <None Include="..\..\..\Test\Shaders\VertexInput\shader.frag" />

@@ -19,6 +19,9 @@
     <Filter Include="Shaders\VertexInput">
       <UniqueIdentifier>{01026dd0-9cce-4066-ae2c-4756ff50612a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Camera">
+      <UniqueIdentifier>{d159dc9a-7ce7-4c3d-927d-b316c07cb6e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Test\Test.cpp">
@@ -41,15 +44,14 @@
     <None Include="..\..\..\Test\Shaders\VertexInput\shader.frag">
       <Filter>Shaders\VertexInput</Filter>
     </None>
+    <None Include="..\..\..\Test\Resources\Triangle\Triangle2D.obj" />
+    <None Include="..\..\..\Test\Shaders\Camera\shader.vert">
+      <Filter>Shaders\Camera</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Test\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="..\..\..\Test\Resources\Triangle\Triangle2D.obj">
-      <Filter>Resource Files</Filter>
-    </Object>
   </ItemGroup>
 </Project>

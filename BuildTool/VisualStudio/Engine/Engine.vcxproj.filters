@@ -37,6 +37,9 @@
     <Filter Include="Engine\Model">
       <UniqueIdentifier>{831db479-bdc4-426b-84e2-d37b7ea476b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Camera">
+      <UniqueIdentifier>{5f30d833-ad85-41ca-891b-2954add231fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -134,6 +137,9 @@
     <ClCompile Include="..\..\..\Source\Engine\Render\Definitions.cpp">
       <Filter>Engine\Render</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Camera\Camera.cpp">
+      <Filter>Engine\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">
@@ -228,6 +234,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanMemoryManager.h">
       <Filter>Engine\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Camera\Camera.h">
+      <Filter>Engine\Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
