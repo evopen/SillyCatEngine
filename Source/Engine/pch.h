@@ -11,6 +11,9 @@
 #include <GLFW/glfw3.h>
 #include <vk_mem_alloc.h>
 
+#define GLM_FORCE_RADIANS
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <array>
 #include <filesystem>
 #include <fstream>

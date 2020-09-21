@@ -22,3 +22,4 @@
 #include <Engine/Vulkan/VulkanUtil.h>
 #include <Engine/Vulkan/VulkanWindowSurface.h>
 #include <Engine/Vulkan/VulkanMemoryManager.h>
+#include <Engine/Camera/Camera.h>
