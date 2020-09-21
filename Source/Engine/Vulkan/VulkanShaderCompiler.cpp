@@ -150,9 +150,13 @@ std::tuple<std::vector<unsigned>, ShaderReflectionInfo> CompileGLSL(EShaderType 
     glslang::GlslangToSpv(*Program.getIntermediate(GlslangShaderType), spirv, &SpvOptions);
     Program.buildReflection();
 
-    int InputCount = Program.getNumPipeInputs();
+    int InputCount        = Program.getNumPipeInputs();
+    int UniformBlockCount = Program.getNumUniformBlocks();
+
     ShaderReflectionInfo ReflectionInfo;
     ReflectionInfo.InputInfos.resize(InputCount);
+    ReflectionInfo.UniformBlockInfos.resize(UniformBlockCount);
+
     for (int i = 0; i < InputCount; ++i)
     {
         auto InputReflection                    = Program.getPipeInput(i);
@@ -162,6 +166,13 @@ std::tuple<std::vector<unsigned>, ShaderReflectionInfo> CompileGLSL(EShaderType 
         ReflectionInfo.InputInfos[i].VectorSize = InputReflection.getType()->getVectorSize();
     }
 
+    for (int i = 0; i < UniformBlockCount; ++i)
+    {
+        auto UniformBlockReflection              = Program.getUniformBlock(i);
+        ReflectionInfo.UniformBlockInfos[i].Name = UniformBlockReflection.name;
+        ReflectionInfo.UniformBlockInfos[i].Size = UniformBlockReflection.size;
+        ReflectionInfo.UniformBlockInfos[i].Binding = UniformBlockReflection.getBinding();
+    }
 
     return {spirv, ReflectionInfo};
 }

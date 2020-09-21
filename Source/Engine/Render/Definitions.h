@@ -29,7 +29,15 @@ struct ShaderReflectionInfo
         glslang::TBasicType Type;
         uint32_t VectorSize;
     };
+
+    struct UniformBlockInfo
+    {
+        std::string Name;
+        size_t Size;
+        uint32_t Binding;
+    };
     std::vector<InputInfo> InputInfos;
+    std::vector<UniformBlockInfo> UniformBlockInfos;
 };
 
 
