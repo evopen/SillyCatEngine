@@ -25,3 +25,25 @@ VkShaderStageFlagBits ToVulkanShaderType(EShaderType InShaderType)
 
     return Map.at(InShaderType);
 }
+
+VkFormat GlslBasicTypeToVkFormat(glslang::TBasicType Type, uint32_t VectorSize)
+{
+    VkFormat Result = VK_FORMAT_UNDEFINED;
+    switch (Type)
+    {
+    case glslang::EbtFloat:
+        switch (VectorSize)
+        {
+        case 3:
+            Result = VK_FORMAT_R32G32B32_SFLOAT;
+        case 4:
+            Result = VK_FORMAT_R32G32B32A32_SFLOAT;
+        }
+        break;
+    }
+
+    if (Result == VK_FORMAT_UNDEFINED)
+        throw std::runtime_error("unknown type");
+
+    return Result;
+}

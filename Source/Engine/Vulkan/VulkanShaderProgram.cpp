@@ -13,19 +13,16 @@ VulkanGraphicsShaderProgram::VulkanGraphicsShaderProgram(VulkanVertexShader* InV
 
 std::vector<VkVertexInputAttributeDescription> VulkanGraphicsShaderProgram::GetVertexInputAttributeDescriptions()
 {
-    VkVertexInputAttributeDescription VertexAttributeDesc = {
-        .location = 0,
-        .binding  = 0,
-        .format   = VK_FORMAT_R32G32B32_SFLOAT,
-        .offset   = 0,
-    };
+    ShaderReflectionInfo VSReflection = VertexShader->GetShaderReflection();
+    std::vector<VkVertexInputAttributeDescription> Descriptions(VSReflection.InputInfos.size());
 
-    VkVertexInputAttributeDescription ColorAttributeDesc = {
-        .location = 1,
-        .binding  = 1,
-        .format   = VK_FORMAT_R32G32B32A32_SFLOAT,
-        .offset   = 0,
-    };
+    for (uint32_t i = 0; i < Descriptions.size(); ++i)
+    {
+        Descriptions[i].location = VSReflection.InputInfos[i].Location;
+        Descriptions[i].binding  = i;
+        Descriptions[i].format   = GlslBasicTypeToVkFormat(VSReflection.InputInfos[i].Type, VSReflection.InputInfos[i].VectorSize);
+        Descriptions[i].offset   = 0;
+    }
 
-    return {VertexAttributeDesc, ColorAttributeDesc};
+    return Descriptions;
 }

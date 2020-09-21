@@ -22,7 +22,7 @@ public:
     VkPipelineShaderStageCreateInfo* GetPipelineShaderStageCreateInfos() const { return ShaderProgram->GetPipelineShaderStageCreateInfos(); }
 
     static std::vector<VkVertexInputBindingDescription> GetVertexInputBindingDescriptions() { return Model::GetVertexInputBindingDescriptions(); }
-    static std::vector<VkVertexInputAttributeDescription> GetVertexInputAttributeDescriptions() { return VulkanGraphicsShaderProgram::GetVertexInputAttributeDescriptions(); }
+    std::vector<VkVertexInputAttributeDescription> GetVertexInputAttributeDescriptions() { return ShaderProgram->GetVertexInputAttributeDescriptions(); }
 
 private:
     VulkanGraphicsShaderProgram* ShaderProgram;

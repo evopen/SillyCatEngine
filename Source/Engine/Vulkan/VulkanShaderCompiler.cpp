@@ -110,7 +110,7 @@ EShLanguage ToGlslangType(EShaderType EngineType)
     return ShaderTypeMap.at(EngineType);
 }
 
-std::vector<unsigned> CompileGLSL(EShaderType ShaderType, std::vector<char> GLSLCode)
+std::tuple<std::vector<unsigned>, ShaderReflectionInfo> CompileGLSL(EShaderType ShaderType, std::vector<char> GLSLCode)
 {
     if (!IsGlslangInitialized)
     {
@@ -149,5 +149,19 @@ std::vector<unsigned> CompileGLSL(EShaderType ShaderType, std::vector<char> GLSL
     SpvOptions.disableOptimizer = true;
     glslang::GlslangToSpv(*Program.getIntermediate(GlslangShaderType), spirv, &SpvOptions);
     Program.buildReflection();
-    return spirv;
+
+    int InputCount = Program.getNumPipeInputs();
+    ShaderReflectionInfo ReflectionInfo;
+    ReflectionInfo.InputInfos.resize(InputCount);
+    for (int i = 0; i < InputCount; ++i)
+    {
+        auto InputReflection                    = Program.getPipeInput(i);
+        ReflectionInfo.InputInfos[i].Name       = InputReflection.name;
+        ReflectionInfo.InputInfos[i].Location   = i;
+        ReflectionInfo.InputInfos[i].Type       = InputReflection.getType()->getBasicType();
+        ReflectionInfo.InputInfos[i].VectorSize = InputReflection.getType()->getVectorSize();
+    }
+
+
+    return {spirv, ReflectionInfo};
 }

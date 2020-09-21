@@ -1,11 +1,8 @@
 #pragma once
+#include "Engine/pch.h"
+
 #include "Engine/Platform/Platform.h"
 #include "Engine/Render/Definitions.h"
-
-#include <vulkan/vulkan.h>
-
-#include <filesystem>
-#include <vector>
 
 class VulkanDevice;
 
@@ -15,6 +12,7 @@ public:
     API VulkanShader(VulkanDevice* InDevice, std::filesystem::path InFilePath);
 
     VkPipelineShaderStageCreateInfo GetPipelineShaderStageInfo() const { return PipelineStageInfo; }
+    ShaderReflectionInfo GetShaderReflection() const { return ReflectionInfo; }
 
 protected:
     VulkanDevice* Device;
@@ -23,6 +21,7 @@ protected:
     EShaderType ShaderType;
     std::vector<char> GLSL;
     std::vector<uint32_t> Spirv;
+    ShaderReflectionInfo ReflectionInfo;
 
     VkPipelineShaderStageCreateInfo PipelineStageInfo;
 };

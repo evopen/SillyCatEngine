@@ -19,7 +19,7 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanPip
     , PipelineState(InVulkanGraphicsPipelineState)
     , RenderPass(InRenderPass)
     , VertexInputBindingDescriptions(VulkanGraphicsPipelineState::GetVertexInputBindingDescriptions())
-    , VertexInputAttributeDescriptions(VulkanGraphicsPipelineState::GetVertexInputAttributeDescriptions())
+    , VertexInputAttributeDescriptions(PipelineState->GetVertexInputAttributeDescriptions())
 {
     VkPipelineVertexInputStateCreateInfo VertexInputInfo = {
         .sType                           = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO,

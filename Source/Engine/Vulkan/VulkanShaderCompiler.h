@@ -4,4 +4,4 @@
 
 enum class EShaderType;
 
-std::vector<unsigned> CompileGLSL(EShaderType ShaderType, std::vector<char> GLSLCode);
+std::tuple<std::vector<unsigned>, ShaderReflectionInfo> CompileGLSL(EShaderType ShaderType, std::vector<char> GLSLCode);

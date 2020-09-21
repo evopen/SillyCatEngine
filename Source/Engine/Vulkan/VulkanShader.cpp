@@ -15,7 +15,7 @@ VulkanShader::VulkanShader(VulkanDevice* InDevice, std::filesystem::path InFileP
     ShaderType = ToShaderType(FilePath.extension().string());
     GLSL       = LoadFile(FilePath, false);
 
-    Spirv = CompileGLSL(ShaderType, GLSL);
+    std::tie(Spirv, ReflectionInfo) = std::move(CompileGLSL(ShaderType, GLSL));
 
     VkShaderModuleCreateInfo ShaderModuleInfo = {};
     ShaderModuleInfo.sType                    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
