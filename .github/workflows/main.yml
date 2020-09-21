@@ -21,6 +21,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -31,9 +33,15 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+          
       - name: Hercules Insights
         # You may pin to the exact commit or the version.
         # uses: src-d/hercules@6959c0d102ed485929385d87c56a9910551ad0b1
         uses: src-d/hercules@v10.7.2
         with:
           args: --burndown --burndown-people --devs --couples
+    
+      - uses: actions/upload-artifact@master
+        with:
+          name: hercules_charts
+          path: hercules_charts.tar
