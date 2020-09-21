@@ -131,6 +131,9 @@
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanMemoryManager.cpp">
       <Filter>Engine\Vulkan</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Render\Definitions.cpp">
+      <Filter>Engine\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">

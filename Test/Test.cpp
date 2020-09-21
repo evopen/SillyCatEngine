@@ -85,7 +85,7 @@ int main()
         std::shared_ptr<VulkanSemaphore> ImageAvailable = std::make_shared<VulkanSemaphore>(&Device);
         VulkanCommandBuffer CmdBuffer(&Device, Device.GetGraphicsQueue());
         VulkanPresenter Presenter(Device.GetPresentQueue(), &Swapchain);
-        std::shared_ptr<Model> Triangle = std::make_shared<Model>("Test/Resources/Triangle/Triangle.obj");
+        std::shared_ptr<Model> Triangle = std::make_shared<Model>("Test/Resources/Triangle/Triangle2D.obj");
 
         World MyWorld;
         MyWorld.AddModel(Triangle, {0, 0, 0}, {0, 0, 0}, {1, 1, 1});
