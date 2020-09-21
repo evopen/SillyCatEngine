@@ -38,10 +38,10 @@ Model::Model(std::filesystem::path InFilePath)
     {
         for (size_t i = 0; i < VerticesCount; i++)
         {
-            Colors[i].r = Mesh->mColors[0]->r;
-            Colors[i].g = Mesh->mColors[0]->g;
-            Colors[i].b = Mesh->mColors[0]->b;
-            Colors[i].a = Mesh->mColors[0]->a;
+            Colors[i].r = Mesh->mColors[0][i].r;
+            Colors[i].g = Mesh->mColors[0][i].g;
+            Colors[i].b = Mesh->mColors[0][i].b;
+            Colors[i].a = Mesh->mColors[0][i].a;
         }
     }
     else
