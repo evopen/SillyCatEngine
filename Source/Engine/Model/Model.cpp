@@ -91,15 +91,16 @@ VkBuffer Model::GetColorBuffer(VulkanMemoryManager* InMemoryManager)
 
 std::vector<VkVertexInputBindingDescription> Model::GetVertexInputBindingDescriptions()
 {
+
     VkVertexInputBindingDescription VertexBindingDesc = {
         .binding   = 0,
-        .stride    = sizeof(glm::vec3),
+        .stride    = sizeof(decltype(Vertices)::value_type),
         .inputRate = VK_VERTEX_INPUT_RATE_VERTEX,
     };
 
     VkVertexInputBindingDescription ColorBindingDesc = {
         .binding   = 1,
-        .stride    = sizeof(glm::vec4),
+        .stride    = sizeof(decltype(Colors)::value_type),
         .inputRate = VK_VERTEX_INPUT_RATE_VERTEX,
     };
 
