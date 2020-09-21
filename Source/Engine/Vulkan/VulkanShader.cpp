@@ -31,6 +31,19 @@ VulkanShader::VulkanShader(VulkanDevice* InDevice, std::filesystem::path InFileP
     PipelineStageInfo.pName  = "main";
 }
 
+std::vector<VkDescriptorSetLayoutBinding> VulkanShader::GetDescriptorSetLayoutBindings()
+{
+    std::vector<VkDescriptorSetLayoutBinding> Bindings(ReflectionInfo.UniformBlockInfos.size());
+    for (size_t i = 0; i < ReflectionInfo.UniformBlockInfos.size(); i++)
+    {
+        Bindings[i].binding         = ReflectionInfo.UniformBlockInfos[i].Binding;
+        Bindings[i].descriptorCount = 1;
+        Bindings[i].descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+        Bindings[i].stageFlags      = ToVulkanShaderType(ShaderType);
+    }
+    return Bindings;
+}
+
 VulkanVertexShader::VulkanVertexShader(VulkanDevice* InDevice, std::filesystem::path InFilePath)
     : VulkanShader(InDevice, InFilePath)
 {

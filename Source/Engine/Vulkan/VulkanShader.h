@@ -13,6 +13,7 @@ public:
 
     VkPipelineShaderStageCreateInfo GetPipelineShaderStageInfo() const { return PipelineStageInfo; }
     ShaderReflectionInfo GetShaderReflection() const { return ReflectionInfo; }
+    std::vector<VkDescriptorSetLayoutBinding> GetDescriptorSetLayoutBindings();
 
 protected:
     VulkanDevice* Device;
