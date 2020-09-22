@@ -63,6 +63,35 @@ VkBuffer VulkanMemoryManager::CreateBuffer(size_t InSize, VmaMemoryUsage InMemor
     return Buffer;
 }
 
+VkBuffer VulkanMemoryManager::CreateBuffer(void* InData, size_t InSize, VmaMemoryUsage InMemoryUsage, VkBufferUsageFlags InBufferUsage)
+{
+    VkBuffer Buffer, StagingBuffer;
+    void* Data;
+    switch (InMemoryUsage)
+    {
+    case VMA_MEMORY_USAGE_CPU_ONLY:
+    case VMA_MEMORY_USAGE_CPU_TO_GPU:
+        Buffer = CreateBuffer(InSize, InMemoryUsage, InBufferUsage);
+        Data   = MapBuffer(Buffer);
+        memcpy(Data, InData, InSize);
+        UnMapBuffer(Buffer);
+        break;
+    case VMA_MEMORY_USAGE_GPU_ONLY:
+        StagingBuffer = CreateBuffer(InSize, VMA_MEMORY_USAGE_CPU_ONLY, VK_BUFFER_USAGE_TRANSFER_SRC_BIT);
+        Data          = MapBuffer(StagingBuffer);
+        std::memcpy(Data, InData, InSize);
+        UnMapBuffer(StagingBuffer);
+        Buffer = CreateBuffer(InSize, VMA_MEMORY_USAGE_GPU_ONLY, VK_BUFFER_USAGE_TRANSFER_DST_BIT | InBufferUsage);
+        CopyBuffer(StagingBuffer, Buffer);
+        FreeBuffer(StagingBuffer);
+        break;
+    default:
+        throw std::runtime_error("unknown usage");
+    }
+
+    return Buffer;
+}
+
 void* VulkanMemoryManager::MapBuffer(VkBuffer InBuffer)
 {
     void* Data;

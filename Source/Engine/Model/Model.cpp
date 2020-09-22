@@ -8,7 +8,7 @@ Model::Model(std::filesystem::path InFilePath)
     , ColorBuffer(VK_NULL_HANDLE)
 {
     Assimp::Importer Importer;
-    const aiScene* Scene = Importer.ReadFile(InFilePath.string().c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+    const aiScene* Scene = Importer.ReadFile(InFilePath.string().c_str(), aiProcessPreset_TargetRealtime_MaxQuality | aiProcess_Triangulate);
     if (!Scene)
     {
         throw std::runtime_error(Importer.GetErrorString());

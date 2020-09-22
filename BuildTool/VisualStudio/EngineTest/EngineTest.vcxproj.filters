@@ -44,7 +44,6 @@
     <None Include="..\..\..\Test\Shaders\VertexInput\shader.frag">
       <Filter>Shaders\VertexInput</Filter>
     </None>
-    <None Include="..\..\..\Test\Resources\Triangle\Triangle2D.obj" />
     <None Include="..\..\..\Test\Shaders\Camera\shader.vert">
       <Filter>Shaders\Camera</Filter>
     </None>

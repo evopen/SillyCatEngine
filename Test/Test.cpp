@@ -89,11 +89,7 @@ int main()
         MVP.View            = std::move(Camera.GetViewMatrix());
         MVP.Projection      = std::move(Camera.GetProjectionMatrix());
         MVP.Model           = glm::identity<glm::mat4>();
-        size_t BufferSize   = sizeof(S_MVP);
-        VkBuffer MVP_Buffer = MemManager.CreateBuffer(sizeof(S_MVP), VMA_MEMORY_USAGE_CPU_TO_GPU, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT);
-        void* Data          = MemManager.MapBuffer(MVP_Buffer);
-        memcpy(Data, &MVP, sizeof(S_MVP));
-        MemManager.UnMapBuffer(MVP_Buffer);
+        VkBuffer MVP_Buffer = MemManager.CreateBuffer(&MVP, sizeof(S_MVP), VMA_MEMORY_USAGE_CPU_TO_GPU, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT);
 
 
         VkDescriptorSetLayout DescriptorSetLayout     = TrianglePipelineState.GetDescriptorSetLayoutHandle();

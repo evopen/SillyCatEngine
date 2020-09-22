@@ -16,6 +16,7 @@ public:
     VmaAllocator GetAllocatorHandle() { return Allocator; }
 
     API VkBuffer CreateBuffer(size_t InSize, VmaMemoryUsage InMemoryUsage, VkBufferUsageFlags InBufferUsage);
+    API VkBuffer CreateBuffer(void* InData, size_t InSize, VmaMemoryUsage InMemoryUsage, VkBufferUsageFlags InBufferUsage);
     API void* MapBuffer(VkBuffer InBuffer);
     API void UnMapBuffer(VkBuffer InBuffer);
     API void CopyBuffer(VkBuffer SrcBuffer, VkBuffer DstBuffer);
