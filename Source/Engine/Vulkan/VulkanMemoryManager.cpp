@@ -18,6 +18,25 @@ VulkanMemoryManager::VulkanMemoryManager(VulkanDevice* InDevice, VulkanInstance*
     };
 
     vmaCreateAllocator(&AllocatorInfo, &Allocator);
+
+    std::vector<VkDescriptorPoolSize> PoolSizes = {
+        {
+            VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+            64,
+        },
+        {
+            VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
+            1024,
+        },
+    };
+
+    VkDescriptorPoolCreateInfo DescriptorPoolInfo = {
+        .sType         = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
+        .maxSets       = 1024,
+        .poolSizeCount = static_cast<uint32_t>(PoolSizes.size()),
+        .pPoolSizes    = PoolSizes.data(),
+    };
+    vkCreateDescriptorPool(Device->GetDeviceHandle(), &DescriptorPoolInfo, nullptr, &DescriptorPool);
 }
 
 VkBuffer VulkanMemoryManager::CreateBuffer(size_t InSize, VmaMemoryUsage InMemoryUsage, VkBufferUsageFlags InBufferUsage)

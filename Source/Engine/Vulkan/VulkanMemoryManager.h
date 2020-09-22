@@ -15,11 +15,12 @@ public:
 
     VmaAllocator GetAllocatorHandle() { return Allocator; }
 
-    VkBuffer CreateBuffer(size_t InSize, VmaMemoryUsage InMemoryUsage, VkBufferUsageFlags InBufferUsage);
-    void* MapBuffer(VkBuffer InBuffer);
-    void UnMapBuffer(VkBuffer InBuffer);
-    void CopyBuffer(VkBuffer SrcBuffer, VkBuffer DstBuffer);
-    void FreeBuffer(VkBuffer InBuffer);
+    API VkBuffer CreateBuffer(size_t InSize, VmaMemoryUsage InMemoryUsage, VkBufferUsageFlags InBufferUsage);
+    API void* MapBuffer(VkBuffer InBuffer);
+    API void UnMapBuffer(VkBuffer InBuffer);
+    API void CopyBuffer(VkBuffer SrcBuffer, VkBuffer DstBuffer);
+    API void FreeBuffer(VkBuffer InBuffer);
+    API VkDescriptorPool GetDescriptorPoolHandle() { return DescriptorPool; }
 
 private:
     VulkanDevice* Device;
@@ -37,4 +38,6 @@ private:
 
     std::unordered_map<VkBuffer, MemoryInfo> Buffers;
     std::unordered_map<VkImage, MemoryInfo> Images;
+
+    VkDescriptorPool DescriptorPool;
 };

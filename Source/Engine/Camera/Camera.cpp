@@ -11,6 +11,6 @@ namespace Sce
         , Aspect(inAspect)
     {
         ViewMatrix       = glm::lookAt(Location, inLookAt, inUp);
-        ProjectionMatrix = glm::perspective(glm::radians(Fov), Aspect, 0.1f, 10.f);
+        ProjectionMatrix = glm::perspective(glm::radians(Fov), Aspect, 0.1f, 10000.f);
     }
 }

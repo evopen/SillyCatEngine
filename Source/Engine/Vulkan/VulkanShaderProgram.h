@@ -15,6 +15,7 @@ public:
     API VkPipelineLayout GetPipelineLayoutHandle() { return PipelineLayout; }
 
     std::vector<VkDescriptorSetLayoutBinding> GetDescriptorSetLayoutBindings() { return Bindings; };
+    VkDescriptorSetLayout GetDescriptorSetLayoutHandle() { return DescriptorSetLayout; }
 
 protected:
     std::vector<VkDescriptorSetLayoutBinding> Bindings;

@@ -48,6 +48,13 @@ TEST(SelfTest, EQUAL)
 
 using namespace std::chrono_literals;
 
+struct S_MVP
+{
+    glm::mat4 Model;
+    glm::mat4 View;
+    glm::mat4 Projection;
+};
+
 
 int main()
 {
@@ -74,8 +81,44 @@ int main()
         std::shared_ptr<VulkanSemaphore> ImageAvailable = std::make_shared<VulkanSemaphore>(&Device);
         VulkanCommandBuffer CmdBuffer(&Device, Device.GetGraphicsQueue());
         VulkanPresenter Presenter(Device.GetPresentQueue(), &Swapchain);
-        std::shared_ptr<Model> Triangle = std::make_shared<Model>("Test/Resources/Triangle/Triangle2D.obj");
-        Sce::Camera Camera(glm::vec3(10, 10, 10), glm::vec3(0, 0, 0));
+        auto Triangle = std::make_shared<Model>("Test/Resources/Triangle/Triangle2D.obj");
+        auto Monkey   = std::make_shared<Model>("C:/Users/DHH/Desktop/Monkey.obj");
+        Sce::Camera Camera(glm::vec3(5, 5, 5), glm::vec3(0, 0, 0));
+        S_MVP MVP;
+
+        MVP.View            = std::move(Camera.GetViewMatrix());
+        MVP.Projection      = std::move(Camera.GetProjectionMatrix());
+        MVP.Model           = glm::identity<glm::mat4>();
+        size_t BufferSize   = sizeof(S_MVP);
+        VkBuffer MVP_Buffer = MemManager.CreateBuffer(sizeof(S_MVP), VMA_MEMORY_USAGE_CPU_TO_GPU, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT);
+        void* Data          = MemManager.MapBuffer(MVP_Buffer);
+        memcpy(Data, &MVP, sizeof(S_MVP));
+        MemManager.UnMapBuffer(MVP_Buffer);
+
+
+        VkDescriptorSetLayout DescriptorSetLayout     = TrianglePipelineState.GetDescriptorSetLayoutHandle();
+        VkDescriptorSetAllocateInfo DescriptorSetInfo = {
+            .sType              = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
+            .descriptorPool     = MemManager.GetDescriptorPoolHandle(),
+            .descriptorSetCount = 1,
+            .pSetLayouts        = &DescriptorSetLayout,
+        };
+        VkDescriptorSet DescriptorSet;
+        vkAllocateDescriptorSets(Device.GetDeviceHandle(), &DescriptorSetInfo, &DescriptorSet);
+        VkDescriptorBufferInfo BufferInfo = {
+            .buffer = MVP_Buffer,
+            .offset = 0,
+            .range  = VK_WHOLE_SIZE,
+        };
+        VkWriteDescriptorSet WriteDescriptorSet = {
+            .sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
+            .dstSet          = DescriptorSet,
+            .dstBinding      = 0,
+            .descriptorCount = 1,
+            .descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+            .pBufferInfo     = &BufferInfo,
+        };
+        vkUpdateDescriptorSets(Device.GetDeviceHandle(), 1, &WriteDescriptorSet, 0, nullptr);
 
 
         World MyWorld;
@@ -108,12 +151,14 @@ int main()
 
 
                 vkCmdBindPipeline(CmdBuffer.GetHandle(), VK_PIPELINE_BIND_POINT_GRAPHICS, Pipeline.GetPipelineHandle());
-                VkBuffer VertexBuffer               = Triangle->GetVertexBuffer(&MemManager);
-                VkBuffer ColorBuffer                = Triangle->GetColorBuffer(&MemManager);
+                VkBuffer VertexBuffer               = Monkey->GetVertexBuffer(&MemManager);
+                VkBuffer ColorBuffer                = Monkey->GetColorBuffer(&MemManager);
                 std::vector<VkBuffer> VertexBuffers = {VertexBuffer, ColorBuffer};
 
                 std::vector<VkDeviceSize> Offsets(2, 0);
                 vkCmdBindVertexBuffers(CmdBuffer.GetHandle(), 0, static_cast<uint32_t>(VertexBuffers.size()), VertexBuffers.data(), Offsets.data());
+
+                vkCmdBindDescriptorSets(CmdBuffer.GetHandle(), VK_PIPELINE_BIND_POINT_GRAPHICS, TrianglePipelineState.GetPipelineLayoutHandle(), 0, 1, &DescriptorSet, 0, nullptr);
 
                 VkViewport Viewport = {
                     .x        = 0,
@@ -137,7 +182,7 @@ int main()
                 vkCmdSetScissor(CmdBuffer.GetHandle(), 0, 1, &Scissor);
 
 
-                vkCmdDraw(CmdBuffer.GetHandle(), 3, 1, 0, 0);
+                vkCmdDraw(CmdBuffer.GetHandle(), Monkey->GetVertexCount(), 1, 0, 0);
 
                 CmdBuffer.EndRenderPass();
 

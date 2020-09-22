@@ -23,7 +23,9 @@ public:
 
     static std::vector<VkVertexInputBindingDescription> GetVertexInputBindingDescriptions() { return Model::GetVertexInputBindingDescriptions(); }
     std::vector<VkVertexInputAttributeDescription> GetVertexInputAttributeDescriptions() { return ShaderProgram->GetVertexInputAttributeDescriptions(); }
-    VkPipelineLayout GetPipelineLayoutHandle() { return ShaderProgram->GetPipelineLayoutHandle(); }
+    API VkPipelineLayout GetPipelineLayoutHandle() { return ShaderProgram->GetPipelineLayoutHandle(); }
+    API VkDescriptorSetLayout GetDescriptorSetLayoutHandle() { return ShaderProgram->GetDescriptorSetLayoutHandle(); }
+
 
 private:
     VulkanGraphicsShaderProgram* ShaderProgram;

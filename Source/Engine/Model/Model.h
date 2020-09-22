@@ -14,6 +14,7 @@ public:
 
     API VkBuffer GetVertexBuffer(VulkanMemoryManager* InMemoryManager);
     API VkBuffer GetColorBuffer(VulkanMemoryManager* InMemoryManager);
+    API uint32_t GetVertexCount() { return static_cast<uint32_t>(Vertices.size()); }
 
 
     static std::vector<VkVertexInputBindingDescription> GetVertexInputBindingDescriptions();

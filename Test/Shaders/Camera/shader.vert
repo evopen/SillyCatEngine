@@ -3,15 +3,16 @@
 layout(location = 0) in vec3 inPosition;
 layout(location = 1) in vec4 inColor;
 
-struct SMVP
+struct S_MVP
 {
 	mat4 Model;
 	mat4 View;
 	mat4 Projection;
 };
 
-layout(binding = 5) uniform MVP_Block {
-	SMVP MVP;
+layout(set = 0, binding = 0) uniform MVP_Block
+{
+	S_MVP MVP;
 };
 
 layout(location = 0) out vec3 fragColor;
