@@ -7,15 +7,14 @@
 #include "VulkanRenderPass.h"
 #include "VulkanRenderTargetLayout.h"
 
-VulkanPipeline::VulkanPipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout)
+VulkanPipeline::VulkanPipeline(VulkanDevice* InDevice)
     : Pipeline(VK_NULL_HANDLE)
     , Device(InDevice)
-    , Layout(InLayout)
 {
 }
 
-VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout, VulkanRenderPass* InRenderPass, VulkanGraphicsPipelineState* InVulkanGraphicsPipelineState)
-    : VulkanPipeline(InDevice, InLayout)
+VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanRenderPass* InRenderPass, VulkanGraphicsPipelineState* InVulkanGraphicsPipelineState)
+    : VulkanPipeline(InDevice)
     , PipelineState(InVulkanGraphicsPipelineState)
     , RenderPass(InRenderPass)
     , VertexInputBindingDescriptions(VulkanGraphicsPipelineState::GetVertexInputBindingDescriptions())
@@ -91,21 +90,21 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanPip
         .pDepthStencilState  = nullptr,
         .pColorBlendState    = &ColorBlendInfo,
         .pDynamicState       = &DynamicStateInfo,
-        .layout              = Layout->GetLayoutHandle(),
-        .renderPass          = RenderPass->GetRenderPassHandle(),
-    };
+        .layout              = PipelineState->GetPipelineLayoutHandle(),
+    .renderPass = RenderPass->GetRenderPassHandle(),
+};
 
-    vkCreateGraphicsPipelines(Device->GetDeviceHandle(), nullptr, 1, &PipelineInfo, nullptr, &Pipeline);
+vkCreateGraphicsPipelines(Device->GetDeviceHandle(), nullptr, 1, &PipelineInfo, nullptr, &Pipeline);
 }
 
 VulkanComputePipeline::VulkanComputePipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout, VulkanComputePipelineState* InComputePipelineState)
-    : VulkanPipeline(InDevice, InLayout)
+    : VulkanPipeline(InDevice)
     , PipelineState(InComputePipelineState)
 {
     VkComputePipelineCreateInfo PipelineInfo = {
         .sType  = VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO,
         .stage  = PipelineState->GetPipelineShaderStageCreateInfo(),
-        .layout = Layout->GetLayoutHandle(),
+        .layout = PipelineState->GetPipelineLayoutHandle(),
     };
     vkCreateComputePipelines(Device->GetDeviceHandle(), nullptr, 1, &PipelineInfo, nullptr, &Pipeline);
 }

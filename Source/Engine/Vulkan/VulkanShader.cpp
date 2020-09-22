@@ -31,6 +31,14 @@ VulkanShader::VulkanShader(VulkanDevice* InDevice, std::filesystem::path InFileP
     PipelineStageInfo.pName  = "main";
 }
 
+VulkanShader::~VulkanShader()
+{
+    if (ShaderModule != VK_NULL_HANDLE)
+    {
+        vkDestroyShaderModule(Device->GetDeviceHandle(), ShaderModule, nullptr);
+    }
+}
+
 std::vector<VkDescriptorSetLayoutBinding> VulkanShader::GetDescriptorSetLayoutBindings()
 {
     std::vector<VkDescriptorSetLayoutBinding> Bindings(ReflectionInfo.UniformBlockInfos.size());

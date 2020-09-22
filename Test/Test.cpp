@@ -48,16 +48,6 @@ TEST(SelfTest, EQUAL)
 
 using namespace std::chrono_literals;
 
-struct Vertex
-{
-    glm::vec2 pos;
-    glm::vec3 color;
-};
-
-const std::vector<Vertex> vertices = {
-    {{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
-    {{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
-    {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}};
 
 int main()
 {
@@ -73,19 +63,20 @@ int main()
         VulkanWindowSurface WindowSurface(&Instance, &Device, "numerous", 800, 600);
         VulkanSwapchain Swapchain(&Instance, &Device, &WindowSurface);
 
-        VulkanVertexShader VertexShader(&Device, "Test/Shaders/VertexInput/shader.vert");
-        VulkanPixelShader FragmentShader(&Device, "Test/Shaders/VertexInput/shader.frag");
-        VulkanGraphicsShaderProgram TriangleProgram(&VertexShader, &FragmentShader);
+        auto VertexShader   = std::make_shared<VulkanVertexShader>(&Device, "Test/Shaders/Camera/shader.vert");
+        auto FragmentShader = std::make_shared<VulkanPixelShader>(&Device, "Test/Shaders/VertexInput/shader.frag");
+        VulkanGraphicsShaderProgram TriangleProgram(&Device, VertexShader, FragmentShader);
         VulkanGraphicsPipelineState TrianglePipelineState(&TriangleProgram);
         VulkanRenderTargetLayout RTLayout(1);
         VulkanRenderPass RenderPass(&Device, &RTLayout);
-        VulkanGraphicsPipelineLayout PipelineLayout(&Device);
-        VulkanGraphicsPipeline Pipeline(&Device, &PipelineLayout, &RenderPass, &TrianglePipelineState);
+        VulkanGraphicsPipeline Pipeline(&Device, &RenderPass, &TrianglePipelineState);
         std::shared_ptr<VulkanSemaphore> RenderFinished = std::make_shared<VulkanSemaphore>(&Device);
         std::shared_ptr<VulkanSemaphore> ImageAvailable = std::make_shared<VulkanSemaphore>(&Device);
         VulkanCommandBuffer CmdBuffer(&Device, Device.GetGraphicsQueue());
         VulkanPresenter Presenter(Device.GetPresentQueue(), &Swapchain);
         std::shared_ptr<Model> Triangle = std::make_shared<Model>("Test/Resources/Triangle/Triangle2D.obj");
+        Sce::Camera Camera(glm::vec3(10, 10, 10), glm::vec3(0, 0, 0));
+
 
         World MyWorld;
         MyWorld.AddModel(Triangle, {0, 0, 0}, {0, 0, 0}, {1, 1, 1});
@@ -107,7 +98,7 @@ int main()
             }
 
             Swapchain.AcquireNextImage(ImageAvailable.get()->GetHandle(), VK_NULL_HANDLE);
-            
+
 
             CmdBuffer.Wait();
 

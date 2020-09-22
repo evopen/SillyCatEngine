@@ -5,31 +5,44 @@
 class VulkanVertexShader;
 class VulkanPixelShader;
 class VulkanComputeShader;
+class VulkanDevice;
 
 class VulkanShaderProgram
 {
 public:
-    API VulkanShaderProgram() = default;
+    API VulkanShaderProgram(VulkanDevice* inDevice);
+    API ~VulkanShaderProgram();
+    API VkPipelineLayout GetPipelineLayoutHandle() { return PipelineLayout; }
 
-    
+    std::vector<VkDescriptorSetLayoutBinding> GetDescriptorSetLayoutBindings() { return Bindings; };
 
 protected:
+    std::vector<VkDescriptorSetLayoutBinding> Bindings;
+    virtual void CreateDescriptorSetLayoutBindings() = 0;
+    void CreateDescriptorSetLayout();
+    void CreatePipelineLayout();
+
+    VkDescriptorSetLayout DescriptorSetLayout;
+    VulkanDevice* Device;
+    VkPipelineLayout PipelineLayout;
 };
 
 class VulkanGraphicsShaderProgram : public VulkanShaderProgram
 {
 public:
-    API VulkanGraphicsShaderProgram(VulkanVertexShader* InVertexShader, VulkanPixelShader* InPixelShader);
+    API VulkanGraphicsShaderProgram(VulkanDevice* inDevice, std::shared_ptr<VulkanVertexShader> InVertexShader, std::shared_ptr<VulkanPixelShader> InPixelShader);
 
     VkPipelineShaderStageCreateInfo* GetPipelineShaderStageCreateInfos() { return PipelineStageInfos.data(); }
     uint32_t GetStageCount() const { return static_cast<uint32_t>(PipelineStageInfos.size()); }
 
     std::vector<VkVertexInputAttributeDescription> GetVertexInputAttributeDescriptions();
+    VkDescriptorSetLayoutCreateInfo GetDescriptorSetLayoutCreateInfo();
 
 private:
-    VulkanVertexShader* VertexShader;
-    VulkanPixelShader* PixelShader;
+    std::shared_ptr<VulkanVertexShader> VertexShader;
+    std::shared_ptr<VulkanPixelShader> PixelShader;
     std::vector<VkPipelineShaderStageCreateInfo> PipelineStageInfos;
+    void CreateDescriptorSetLayoutBindings() override;
 };
 
 class VulkanComputeShaderProgram : public VulkanShaderProgram

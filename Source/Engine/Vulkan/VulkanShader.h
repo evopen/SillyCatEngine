@@ -10,6 +10,7 @@ class VulkanShader
 {
 public:
     API VulkanShader(VulkanDevice* InDevice, std::filesystem::path InFilePath);
+    API ~VulkanShader();
 
     VkPipelineShaderStageCreateInfo GetPipelineShaderStageInfo() const { return PipelineStageInfo; }
     ShaderReflectionInfo GetShaderReflection() const { return ReflectionInfo; }

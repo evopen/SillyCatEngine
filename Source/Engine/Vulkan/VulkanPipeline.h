@@ -14,20 +14,19 @@ class VulkanComputePipelineState;
 class VulkanPipeline
 {
 public:
-    API VulkanPipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout);
+    API VulkanPipeline(VulkanDevice* InDevice);
 
     API VkPipeline GetPipelineHandle() { return Pipeline; }
 
 protected:
     VkPipeline Pipeline;
     VulkanDevice* Device;
-    VulkanPipelineLayout* Layout;
 };
 
 class VulkanGraphicsPipeline : public VulkanPipeline
 {
 public:
-    API VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout, VulkanRenderPass* InRenderPass, VulkanGraphicsPipelineState* InVulkanGraphicsPipelineState);
+    API VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanRenderPass* InRenderPass, VulkanGraphicsPipelineState* InVulkanGraphicsPipelineState);
 
 private:
     VulkanGraphicsPipelineState* PipelineState;
