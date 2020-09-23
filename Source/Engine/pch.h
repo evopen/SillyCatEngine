@@ -10,6 +10,7 @@
 #include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
 #include <vk_mem_alloc.h>
+#include <stb_image.h>
 
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>

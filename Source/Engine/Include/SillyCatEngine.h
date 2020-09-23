@@ -1,14 +1,17 @@
 #pragma once
 
+#include <Engine/Camera/Camera.h>
 #include <Engine/Filesystem/FileUtil.h>
 #include <Engine/Model/Model.h>
 #include <Engine/Model/World.h>
+#include <Engine/Texture/Texture2D.h>
 #include <Engine/Vulkan/VulkanCommandBuffer.h>
 #include <Engine/Vulkan/VulkanDevice.h>
 #include <Engine/Vulkan/VulkanFence.h>
 #include <Engine/Vulkan/VulkanFramebuffer.h>
 #include <Engine/Vulkan/VulkanImageView.h>
 #include <Engine/Vulkan/VulkanInstance.h>
+#include <Engine/Vulkan/VulkanMemoryManager.h>
 #include <Engine/Vulkan/VulkanPipeline.h>
 #include <Engine/Vulkan/VulkanPipelineLayout.h>
 #include <Engine/Vulkan/VulkanPipelineState.h>
@@ -21,5 +24,3 @@
 #include <Engine/Vulkan/VulkanSwapchain.h>
 #include <Engine/Vulkan/VulkanUtil.h>
 #include <Engine/Vulkan/VulkanWindowSurface.h>
-#include <Engine/Vulkan/VulkanMemoryManager.h>
-#include <Engine/Camera/Camera.h>

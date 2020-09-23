@@ -40,6 +40,9 @@
     <Filter Include="Engine\Camera">
       <UniqueIdentifier>{5f30d833-ad85-41ca-891b-2954add231fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Texture">
+      <UniqueIdentifier>{aeed0d2a-b9bd-422d-a742-ffb6275af74e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -137,6 +140,9 @@
     <ClCompile Include="..\..\..\Source\Engine\Camera\Camera.cpp">
       <Filter>Engine\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Texture\Texture2D.cpp">
+      <Filter>Engine\Texture</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">
@@ -231,6 +237,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\Camera\Camera.h">
       <Filter>Engine\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Texture\Texture2D.h">
+      <Filter>Engine\Texture</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
