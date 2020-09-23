@@ -16,7 +16,7 @@ public:
     API VulkanDevice(VulkanInstance* inInstance, VkPhysicalDevice inPhysicalDevice, bool InOffscreenRender);
     API void Init();
     API void Destroy();
-    API static std::tuple<VkPhysicalDevice, VkPhysicalDeviceProperties> SelectPhysicalDevice(VulkanInstance instance);
+    API static std::tuple<VkPhysicalDevice, VkPhysicalDeviceProperties> SelectPhysicalDevice(VulkanInstance* instance);
     VkDevice GetDeviceHandle() const { return Device; }
     VkPhysicalDevice GetPhysicalDeviceHandle() const { return PhysicalDevice; }
     VulkanQueue* GetGraphicsQueue() { return GraphicsQueue.get(); }

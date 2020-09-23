@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{234f932a-2038-4a33-a763-baee47395af4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{40d1103a-fd32-430b-a3ec-3c678455b423}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\App\ModelRenderer\Source\ModelRenderer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\App\ModelRenderer\Source\pch.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\App\ModelRenderer\Source\pch.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\Shader.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\Shader.frag">
+      <Filter>Shader</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,4 +1,5 @@
 #include "Engine/pch.h"
+
 #include "FileUtil.h"
 
 std::vector<char> LoadFile(const std::filesystem::path& FileName, bool IsBinary)
@@ -8,7 +9,7 @@ std::vector<char> LoadFile(const std::filesystem::path& FileName, bool IsBinary)
     std::fstream file(FileName, std::ios::ate | std::ios::in | (IsBinary ? std::ios::binary : 0));
     if (!file.is_open())
     {
-        throw std::invalid_argument("cannot open " + FileName.string());
+        throw std::invalid_argument("cannot open " + FileName.string() + ". current dir: " + CurrentDir.string());
     }
     const size_t FileSize = file.tellg();
     std::vector<char> buffer(FileSize);

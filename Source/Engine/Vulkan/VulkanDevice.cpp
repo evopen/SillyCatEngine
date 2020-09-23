@@ -23,6 +23,7 @@ VulkanDevice::VulkanDevice(VulkanInstance* inInstance, VkPhysicalDevice inPhysic
     , PhysicalDeviceProp()
 
 {
+    Init();
 }
 
 
@@ -115,12 +116,12 @@ void VulkanDevice::GetQueueProperties(
 }
 
 
-std::tuple<VkPhysicalDevice, VkPhysicalDeviceProperties> VulkanDevice::SelectPhysicalDevice(VulkanInstance instance)
+std::tuple<VkPhysicalDevice, VkPhysicalDeviceProperties> VulkanDevice::SelectPhysicalDevice(VulkanInstance* instance)
 {
     uint32_t numPhysicalDevices;
-    CheckResult(vkEnumeratePhysicalDevices(instance.GetInstanceHandle(), &numPhysicalDevices, nullptr));
+    CheckResult(vkEnumeratePhysicalDevices(instance->GetInstanceHandle(), &numPhysicalDevices, nullptr));
     std::vector<VkPhysicalDevice> physicalDevices(numPhysicalDevices);
-    vkEnumeratePhysicalDevices(instance.GetInstanceHandle(), &numPhysicalDevices, physicalDevices.data());
+    vkEnumeratePhysicalDevices(instance->GetInstanceHandle(), &numPhysicalDevices, physicalDevices.data());
 
     for (size_t i = 0; i < numPhysicalDevices; i++)
     {

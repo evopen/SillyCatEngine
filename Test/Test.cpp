@@ -62,7 +62,7 @@ int main()
     {
         VulkanInstance Instance;
         Instance.Init();
-        auto [physicalDevice, deviceProp] = VulkanDevice::SelectPhysicalDevice(Instance);
+        auto [physicalDevice, deviceProp] = VulkanDevice::SelectPhysicalDevice(&Instance);
         spdlog::info("select: {}", deviceProp.deviceName);
         VulkanDevice Device(&Instance, physicalDevice, false);
         Device.Init();

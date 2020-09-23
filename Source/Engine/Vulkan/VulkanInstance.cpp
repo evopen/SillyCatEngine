@@ -14,7 +14,9 @@ VulkanInstance::VulkanInstance()
     , Device(nullptr)
     , RenderOffscreen(false)
     , EnableValidation(true)
+    , DebugMessenger(VK_NULL_HANDLE)
 {
+    Init();
 }
 
 VulkanInstance::VulkanInstance(bool InRenderOffscreen, bool InEnableValidation)
@@ -24,6 +26,7 @@ VulkanInstance::VulkanInstance(bool InRenderOffscreen, bool InEnableValidation)
     , EnableValidation(InEnableValidation)
     , DebugMessenger(VK_NULL_HANDLE)
 {
+    Init();
 }
 
 
