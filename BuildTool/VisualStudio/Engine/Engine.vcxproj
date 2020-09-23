@@ -204,6 +204,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanRenderTargetLayout.cpp" />
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanSampler.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanSemaphore.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanShader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -248,6 +249,7 @@
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanRenderer.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanRenderPass.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanRenderTargetLayout.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanSampler.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanSemaphore.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanShader.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanShaderCompiler.h" />

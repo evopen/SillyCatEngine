@@ -143,6 +143,9 @@
     <ClCompile Include="..\..\..\Source\Engine\Texture\Texture2D.cpp">
       <Filter>Engine\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanSampler.cpp">
+      <Filter>Engine\Vulkan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">
@@ -240,6 +243,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\Texture\Texture2D.h">
       <Filter>Engine\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanSampler.h">
+      <Filter>Engine\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
