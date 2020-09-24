@@ -1,9 +1,10 @@
 #include "Engine/pch.h"
+
 #include "VulkanUtil.h"
 
 #include <stdexcept>
 
-void CheckResult(VkBool32 Result)
+void CheckResult(VkResult Result)
 {
     if (Result != VK_SUCCESS)
     {

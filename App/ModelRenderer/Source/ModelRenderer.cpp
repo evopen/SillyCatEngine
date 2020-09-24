@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_vulkan.h>
 
 int main()
 {
@@ -21,11 +23,50 @@ int main()
         VulkanGraphicsPipeline pipeline(&device, &renderPass, &pipelineState);
         VulkanSemaphore ImageAvailable(&device);
         VulkanSemaphore RenderFinish(&device);
+        VulkanMemoryManager MemoryManager(&device, &instance);
 
+        {
+            ImGui::CreateContext();
+            ImGuiIO& io = ImGui::GetIO();
+            ImGui::StyleColorsDark();
+            ImGui_ImplGlfw_InitForVulkan(windowSurface.GetWindowHandle(), true);
+
+            ImGui_ImplVulkan_InitInfo ImGuiVulkanInfo = {
+                .Instance        = instance.GetInstanceHandle(),
+                .PhysicalDevice  = device.GetPhysicalDeviceHandle(),
+                .Device          = device.GetDeviceHandle(),
+                .QueueFamily     = device.GetGraphicsQueue()->GetFamilyIndex(),
+                .Queue           = device.GetGraphicsQueue()->GetHandle(),
+                .PipelineCache   = nullptr,
+                .DescriptorPool  = MemoryManager.GetDescriptorPoolHandle(),
+                .MinImageCount   = 2,
+                .ImageCount      = swapchain.GetImageCount(),
+                .MSAASamples     = VK_SAMPLE_COUNT_1_BIT,
+                .CheckVkResultFn = CheckResult,
+            };
+
+            ImGui_ImplVulkan_Init(&ImGuiVulkanInfo, renderPass.GetRenderPassHandle());
+
+            VulkanCommandBuffer fontUploadCmdBuf(&device, device.GetTransferQueue());
+            fontUploadCmdBuf.Begin();
+            ImGui_ImplVulkan_CreateFontsTexture(fontUploadCmdBuf.GetHandle());
+            fontUploadCmdBuf.End();
+            fontUploadCmdBuf.Submit();
+            fontUploadCmdBuf.Wait();
+            ImGui_ImplVulkan_DestroyFontUploadObjects();
+        }
+
+        bool bShowDemoWindow = true;
 
         while (!glfwWindowShouldClose(windowSurface.GetWindowHandle()))
         {
             glfwPollEvents();
+
+            ImGui_ImplVulkan_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+            ImGui::ShowDemoWindow(&bShowDemoWindow);
+            ImGui::Render();
 
             std::vector<std::shared_ptr<VulkanFramebuffer>> framebuffers;
             std::vector<std::shared_ptr<VulkanImageView>> swapchainImageViews;
@@ -44,6 +85,11 @@ int main()
             VkRect2D Scissor    = windowSurface.GetSurfaceScissor();
             vkCmdSetViewport(cmdBuffer.GetHandle(), 0, 1, &Viewport);
             vkCmdSetScissor(cmdBuffer.GetHandle(), 0, 1, &Scissor);
+            //ImGui::Text("Hello, world %d", 123);
+
+
+            ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), cmdBuffer.GetHandle());
+
             cmdBuffer.EndRenderPass();
             swapchain.CmdTransitImagePresentSrc(&cmdBuffer);
             cmdBuffer.End();

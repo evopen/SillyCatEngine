@@ -1,6 +1,7 @@
 #pragma once
+#include "Engine/Platform/Platform.h"
+
 #include <vulkan/vulkan_core.h>
 
 
-void CheckResult(VkBool32 Result);
-
+API void CheckResult(VkResult Result);
