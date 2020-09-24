@@ -18,7 +18,7 @@ TEST(VulkanDeviceTest, SelectDiscreteGPU)
 {
     VulkanInstance instance;
     instance.Init();
-    auto [physicalDevice, deviceProp] = VulkanDevice::SelectPhysicalDevice(instance);
+    auto [physicalDevice, deviceProp] = VulkanDevice::SelectPhysicalDevice(&instance);
     EXPECT_NE(physicalDevice == VK_NULL_HANDLE, true);
     spdlog::info("Select Device: {}", deviceProp.deviceName);
 }
@@ -27,7 +27,7 @@ TEST(VulkanDeviceTest, CreateDevice)
 {
     VulkanInstance instance(false, true);
     instance.Init();
-    auto [physicalDevice, deviceProp] = VulkanDevice::SelectPhysicalDevice(instance);
+    auto [physicalDevice, deviceProp] = VulkanDevice::SelectPhysicalDevice(&instance);
     EXPECT_NE(physicalDevice == VK_NULL_HANDLE, true);
     spdlog::info("Select Device: {}", deviceProp.deviceName);
     VulkanDevice device(&instance, physicalDevice, false);
@@ -158,24 +158,8 @@ int main()
 
                 vkCmdBindDescriptorSets(CmdBuffer.GetHandle(), VK_PIPELINE_BIND_POINT_GRAPHICS, TrianglePipelineState.GetPipelineLayoutHandle(), 0, 1, &DescriptorSet, 0, nullptr);
 
-                VkViewport Viewport = {
-                    .x        = 0,
-                    .y        = static_cast<float>(WindowSurface.GetHeight()),
-                    .width    = static_cast<float>(WindowSurface.GetWidth()),
-                    .height   = -static_cast<float>(WindowSurface.GetHeight()),
-                    .minDepth = 0.f,
-                    .maxDepth = 1.f,
-                };
-                VkRect2D Scissor = {
-                    .offset = {
-                        .x = 0,
-                        .y = 0,
-                    },
-                    .extent = {
-                        .width  = WindowSurface.GetWidth(),
-                        .height = WindowSurface.GetHeight(),
-                    },
-                };
+                VkViewport Viewport = WindowSurface.GetSurfaceViewport();
+                VkRect2D Scissor    = WindowSurface.GetSurfaceScissor();
                 vkCmdSetViewport(CmdBuffer.GetHandle(), 0, 1, &Viewport);
                 vkCmdSetScissor(CmdBuffer.GetHandle(), 0, 1, &Scissor);
 
@@ -189,8 +173,8 @@ int main()
                 CmdBuffer.End();
             }
 
-            CmdBuffer.Submit({ImageAvailable.get()->GetHandle()}, {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT}, {RenderFinished});
-            Presenter.Present({RenderFinished});
+            CmdBuffer.Submit({ImageAvailable.get()->GetHandle()}, {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT}, {RenderFinished->GetHandle()});
+            Presenter.Present({RenderFinished->GetHandle()});
         }
     }
     catch (std::exception& e)

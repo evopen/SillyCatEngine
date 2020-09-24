@@ -54,6 +54,32 @@ void VulkanWindowSurface::CenterWindow()
         monitorY + (Mode->height - Height) / 2);
 }
 
+VkViewport VulkanWindowSurface::GetSurfaceViewport()
+{
+    return VkViewport{
+        .x        = 0,
+        .y        = static_cast<float>(Height),
+        .width    = static_cast<float>(Width),
+        .height   = -static_cast<float>(Height),
+        .minDepth = 0.f,
+        .maxDepth = 1.f,
+    };
+}
+
+VkRect2D VulkanWindowSurface::GetSurfaceScissor()
+{
+    return VkRect2D{
+        .offset = {
+            .x = 0,
+            .y = 0,
+        },
+        .extent = {
+            .width  = Width,
+            .height = Height,
+        },
+    };
+}
+
 
 void VulkanWindowSurface::FramebufferResizeCallback(int InWidth, int InHeight)
 {

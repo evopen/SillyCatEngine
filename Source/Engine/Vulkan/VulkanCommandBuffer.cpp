@@ -91,13 +91,8 @@ void VulkanCommandBuffer::Wait() const
 }
 
 
-void VulkanCommandBuffer::Submit(std::vector<VkSemaphore> InWaitSemaphores, std::vector<VkPipelineStageFlags> InWaitStages, std::vector<std::shared_ptr<VulkanSemaphore>> InSignalSemaphores) const
+void VulkanCommandBuffer::Submit(std::vector<VkSemaphore> InWaitSemaphores, std::vector<VkPipelineStageFlags> InWaitStages, std::vector<VkSemaphore> InSignalSemaphores) const
 {
-    std::vector<VkSemaphore> SignalSemaphores(InSignalSemaphores.size());
-    for (uint32_t i = 0; i < InSignalSemaphores.size(); i++)
-    {
-        SignalSemaphores[i] = InSignalSemaphores[i]->GetHandle();
-    }
     VkSubmitInfo SubmitInfo = {
         .sType                = VK_STRUCTURE_TYPE_SUBMIT_INFO,
         .waitSemaphoreCount   = static_cast<uint32_t>(InWaitSemaphores.size()),
@@ -105,8 +100,8 @@ void VulkanCommandBuffer::Submit(std::vector<VkSemaphore> InWaitSemaphores, std:
         .pWaitDstStageMask    = InWaitStages.data(),
         .commandBufferCount   = 1,
         .pCommandBuffers      = &CommandBuffer,
-        .signalSemaphoreCount = static_cast<uint32_t>(SignalSemaphores.size()),
-        .pSignalSemaphores    = SignalSemaphores.data(),
+        .signalSemaphoreCount = static_cast<uint32_t>(InSignalSemaphores.size()),
+        .pSignalSemaphores    = InSignalSemaphores.data(),
     };
     Fence->Reset();
     vkQueueSubmit(Queue->GetHandle(), 1, &SubmitInfo, Fence->GetHandle());

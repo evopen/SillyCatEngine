@@ -12,7 +12,7 @@ class VulkanPresenter
 {
 public:
     API VulkanPresenter(VulkanQueue* InPresentQueue, VulkanSwapchain* InSwapchain);
-    API void Present(std::vector<std::shared_ptr<VulkanSemaphore>> InWaitSemaphores) const;
+    API void Present(std::vector<VkSemaphore> InWaitSemaphores) const;
 
 private:
     VulkanQueue* PresentQueue;

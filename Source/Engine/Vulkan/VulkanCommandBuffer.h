@@ -22,7 +22,7 @@ public:
     API void EndRenderPass() const;
     API void Reset();
     API bool IsRecording() const { return bIsRecording; }
-    API void Submit(std::vector<VkSemaphore> InWaitSemaphores = {}, std::vector<VkPipelineStageFlags> InWaitStages = {}, std::vector<std::shared_ptr<VulkanSemaphore>> InSignalSemaphores = {}) const;
+    API void Submit(std::vector<VkSemaphore> InWaitSemaphores = {}, std::vector<VkPipelineStageFlags> InWaitStages = {}, std::vector<VkSemaphore> InSignalSemaphores = {}) const;
     API void Wait() const;
 
     API VkCommandBuffer GetHandle() { return CommandBuffer; }

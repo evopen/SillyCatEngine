@@ -20,12 +20,18 @@
     <ClInclude Include="..\..\..\App\ModelRenderer\Source\pch.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\App\ModelRenderer\Source\ShaderList.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\App\ModelRenderer\Source\Shader\Shader.vert">
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\ShadingList.json">
       <Filter>Shader</Filter>
     </None>
-    <None Include="..\..\..\App\ModelRenderer\Source\Shader\Shader.frag">
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor.vert">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>

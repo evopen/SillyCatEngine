@@ -33,6 +33,10 @@ public:
 
     std::set<VulkanSwapchain*> GetSwapchains() { return Swapchains; }
 
+    API VkViewport GetSurfaceViewport();
+    API VkRect2D GetSurfaceScissor();
+
+
 private:
     VkSurfaceKHR Surface;
     VulkanInstance* Instance;
