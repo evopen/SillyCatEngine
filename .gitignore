@@ -362,3 +362,4 @@ MigrationBackup/
 vcpkg_installed/
 
 !Test/Resources/**
+imgui.ini
