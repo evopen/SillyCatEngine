@@ -42,6 +42,9 @@
     <Filter Include="Engine\GUI">
       <UniqueIdentifier>{3e120606-3168-4501-987b-26f1fe2a1913}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Concurrent">
+      <UniqueIdentifier>{dc3d3bee-53e5-4d47-91b4-3657d7180987}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -148,6 +151,9 @@
     <ClCompile Include="..\..\..\Source\Engine\GUI\GUI.cpp">
       <Filter>Engine\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Concurrent\Thread.cpp">
+      <Filter>Engine\Concurrent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">
@@ -251,6 +257,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\GUI\GUI.h">
       <Filter>Engine\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Concurrent\Thread.h">
+      <Filter>Engine\Concurrent</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

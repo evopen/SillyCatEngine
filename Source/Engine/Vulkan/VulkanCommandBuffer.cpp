@@ -48,48 +48,21 @@ void VulkanCommandBuffer::End()
     bIsRecording = false;
 }
 
-void VulkanCommandBuffer::BeginRenderPass(std::shared_ptr<VulkanRenderPass> inRenderPass, std::shared_ptr<VulkanFramebuffer> inFramebuffer)
-{
-    std::vector<VkClearValue> ClearValues(inRenderPass->GetRenderTargetLayout()->GetColorAttachmentReferenceCount(),
-        {1, 1, 1, 1});
-
-    VkRenderPassBeginInfo BeginInfo = {
-        .sType       = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
-        .renderPass  = inRenderPass->GetRenderPassHandle(),
-        .framebuffer = inFramebuffer->GetHandle(),
-        .renderArea  = {
-            .offset = {
-                .x = 0,
-                .y = 0,
-            },
-            .extent = {
-                .width  = inFramebuffer->GetWidth(),
-                .height = inFramebuffer->GetHeight(),
-            },
-        },
-        .clearValueCount = static_cast<uint32_t>(ClearValues.size()),
-        .pClearValues    = ClearValues.data(),
-    };
-    vkCmdBeginRenderPass(CommandBuffer, &BeginInfo, VK_SUBPASS_CONTENTS_INLINE);
-    OwnedFramebuffers.push_back(std::move(inFramebuffer));
-    OwnedRenderPass.push_back(std::move(inRenderPass));
-}
-
-void VulkanCommandBuffer::EndRenderPass() const
-{
-    vkCmdEndRenderPass(CommandBuffer);
-}
 
 void VulkanCommandBuffer::Reset()
 {
     vkResetCommandBuffer(CommandBuffer, 0);
-    OwnedFramebuffers.clear();
-    OwnedRenderPass.clear();
+    OwnedObjects.clear();
 }
 
 void VulkanCommandBuffer::Wait() const
 {
     Fence->Wait();
+}
+
+void VulkanCommandBuffer::PossessObject(std::shared_ptr<void> inObject)
+{
+    OwnedObjects.emplace_back(std::move(inObject));
 }
 
 

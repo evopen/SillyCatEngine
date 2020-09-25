@@ -12,10 +12,11 @@
 
 namespace Sce
 {
-    GUI::GUI(std::shared_ptr<VulkanInstance> inInstance, VulkanDevice* inDevice, VulkanMemoryManager* inMemoryManager, std::shared_ptr<VulkanRenderPass> inRenderPass, uint32_t inImageCount, bool inShowDemoWindow)
+    GUI::GUI(std::shared_ptr<VulkanInstance> inInstance, VulkanDevice* inDevice, VulkanMemoryManager* inMemoryManager, std::shared_ptr<VulkanWindowSurface> inWindowSurface, std::shared_ptr<VulkanRenderPass> inRenderPass, uint32_t inImageCount, bool inShowDemoWindow)
         : Instance(inInstance)
         , Device(inDevice)
         , MemoryManager(inMemoryManager)
+        , Window(inWindowSurface)
         , RenderPass(inRenderPass)
         , bShowDemoWindow(inShowDemoWindow)
     {
@@ -61,9 +62,10 @@ namespace Sce
         ImGui::ShowDemoWindow(&bShowDemoWindow);
     }
 
-    void GUI::Render()
+    void GUI::Render(VulkanCommandBuffer* inCmdBuffer)
     {
         ImGui::Render();
-        ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), cmdBuffer.GetHandle());
+        ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), inCmdBuffer->GetHandle());
+        inCmdBuffer->PossessObject(shared_from_this());
     }
 }

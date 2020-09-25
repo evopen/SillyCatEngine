@@ -25,3 +25,4 @@
 #include <Engine/Vulkan/VulkanUtil.h>
 #include <Engine/Vulkan/VulkanWindowSurface.h>
 #include <Engine/GUI/GUI.h>
+#include <Engine/Concurrent/Thread.h>

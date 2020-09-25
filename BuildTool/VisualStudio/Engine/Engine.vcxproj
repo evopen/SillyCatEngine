@@ -164,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\Engine\Camera\Camera.cpp" />
+    <ClCompile Include="..\..\..\Source\Engine\Concurrent\Thread.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Filesystem\FileUtil.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
@@ -226,6 +227,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Camera\Camera.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Concurrent\Thread.h" />
     <ClInclude Include="..\..\..\Source\Engine\Filesystem\FileUtil.h" />
     <ClInclude Include="..\..\..\Source\Engine\GUI\GUI.h" />
     <ClInclude Include="..\..\..\Source\Engine\Include\SillyCatEngine.h" />

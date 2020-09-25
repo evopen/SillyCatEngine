@@ -18,12 +18,11 @@ public:
 
     API void Begin();
     API void End();
-    API void BeginRenderPass(std::shared_ptr<VulkanRenderPass> inRenderPass, std::shared_ptr<VulkanFramebuffer> inFramebuffer);
-    API void EndRenderPass() const;
     API void Reset();
     API bool IsRecording() const { return bIsRecording; }
     API void Submit(std::vector<VkSemaphore> InWaitSemaphores = {}, std::vector<VkPipelineStageFlags> InWaitStages = {}, std::vector<VkSemaphore> InSignalSemaphores = {}) const;
     API void Wait() const;
+    API void PossessObject(std::shared_ptr<void> inObject);
 
     API VkCommandBuffer GetHandle() { return CommandBuffer; }
 
@@ -35,9 +34,5 @@ private:
     bool bIsRecording;
     std::unique_ptr<VulkanFence> Fence;
 
-    std::vector<std::shared_ptr<VulkanFramebuffer>> OwnedFramebuffers;
-    std::vector<std::shared_ptr<VulkanRenderPass>> OwnedRenderPass;
-
-    template<typename T>
-    std::vector<T> OwnedObject;
+    std::vector<std::shared_ptr<void>> OwnedObjects;
 };
