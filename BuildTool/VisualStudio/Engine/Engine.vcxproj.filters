@@ -39,6 +39,9 @@
     <Filter Include="Engine\Texture">
       <UniqueIdentifier>{aeed0d2a-b9bd-422d-a742-ffb6275af74e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\GUI">
+      <UniqueIdentifier>{3e120606-3168-4501-987b-26f1fe2a1913}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -142,6 +145,9 @@
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanSampler.cpp">
       <Filter>Engine\Vulkan</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\GUI\GUI.cpp">
+      <Filter>Engine\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">
@@ -242,6 +248,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanSampler.h">
       <Filter>Engine\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\GUI\GUI.h">
+      <Filter>Engine\GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

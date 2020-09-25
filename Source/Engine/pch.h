@@ -11,6 +11,8 @@
 #include <GLFW/glfw3.h>
 #include <vk_mem_alloc.h>
 #include <stb_image.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_vulkan.h>
 
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
@@ -22,3 +24,4 @@
 #include <stdexcept>
 #include <vector>
 #include <unordered_map>
+#include <optional>

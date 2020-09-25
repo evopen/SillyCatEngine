@@ -27,6 +27,7 @@ int main()
 
         {
             ImGui::CreateContext();
+
             ImGuiIO& io = ImGui::GetIO();
             ImGui::StyleColorsDark();
             ImGui_ImplGlfw_InitForVulkan(windowSurface.GetWindowHandle(), true);
