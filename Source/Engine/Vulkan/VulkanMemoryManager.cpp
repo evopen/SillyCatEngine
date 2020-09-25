@@ -6,9 +6,9 @@
 #include "VulkanInstance.h"
 #include "VulkanMemoryManager.h"
 
-VulkanMemoryManager::VulkanMemoryManager(VulkanDevice* InDevice, VulkanInstance* InInstance)
+VulkanMemoryManager::VulkanMemoryManager(VulkanDevice* InDevice, std::shared_ptr<VulkanInstance> inInstance)
     : Device(InDevice)
-    , Instance(InInstance)
+    , Instance(inInstance)
     , Allocator(VK_NULL_HANDLE)
 {
     VmaAllocatorCreateInfo AllocatorInfo = {

@@ -7,11 +7,11 @@ int main()
 {
     try
     {
-        VulkanInstance instance(false, true);
-        auto [physicalDevice, physicalDeviceProperties] = VulkanDevice::SelectPhysicalDevice(&instance);
-        VulkanDevice device(&instance, physicalDevice, false);
-        VulkanWindowSurface windowSurface(&instance, &device, "SillyCatRenderer", 800, 600);
-        VulkanSwapchain swapchain(&instance, &device, &windowSurface);
+        auto instance = std::make_shared<VulkanInstance>(false, true);
+        auto [physicalDevice, physicalDeviceProperties] = VulkanDevice::SelectPhysicalDevice(instance);
+        VulkanDevice device(instance, physicalDevice, false);
+        VulkanWindowSurface windowSurface(instance, &device, "SillyCatRenderer", 800, 600);
+        VulkanSwapchain swapchain(instance, &device, &windowSurface);
         VulkanPresenter presenter(device.GetPresentQueue(), &swapchain);
         VulkanCommandBuffer cmdBuffer(&device, device.GetGraphicsQueue());
         auto vertexShader = std::make_shared<VulkanVertexShader>(&device, "App/ModelRenderer/Source/Shader/BaseColor.vert");
@@ -23,7 +23,7 @@ int main()
         VulkanGraphicsPipeline pipeline(&device, renderPass, &pipelineState);
         VulkanSemaphore ImageAvailable(&device);
         VulkanSemaphore RenderFinish(&device);
-        VulkanMemoryManager MemoryManager(&device, &instance);
+        VulkanMemoryManager MemoryManager(&device, instance);
 
         {
             ImGui::CreateContext();
@@ -33,7 +33,7 @@ int main()
             ImGui_ImplGlfw_InitForVulkan(windowSurface.GetWindowHandle(), true);
 
             ImGui_ImplVulkan_InitInfo ImGuiVulkanInfo = {
-                .Instance        = instance.GetInstanceHandle(),
+                .Instance        = instance->GetInstanceHandle(),
                 .PhysicalDevice  = device.GetPhysicalDeviceHandle(),
                 .Device          = device.GetDeviceHandle(),
                 .QueueFamily     = device.GetGraphicsQueue()->GetFamilyIndex(),

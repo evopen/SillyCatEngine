@@ -9,7 +9,7 @@
 
 
 VulkanWindowSurface::VulkanWindowSurface(
-    VulkanInstance* InInstance, VulkanDevice* InDevice, std::string InWindowName, uint32_t InWidth, uint32_t InHeight)
+    std::shared_ptr<VulkanInstance> InInstance, VulkanDevice* InDevice, std::string InWindowName, uint32_t InWidth, uint32_t InHeight)
     : Surface(VK_NULL_HANDLE)
     , Instance(InInstance)
     , Window(nullptr)

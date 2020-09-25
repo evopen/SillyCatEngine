@@ -11,7 +11,7 @@ class VulkanInstance;
 class VulkanMemoryManager
 {
 public:
-    API VulkanMemoryManager(VulkanDevice* InDevice, VulkanInstance* InInstance);
+    API VulkanMemoryManager(VulkanDevice* InDevice, std::shared_ptr<VulkanInstance> inInstance);
 
     VmaAllocator GetAllocatorHandle() { return Allocator; }
 
@@ -29,7 +29,7 @@ public:
 
 private:
     VulkanDevice* Device;
-    VulkanInstance* Instance;
+    std::shared_ptr<VulkanInstance> Instance;
 
     VmaAllocator Allocator;
 

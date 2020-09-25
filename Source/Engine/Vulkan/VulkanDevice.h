@@ -13,10 +13,10 @@ class VulkanDevice
 {
 public:
     VulkanDevice();
-    API VulkanDevice(VulkanInstance* inInstance, VkPhysicalDevice inPhysicalDevice, bool InOffscreenRender);
+    API VulkanDevice(std::shared_ptr<VulkanInstance> inInstance, VkPhysicalDevice inPhysicalDevice, bool InOffscreenRender);
     API void Init();
     API void Destroy();
-    API static std::tuple<VkPhysicalDevice, VkPhysicalDeviceProperties> SelectPhysicalDevice(VulkanInstance* instance);
+    API static std::tuple<VkPhysicalDevice, VkPhysicalDeviceProperties> SelectPhysicalDevice(const std::shared_ptr<VulkanInstance>& instance);
     VkDevice GetDeviceHandle() const { return Device; }
     VkPhysicalDevice GetPhysicalDeviceHandle() const { return PhysicalDevice; }
     VulkanQueue* GetGraphicsQueue() { return GraphicsQueue.get(); }
@@ -25,7 +25,7 @@ public:
     VulkanQueue* GetTransferQueue() { return TransferQueue.get(); }
 
 private:
-    VulkanInstance* Instance;
+    std::shared_ptr<VulkanInstance> Instance;
     VkDevice Device;
     VkPhysicalDevice PhysicalDevice;
     std::shared_ptr<VulkanQueue> GraphicsQueue;

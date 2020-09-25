@@ -15,7 +15,7 @@ class VulkanSwapchain;
 class VulkanWindowSurface
 {
 public:
-    API VulkanWindowSurface(VulkanInstance* InInstance, VulkanDevice* Device, std::string InWindowName,
+    API VulkanWindowSurface(std::shared_ptr<VulkanInstance> InInstance, VulkanDevice* Device, std::string InWindowName,
         uint32_t InWidth, uint32_t InHeight);
     void CreateWindow();
     void CreateSurface();
@@ -39,7 +39,7 @@ public:
 
 private:
     VkSurfaceKHR Surface;
-    VulkanInstance* Instance;
+    std::shared_ptr<VulkanInstance> Instance;
     VulkanDevice* Device;
     GLFWwindow* Window;
     uint32_t Width;

@@ -10,7 +10,7 @@ class VulkanWindowSurface;
 class VulkanSwapchain
 {
 public:
-    API VulkanSwapchain(VulkanInstance* InInstance, VulkanDevice* InDevice, VulkanWindowSurface* InWindowSurface);
+    API VulkanSwapchain(std::shared_ptr<VulkanInstance> inInstance, VulkanDevice* InDevice, VulkanWindowSurface* InWindowSurface);
     API ~VulkanSwapchain();
 
     API VkSwapchainKHR GetSwapchainHandle() { return Swapchain; }
@@ -27,7 +27,7 @@ private:
     VkSwapchainKHR Swapchain;
     VulkanDevice* Device;
     VulkanWindowSurface* WindowSurface;
-    VulkanInstance* Instance;
+    std::shared_ptr<VulkanInstance> Instance;
     std::vector<VkImage> Images;
 
     uint32_t RenderIndex;

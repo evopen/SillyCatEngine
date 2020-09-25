@@ -7,9 +7,9 @@
 #include "VulkanWindowSurface.h"
 
 VulkanSwapchain::VulkanSwapchain(
-    VulkanInstance* InInstance, VulkanDevice* InDevice, VulkanWindowSurface* InWindowSurface)
+    std::shared_ptr<VulkanInstance> inInstance, VulkanDevice* InDevice, VulkanWindowSurface* InWindowSurface)
     : WindowSurface(InWindowSurface)
-    , Instance(InInstance)
+    , Instance(inInstance)
     , RenderIndex(0)
     , Device(InDevice)
 {

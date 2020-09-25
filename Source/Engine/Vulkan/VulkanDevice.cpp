@@ -15,7 +15,7 @@ VulkanDevice::VulkanDevice()
 {
 }
 
-VulkanDevice::VulkanDevice(VulkanInstance* inInstance, VkPhysicalDevice inPhysicalDevice, bool InOffscreenRender)
+VulkanDevice::VulkanDevice(std::shared_ptr<VulkanInstance> inInstance, VkPhysicalDevice inPhysicalDevice, bool InOffscreenRender)
     : Instance(inInstance)
     , Device(VK_NULL_HANDLE)
     , PhysicalDevice(inPhysicalDevice)
@@ -116,7 +116,7 @@ void VulkanDevice::GetQueueProperties(
 }
 
 
-std::tuple<VkPhysicalDevice, VkPhysicalDeviceProperties> VulkanDevice::SelectPhysicalDevice(VulkanInstance* instance)
+std::tuple<VkPhysicalDevice, VkPhysicalDeviceProperties> VulkanDevice::SelectPhysicalDevice(const std::shared_ptr<VulkanInstance>& instance)
 {
     uint32_t numPhysicalDevices;
     CheckResult(vkEnumeratePhysicalDevices(instance->GetInstanceHandle(), &numPhysicalDevices, nullptr));
