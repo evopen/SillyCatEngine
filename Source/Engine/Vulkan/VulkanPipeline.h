@@ -26,11 +26,11 @@ protected:
 class VulkanGraphicsPipeline : public VulkanPipeline
 {
 public:
-    API VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanRenderPass* InRenderPass, VulkanGraphicsPipelineState* InVulkanGraphicsPipelineState);
+    API VulkanGraphicsPipeline(VulkanDevice* InDevice, std::shared_ptr<VulkanRenderPass> InRenderPass, VulkanGraphicsPipelineState* InVulkanGraphicsPipelineState);
 
 private:
     VulkanGraphicsPipelineState* PipelineState;
-    VulkanRenderPass* RenderPass;
+    std::shared_ptr<VulkanRenderPass> RenderPass;
     std::vector<VkVertexInputBindingDescription> VertexInputBindingDescriptions;
     std::vector<VkVertexInputAttributeDescription> VertexInputAttributeDescriptions;
 };

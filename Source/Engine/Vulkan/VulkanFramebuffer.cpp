@@ -6,7 +6,7 @@
 #include "VulkanRenderPass.h"
 #include "VulkanRenderTargetLayout.h"
 
-VulkanFramebuffer::VulkanFramebuffer(VulkanDevice* InDevice, VulkanRenderPass* InRenderPass, std::vector<std::shared_ptr<VulkanImageView>> InImageViews, uint32_t InWidth, uint32_t InHeight)
+VulkanFramebuffer::VulkanFramebuffer(VulkanDevice* InDevice, std::shared_ptr<VulkanRenderPass> InRenderPass, std::vector<std::shared_ptr<VulkanImageView>> InImageViews, uint32_t InWidth, uint32_t InHeight)
     : Device(InDevice)
     , RenderPass(InRenderPass)
     , Framebuffer(VK_NULL_HANDLE)

@@ -48,30 +48,31 @@ void VulkanCommandBuffer::End()
     bIsRecording = false;
 }
 
-void VulkanCommandBuffer::BeginRenderPass(VulkanRenderPass* InRenderPass, std::shared_ptr<VulkanFramebuffer> InFramebuffer)
+void VulkanCommandBuffer::BeginRenderPass(std::shared_ptr<VulkanRenderPass> inRenderPass, std::shared_ptr<VulkanFramebuffer> inFramebuffer)
 {
-    std::vector<VkClearValue> ClearValues(InRenderPass->GetRenderTargetLayout()->GetColorAttachmentReferenceCount(),
+    std::vector<VkClearValue> ClearValues(inRenderPass->GetRenderTargetLayout()->GetColorAttachmentReferenceCount(),
         {1, 1, 1, 1});
 
     VkRenderPassBeginInfo BeginInfo = {
         .sType       = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
-        .renderPass  = InRenderPass->GetRenderPassHandle(),
-        .framebuffer = InFramebuffer->GetHandle(),
+        .renderPass  = inRenderPass->GetRenderPassHandle(),
+        .framebuffer = inFramebuffer->GetHandle(),
         .renderArea  = {
             .offset = {
                 .x = 0,
                 .y = 0,
             },
             .extent = {
-                .width  = InFramebuffer->GetWidth(),
-                .height = InFramebuffer->GetHeight(),
+                .width  = inFramebuffer->GetWidth(),
+                .height = inFramebuffer->GetHeight(),
             },
         },
         .clearValueCount = static_cast<uint32_t>(ClearValues.size()),
         .pClearValues    = ClearValues.data(),
     };
     vkCmdBeginRenderPass(CommandBuffer, &BeginInfo, VK_SUBPASS_CONTENTS_INLINE);
-    Framebuffers.push_back(InFramebuffer);
+    OwnedFramebuffers.push_back(std::move(inFramebuffer));
+    OwnedRenderPass.push_back(std::move(inRenderPass));
 }
 
 void VulkanCommandBuffer::EndRenderPass() const
@@ -82,7 +83,8 @@ void VulkanCommandBuffer::EndRenderPass() const
 void VulkanCommandBuffer::Reset()
 {
     vkResetCommandBuffer(CommandBuffer, 0);
-    Framebuffers.clear();
+    OwnedFramebuffers.clear();
+    OwnedRenderPass.clear();
 }
 
 void VulkanCommandBuffer::Wait() const

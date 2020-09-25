@@ -13,7 +13,7 @@ VulkanPipeline::VulkanPipeline(VulkanDevice* InDevice)
 {
 }
 
-VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanRenderPass* InRenderPass, VulkanGraphicsPipelineState* InVulkanGraphicsPipelineState)
+VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, std::shared_ptr<VulkanRenderPass> InRenderPass, VulkanGraphicsPipelineState* InVulkanGraphicsPipelineState)
     : VulkanPipeline(InDevice)
     , PipelineState(InVulkanGraphicsPipelineState)
     , RenderPass(InRenderPass)
@@ -91,10 +91,10 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, VulkanRen
         .pColorBlendState    = &ColorBlendInfo,
         .pDynamicState       = &DynamicStateInfo,
         .layout              = PipelineState->GetPipelineLayoutHandle(),
-    .renderPass = RenderPass->GetRenderPassHandle(),
-};
+        .renderPass          = RenderPass->GetRenderPassHandle(),
+    };
 
-vkCreateGraphicsPipelines(Device->GetDeviceHandle(), nullptr, 1, &PipelineInfo, nullptr, &Pipeline);
+    vkCreateGraphicsPipelines(Device->GetDeviceHandle(), nullptr, 1, &PipelineInfo, nullptr, &Pipeline);
 }
 
 VulkanComputePipeline::VulkanComputePipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout, VulkanComputePipelineState* InComputePipelineState)

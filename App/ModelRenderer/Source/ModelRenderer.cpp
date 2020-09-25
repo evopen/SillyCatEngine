@@ -19,8 +19,8 @@ int main()
         VulkanGraphicsShaderProgram shaderProgram(&device, vertexShader, pixelShader);
         VulkanGraphicsPipelineState pipelineState(&shaderProgram);
         VulkanRenderTargetLayout RTLayout(1);
-        VulkanRenderPass renderPass(&device, &RTLayout);
-        VulkanGraphicsPipeline pipeline(&device, &renderPass, &pipelineState);
+        auto renderPass = std::make_shared<VulkanRenderPass>(&device, &RTLayout);
+        VulkanGraphicsPipeline pipeline(&device, renderPass, &pipelineState);
         VulkanSemaphore ImageAvailable(&device);
         VulkanSemaphore RenderFinish(&device);
         VulkanMemoryManager MemoryManager(&device, &instance);
@@ -45,7 +45,7 @@ int main()
                 .CheckVkResultFn = CheckResult,
             };
 
-            ImGui_ImplVulkan_Init(&ImGuiVulkanInfo, renderPass.GetRenderPassHandle());
+            ImGui_ImplVulkan_Init(&ImGuiVulkanInfo, renderPass->GetRenderPassHandle());
 
             VulkanCommandBuffer fontUploadCmdBuf(&device, device.GetTransferQueue());
             fontUploadCmdBuf.Begin();
@@ -73,14 +73,14 @@ int main()
             for (uint32_t i = 0; i < swapchain.GetImageCount(); i++)
             {
                 swapchainImageViews.emplace_back(std::make_shared<VulkanImageView>(&device, swapchain.GetImage(i)));
-                framebuffers.emplace_back(std::make_shared<VulkanFramebuffer>(&device, &renderPass, std::vector<std::shared_ptr<VulkanImageView>>{swapchainImageViews[i]}, windowSurface.GetWidth(), windowSurface.GetHeight()));
+                framebuffers.emplace_back(std::make_shared<VulkanFramebuffer>(&device, renderPass, std::vector<std::shared_ptr<VulkanImageView>>{swapchainImageViews[i]}, windowSurface.GetWidth(), windowSurface.GetHeight()));
             }
 
             swapchain.AcquireNextImage(ImageAvailable.GetHandle(), VK_NULL_HANDLE);
 
             cmdBuffer.Wait();
             cmdBuffer.Begin();
-            cmdBuffer.BeginRenderPass(&renderPass, framebuffers[swapchain.GetRenderIndex()]);
+            cmdBuffer.BeginRenderPass(renderPass, framebuffers[swapchain.GetRenderIndex()]);
             VkViewport Viewport = windowSurface.GetSurfaceViewport();
             VkRect2D Scissor    = windowSurface.GetSurfaceScissor();
             vkCmdSetViewport(cmdBuffer.GetHandle(), 0, 1, &Viewport);

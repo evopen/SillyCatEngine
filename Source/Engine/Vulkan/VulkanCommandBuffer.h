@@ -18,7 +18,7 @@ public:
 
     API void Begin();
     API void End();
-    API void BeginRenderPass(VulkanRenderPass* InRenderPass, std::shared_ptr<VulkanFramebuffer> InFramebuffer);
+    API void BeginRenderPass(std::shared_ptr<VulkanRenderPass> inRenderPass, std::shared_ptr<VulkanFramebuffer> inFramebuffer);
     API void EndRenderPass() const;
     API void Reset();
     API bool IsRecording() const { return bIsRecording; }
@@ -35,5 +35,6 @@ private:
     bool bIsRecording;
     std::unique_ptr<VulkanFence> Fence;
 
-    std::vector<std::shared_ptr<VulkanFramebuffer>> Framebuffers;
+    std::vector<std::shared_ptr<VulkanFramebuffer>> OwnedFramebuffers;
+    std::vector<std::shared_ptr<VulkanRenderPass>> OwnedRenderPass;
 };
