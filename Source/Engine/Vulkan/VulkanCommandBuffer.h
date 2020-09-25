@@ -37,4 +37,7 @@ private:
 
     std::vector<std::shared_ptr<VulkanFramebuffer>> OwnedFramebuffers;
     std::vector<std::shared_ptr<VulkanRenderPass>> OwnedRenderPass;
+
+    template<typename T>
+    std::vector<T> OwnedObject;
 };

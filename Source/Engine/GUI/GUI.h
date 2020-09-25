@@ -8,15 +8,20 @@ namespace Sce
     class GUI
     {
     public:
-        GUI(VulkanInstance* inInstance, VulkanDevice* inDevice, VulkanMemoryManager* inMemoryManager, std::shared_ptr<VulkanRenderPass> inRenderPass, uint32_t inImageCount);
-        ~GUI();
+        API GUI(std::shared_ptr<VulkanInstance> inInstance, VulkanDevice* inDevice, VulkanMemoryManager* inMemoryManager, std::shared_ptr<VulkanRenderPass> inRenderPass, uint32_t inImageCount, bool inShowDemoWindow);
+        API ~GUI();
+
+        API void NewFrame();
+        API void Render();
 
     private:
         ImGuiContext* Context;
         std::shared_ptr<VulkanWindowSurface> Window;
-        VulkanInstance* Instance;
+        std::shared_ptr<VulkanInstance> Instance;
         VulkanDevice* Device;
         VulkanMemoryManager* MemoryManager;
         std::shared_ptr<VulkanRenderPass> RenderPass;
+
+        bool bShowDemoWindow;
     };
 }

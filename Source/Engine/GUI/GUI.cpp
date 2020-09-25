@@ -1,5 +1,6 @@
 #include "Engine/pch.h"
 
+#include "Engine/Vulkan/VulkanCommandBuffer.h"
 #include "Engine/Vulkan/VulkanDevice.h"
 #include "Engine/Vulkan/VulkanInstance.h"
 #include "Engine/Vulkan/VulkanMemoryManager.h"
@@ -11,11 +12,12 @@
 
 namespace Sce
 {
-    GUI::GUI(VulkanInstance* inInstance, VulkanDevice* inDevice, VulkanMemoryManager* inMemoryManager, std::shared_ptr<VulkanRenderPass> inRenderPass, uint32_t inImageCount)
+    GUI::GUI(std::shared_ptr<VulkanInstance> inInstance, VulkanDevice* inDevice, VulkanMemoryManager* inMemoryManager, std::shared_ptr<VulkanRenderPass> inRenderPass, uint32_t inImageCount, bool inShowDemoWindow)
         : Instance(inInstance)
         , Device(inDevice)
         , MemoryManager(inMemoryManager)
         , RenderPass(inRenderPass)
+        , bShowDemoWindow(inShowDemoWindow)
     {
         Context = ImGui::CreateContext();
         ImGui::StyleColorsClassic();
@@ -35,11 +37,33 @@ namespace Sce
         };
 
         ImGui_ImplVulkan_Init(&ImGuiVulkanInfo, RenderPass->GetRenderPassHandle());
+
+        VulkanCommandBuffer fontUploadCmdBuf(Device, Device->GetTransferQueue());
+        fontUploadCmdBuf.Begin();
+        ImGui_ImplVulkan_CreateFontsTexture(fontUploadCmdBuf.GetHandle());
+        fontUploadCmdBuf.End();
+        fontUploadCmdBuf.Submit();
+        fontUploadCmdBuf.Wait();
+        ImGui_ImplVulkan_DestroyFontUploadObjects();
     }
 
     GUI::~GUI()
     {
         ImGui::DestroyContext(Context);
         ImGui_ImplGlfw_Shutdown();
+    }
+
+    void GUI::NewFrame()
+    {
+        ImGui_ImplVulkan_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        ImGui::ShowDemoWindow(&bShowDemoWindow);
+    }
+
+    void GUI::Render()
+    {
+        ImGui::Render();
+        ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), cmdBuffer.GetHandle());
     }
 }
