@@ -49,12 +49,13 @@ void DrawUI(VulkanCommandBuffer* cmdBuffer, const std::shared_ptr<Sce::GUI>& gui
             ImGui::PushStyleColor(ImGuiCol_Button, ImColor(20, 100, 240).Value);
         else
             ImGui::PushStyleColor(ImGuiCol_Button, ImColor(105, 110, 135).Value);
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImColor(10, 80, 180).Value);
         if (ImGui::Button(ShadingList[i].Name.c_str()))
         {
             status.currentShadingIndex = i;
             status.bShaderNeedUpdate   = true;
         }
-        ImGui::PopStyleColor(1);
+        ImGui::PopStyleColor(2);
         ImGui::PopID();
     }
 

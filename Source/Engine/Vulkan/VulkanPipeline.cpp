@@ -13,6 +13,12 @@ VulkanPipeline::VulkanPipeline(VulkanDevice* InDevice)
 {
 }
 
+VulkanPipeline::~VulkanPipeline()
+{
+    if (Pipeline != VK_NULL_HANDLE)
+        vkDestroyPipeline(Device->GetDeviceHandle(), Pipeline, nullptr);
+}
+
 VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, std::shared_ptr<VulkanRenderPass> InRenderPass, std::shared_ptr<VulkanGraphicsPipelineState> InVulkanGraphicsPipelineState)
     : VulkanPipeline(InDevice)
     , PipelineState(InVulkanGraphicsPipelineState)

@@ -7,6 +7,7 @@
 VulkanShaderProgram::VulkanShaderProgram(VulkanDevice* inDevice)
     : DescriptorSetLayout(VK_NULL_HANDLE)
     , Device(inDevice)
+    , PipelineLayout(VK_NULL_HANDLE)
 {
 }
 
@@ -14,6 +15,8 @@ VulkanShaderProgram::~VulkanShaderProgram()
 {
     if (DescriptorSetLayout != VK_NULL_HANDLE)
         vkDestroyDescriptorSetLayout(Device->GetDeviceHandle(), DescriptorSetLayout, nullptr);
+    if (PipelineLayout != VK_NULL_HANDLE)
+        vkDestroyPipelineLayout(Device->GetDeviceHandle(), PipelineLayout, nullptr);
 }
 
 void VulkanShaderProgram::CreateDescriptorSetLayout()

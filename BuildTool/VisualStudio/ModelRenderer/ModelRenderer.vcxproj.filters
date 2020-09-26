@@ -31,5 +31,11 @@
     <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor.vert">
       <Filter>Shader</Filter>
     </None>
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\WireFrame.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\WireFrame.frag">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

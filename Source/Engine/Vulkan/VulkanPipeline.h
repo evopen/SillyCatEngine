@@ -15,6 +15,7 @@ class VulkanPipeline
 {
 public:
     API VulkanPipeline(VulkanDevice* InDevice);
+    API ~VulkanPipeline();
 
     API VkPipeline GetPipelineHandle() { return Pipeline; }
 
@@ -27,7 +28,7 @@ class VulkanGraphicsPipeline : public VulkanPipeline
 {
 public:
     API VulkanGraphicsPipeline(VulkanDevice* InDevice, std::shared_ptr<VulkanRenderPass> InRenderPass, std::shared_ptr<VulkanGraphicsPipelineState> InVulkanGraphicsPipelineState);
-
+    
 private:
     std::shared_ptr<VulkanGraphicsPipelineState> PipelineState;
     std::shared_ptr<VulkanRenderPass> RenderPass;
