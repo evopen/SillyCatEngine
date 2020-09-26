@@ -15,15 +15,18 @@ public:
     API VkPipelineLayout GetPipelineLayoutHandle() { return PipelineLayout; }
 
     std::vector<VkDescriptorSetLayoutBinding> GetDescriptorSetLayoutBindings() { return Bindings; };
-    VkDescriptorSetLayout GetDescriptorSetLayoutHandle() { return DescriptorSetLayout; }
+    API VkDescriptorSetLayout GetDescriptorSetLayoutHandle() { return DescriptorSetLayout; }
+    API VkDescriptorSet GetDescriptorSetHandle() { return DescriptorSet; }
 
 protected:
     std::vector<VkDescriptorSetLayoutBinding> Bindings;
     virtual void CreateDescriptorSetLayoutBindings() = 0;
     void CreateDescriptorSetLayout();
     void CreatePipelineLayout();
+    void CreateDescriptorSet();
 
     VkDescriptorSetLayout DescriptorSetLayout;
+    VkDescriptorSet DescriptorSet;
     VulkanDevice* Device;
     VkPipelineLayout PipelineLayout;
 };

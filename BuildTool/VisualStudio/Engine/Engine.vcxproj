@@ -236,6 +236,7 @@
     <ClInclude Include="..\..\..\Source\Engine\pch.h" />
     <ClInclude Include="..\..\..\Source\Engine\Platform\Platform.h" />
     <ClInclude Include="..\..\..\Source\Engine\Render\Definitions.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Render\Shading.h" />
     <ClInclude Include="..\..\..\Source\Engine\Texture\Texture2D.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanCommandBuffer.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanComputer.h" />

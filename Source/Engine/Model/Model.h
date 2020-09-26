@@ -35,7 +35,7 @@ namespace Sce
             }
             return static_cast<uint32_t>(sum);
         }
-        API uint32_t GetMeshCount() { return Meshes.size(); }
+        API uint32_t GetMeshCount() { return static_cast<uint32_t>(Meshes.size()); }
         API Mesh& GetMesh(size_t index) { return Meshes[index]; }
 
 

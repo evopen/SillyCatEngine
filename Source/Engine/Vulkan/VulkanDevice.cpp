@@ -2,6 +2,7 @@
 
 #include "VulkanDevice.h"
 #include "VulkanInstance.h"
+#include "VulkanMemoryManager.h"
 #include "VulkanQueue.h"
 #include "VulkanUtil.h"
 
@@ -21,7 +22,6 @@ VulkanDevice::VulkanDevice(std::shared_ptr<VulkanInstance> inInstance, VkPhysica
     , PhysicalDevice(inPhysicalDevice)
     , OffscreenRender(InOffscreenRender)
     , PhysicalDeviceProp()
-
 {
     Init();
 }
@@ -83,6 +83,8 @@ void VulkanDevice::CreateDevice()
     GraphicsQueue = std::make_shared<VulkanQueue>(this, GraphicsFamilyIndex);
     TransferQueue = std::make_shared<VulkanQueue>(this, TransferFamilyIndex);
     ComputeQueue  = std::make_shared<VulkanQueue>(this, ComputeFamilyIndex);
+
+    MemoryManager.reset(new VulkanMemoryManager(this, Instance));
 }
 
 void VulkanDevice::Init()

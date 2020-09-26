@@ -26,3 +26,4 @@
 #include <Engine/Vulkan/VulkanWindowSurface.h>
 #include <Engine/GUI/GUI.h>
 #include <Engine/Concurrent/Thread.h>
+#include <Engine/Render/Shading.h>

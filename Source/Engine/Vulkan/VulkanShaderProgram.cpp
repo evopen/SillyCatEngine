@@ -1,6 +1,7 @@
 #include "Engine/pch.h"
 
 #include "VulkanDevice.h"
+#include "VulkanMemoryManager.h"
 #include "VulkanShader.h"
 #include "VulkanShaderProgram.h"
 
@@ -41,6 +42,18 @@ void VulkanShaderProgram::CreatePipelineLayout()
     vkCreatePipelineLayout(Device->GetDeviceHandle(), &PipelineLayoutInfo, nullptr, &PipelineLayout);
 }
 
+void VulkanShaderProgram::CreateDescriptorSet()
+{
+    VkDescriptorSetAllocateInfo DescriptorSetAllocateInfo = {
+        .sType              = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
+        .descriptorPool     = Device->GetMemoryManager()->GetDescriptorPoolHandle(),
+        .descriptorSetCount = 1,  // Could be number of swapchain images
+        .pSetLayouts        = &DescriptorSetLayout,
+    };
+
+    vkAllocateDescriptorSets(Device->GetDeviceHandle(), &DescriptorSetAllocateInfo, &DescriptorSet);
+}
+
 VulkanGraphicsShaderProgram::VulkanGraphicsShaderProgram(VulkanDevice* inDevice, std::shared_ptr<VulkanVertexShader> InVertexShader, std::shared_ptr<VulkanPixelShader> InPixelShader)
     : VulkanShaderProgram(inDevice)
     , VertexShader(InVertexShader)
@@ -51,6 +64,7 @@ VulkanGraphicsShaderProgram::VulkanGraphicsShaderProgram(VulkanDevice* inDevice,
     VulkanGraphicsShaderProgram::CreateDescriptorSetLayoutBindings();
     CreateDescriptorSetLayout();
     CreatePipelineLayout();
+    CreateDescriptorSet();
 }
 
 std::vector<VkVertexInputAttributeDescription> VulkanGraphicsShaderProgram::GetVertexInputAttributeDescriptions()

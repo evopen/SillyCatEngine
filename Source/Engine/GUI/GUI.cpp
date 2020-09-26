@@ -12,10 +12,9 @@
 
 namespace Sce
 {
-    GUI::GUI(std::shared_ptr<VulkanInstance> inInstance, VulkanDevice* inDevice, VulkanMemoryManager* inMemoryManager, std::shared_ptr<VulkanWindowSurface> inWindowSurface, std::shared_ptr<VulkanRenderPass> inRenderPass, uint32_t inImageCount)
+    GUI::GUI(std::shared_ptr<VulkanInstance> inInstance, VulkanDevice* inDevice, std::shared_ptr<VulkanWindowSurface> inWindowSurface, std::shared_ptr<VulkanRenderPass> inRenderPass, uint32_t inImageCount)
         : Instance(inInstance)
         , Device(inDevice)
-        , MemoryManager(inMemoryManager)
         , Window(inWindowSurface)
         , RenderPass(inRenderPass)
     {
@@ -29,7 +28,7 @@ namespace Sce
             .QueueFamily     = Device->GetGraphicsQueue()->GetFamilyIndex(),
             .Queue           = Device->GetGraphicsQueue()->GetHandle(),
             .PipelineCache   = nullptr,
-            .DescriptorPool  = MemoryManager->GetDescriptorPoolHandle(),
+            .DescriptorPool  = Device->GetMemoryManager()->GetDescriptorPoolHandle(),
             .MinImageCount   = 2,
             .ImageCount      = inImageCount,
             .MSAASamples     = VK_SAMPLE_COUNT_1_BIT,

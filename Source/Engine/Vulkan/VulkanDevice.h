@@ -8,6 +8,7 @@
 
 class VulkanInstance;
 class VulkanQueue;
+class VulkanMemoryManager;
 
 class VulkanDevice
 {
@@ -23,6 +24,8 @@ public:
     VulkanQueue* GetPresentQueue() { return GraphicsQueue.get(); }
     VulkanQueue* GetComputeQueue() { return ComputeQueue.get(); }
     VulkanQueue* GetTransferQueue() { return TransferQueue.get(); }
+
+    VulkanMemoryManager* GetMemoryManager() { return MemoryManager.get(); }
 
 private:
     std::shared_ptr<VulkanInstance> Instance;
@@ -43,4 +46,6 @@ private:
     static void GetDeviceExtensions(std::vector<const char*>& deviceExtensions, bool OffscreenRender);
     static void GetQueueProperties(
         VkPhysicalDevice physicalDevice, std::vector<VkQueueFamilyProperties>& queueProperties);
+
+    std::unique_ptr<VulkanMemoryManager> MemoryManager;
 };

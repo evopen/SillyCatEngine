@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include "Shader/BaseColor.h"
+
 struct SShading
 {
     std::string Name;
@@ -99,13 +101,13 @@ int main()
         std::shared_ptr<VulkanPixelShader> pixelShader;
         std::shared_ptr<VulkanGraphicsShaderProgram> shaderProgram;
         std::shared_ptr<VulkanGraphicsPipelineState> pipelineState;
+        std::shared_ptr<Shading> shading;
         VulkanRenderTargetLayout RTLayout(1);
         auto renderPass = std::make_shared<VulkanRenderPass>(&device, &RTLayout);
         std::shared_ptr<VulkanGraphicsPipeline> pipeline;
         VulkanSemaphore ImageAvailable(&device);
         VulkanSemaphore RenderFinish(&device);
-        VulkanMemoryManager MemoryManager(&device, instance);
-        auto gui = std::make_shared<Sce::GUI>(instance, &device, &MemoryManager, windowSurface, renderPass, swapchain.GetImageCount());
+        auto gui = std::make_shared<Sce::GUI>(instance, &device, windowSurface, renderPass, swapchain.GetImageCount());
         ImGui::SetCurrentContext(gui->GetContext());
         std::shared_ptr<Sce::Model> ModelLoaded;
         Sce::Camera Camera(glm::vec3(5, 5, 5), glm::vec3(0, 0, 0));
@@ -118,7 +120,7 @@ int main()
             {
                 if (uiStatus.bNeedLoadModel)
                 {
-                    LoadModel(ModelLoaded, &MemoryManager);
+                    LoadModel(ModelLoaded, device.GetMemoryManager());
                     uiStatus.bNeedLoadModel = false;
                 }
                 if (uiStatus.bShaderNeedUpdate)
@@ -128,6 +130,9 @@ int main()
                     shaderProgram.reset(new VulkanGraphicsShaderProgram(&device, vertexShader, pixelShader));
                     pipelineState.reset(new VulkanGraphicsPipelineState(shaderProgram));
                     pipeline.reset(new VulkanGraphicsPipeline(&device, renderPass, pipelineState));
+
+                    if (ShadingList[uiStatus.currentShadingIndex].Name == "Base Color")
+                        shading.reset(new ShadingBaseColor(&device, shaderProgram, Camera));
 
                     uiStatus.bShaderNeedUpdate = false;
                 }
@@ -161,6 +166,8 @@ int main()
                     std::vector<VkDeviceSize> Offsets(2, 0);
                     std::vector<VkBuffer> VertexBuffers = {VertexBuffer, ColorBuffer};
                     vkCmdBindVertexBuffers(cmdBuffer.GetHandle(), 0, static_cast<uint32_t>(VertexBuffers.size()), VertexBuffers.data(), Offsets.data());
+                    VkDescriptorSet descriptorSet = shaderProgram->GetDescriptorSetHandle();
+                    vkCmdBindDescriptorSets(cmdBuffer.GetHandle(), VK_PIPELINE_BIND_POINT_GRAPHICS, shaderProgram->GetPipelineLayoutHandle(), 0, 1, &descriptorSet, 0, nullptr);
                     vkCmdDraw(cmdBuffer.GetHandle(), ModelLoaded->GetVertexCount(), 1, 0, 0);
                 }
             }

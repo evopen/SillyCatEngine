@@ -261,5 +261,8 @@
     <ClInclude Include="..\..\..\Source\Engine\Concurrent\Thread.h">
       <Filter>Engine\Concurrent</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Render\Shading.h">
+      <Filter>Engine\Render</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
