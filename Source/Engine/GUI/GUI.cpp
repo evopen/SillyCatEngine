@@ -12,13 +12,12 @@
 
 namespace Sce
 {
-    GUI::GUI(std::shared_ptr<VulkanInstance> inInstance, VulkanDevice* inDevice, VulkanMemoryManager* inMemoryManager, std::shared_ptr<VulkanWindowSurface> inWindowSurface, std::shared_ptr<VulkanRenderPass> inRenderPass, uint32_t inImageCount, bool inShowDemoWindow)
+    GUI::GUI(std::shared_ptr<VulkanInstance> inInstance, VulkanDevice* inDevice, VulkanMemoryManager* inMemoryManager, std::shared_ptr<VulkanWindowSurface> inWindowSurface, std::shared_ptr<VulkanRenderPass> inRenderPass, uint32_t inImageCount)
         : Instance(inInstance)
         , Device(inDevice)
         , MemoryManager(inMemoryManager)
         , Window(inWindowSurface)
         , RenderPass(inRenderPass)
-        , bShowDemoWindow(inShowDemoWindow)
     {
         Context = ImGui::CreateContext();
         ImGui::StyleColorsClassic();
@@ -59,7 +58,6 @@ namespace Sce
         ImGui_ImplVulkan_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        ImGui::ShowDemoWindow(&bShowDemoWindow);
     }
 
     void GUI::Render(VulkanCommandBuffer* inCmdBuffer)

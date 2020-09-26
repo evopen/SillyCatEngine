@@ -24,7 +24,7 @@ int main()
         VulkanSemaphore ImageAvailable(&device);
         VulkanSemaphore RenderFinish(&device);
         VulkanMemoryManager MemoryManager(&device, instance);
-        auto gui = std::make_shared<Sce::GUI>(instance, &device, &MemoryManager, windowSurface, renderPass, swapchain.GetImageCount(), true);
+        auto gui = std::make_shared<Sce::GUI>(instance, &device, &MemoryManager, windowSurface, renderPass, swapchain.GetImageCount());
 
         while (!glfwWindowShouldClose(windowSurface->GetWindowHandle()))
         {
