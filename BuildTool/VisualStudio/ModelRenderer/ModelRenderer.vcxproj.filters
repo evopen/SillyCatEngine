@@ -25,9 +25,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\App\ModelRenderer\Source\Shader\ShadingList.json">
-      <Filter>Shader</Filter>
-    </None>
     <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor.frag">
       <Filter>Shader</Filter>
     </None>

@@ -17,8 +17,8 @@ protected:
 class VulkanGraphicsPipelineState : public VulkanPipelineState
 {
 public:
-    API VulkanGraphicsPipelineState(VulkanGraphicsShaderProgram* InShaderProgram);
-    uint32_t GetStageCount() const { return static_cast<VulkanGraphicsShaderProgram*>(ShaderProgram)->GetStageCount(); }
+    API VulkanGraphicsPipelineState(std::shared_ptr<VulkanGraphicsShaderProgram> InShaderProgram);
+    uint32_t GetStageCount() const { return ShaderProgram->GetStageCount(); }
     VkPipelineShaderStageCreateInfo* GetPipelineShaderStageCreateInfos() const { return ShaderProgram->GetPipelineShaderStageCreateInfos(); }
 
     static std::vector<VkVertexInputBindingDescription> GetVertexInputBindingDescriptions() { return Sce::Model::GetVertexInputBindingDescriptions(); }
@@ -28,17 +28,17 @@ public:
 
 
 private:
-    VulkanGraphicsShaderProgram* ShaderProgram;
+    std::shared_ptr<VulkanGraphicsShaderProgram> ShaderProgram;
 };
 
 class VulkanComputePipelineState : public VulkanPipelineState
 {
 public:
-    API VulkanComputePipelineState(VulkanComputeShaderProgram* InShaderProgram);
+    API VulkanComputePipelineState(std::shared_ptr<VulkanComputeShaderProgram> InShaderProgram);
 
     VkPipelineShaderStageCreateInfo GetPipelineShaderStageCreateInfo() const { return ShaderProgram->GetPipelineShaderStageCreateInfo(); }
     VkPipelineLayout GetPipelineLayoutHandle() { return ShaderProgram->GetPipelineLayoutHandle(); }
 
 private:
-    VulkanComputeShaderProgram* ShaderProgram;
+    std::shared_ptr<VulkanComputeShaderProgram> ShaderProgram;
 };

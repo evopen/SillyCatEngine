@@ -6,12 +6,12 @@ VulkanPipelineState::VulkanPipelineState()
 {
 }
 
-VulkanGraphicsPipelineState::VulkanGraphicsPipelineState(VulkanGraphicsShaderProgram* InShaderProgram)
+VulkanGraphicsPipelineState::VulkanGraphicsPipelineState(std::shared_ptr<VulkanGraphicsShaderProgram>  InShaderProgram)
     : ShaderProgram(InShaderProgram)
 {
 }
 
-VulkanComputePipelineState::VulkanComputePipelineState(VulkanComputeShaderProgram* InShaderProgram)
+VulkanComputePipelineState::VulkanComputePipelineState(std::shared_ptr<VulkanComputeShaderProgram> InShaderProgram)
     : ShaderProgram(InShaderProgram)
 {
 }

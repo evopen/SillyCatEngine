@@ -6,3 +6,4 @@
 #include <filesystem>
 
 #include <nfd.h>
+#include <nlohmann/json.hpp>

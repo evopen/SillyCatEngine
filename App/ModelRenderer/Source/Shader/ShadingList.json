@@ -1,0 +1,14 @@
+{
+    "ShadingList": [
+        {
+            "Name": "Base Color",
+            "Vertex": "BaseColor.vert",
+            "Fragment": "BaseColor.frag"
+        },
+        {
+            "Name": "Wire Frame",
+            "Vertex": "WireFrame.vert",
+            "Fragment": "WireFrame.frag"
+        }
+    ]
+}

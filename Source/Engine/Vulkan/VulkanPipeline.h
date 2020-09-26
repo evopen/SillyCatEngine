@@ -26,10 +26,10 @@ protected:
 class VulkanGraphicsPipeline : public VulkanPipeline
 {
 public:
-    API VulkanGraphicsPipeline(VulkanDevice* InDevice, std::shared_ptr<VulkanRenderPass> InRenderPass, VulkanGraphicsPipelineState* InVulkanGraphicsPipelineState);
+    API VulkanGraphicsPipeline(VulkanDevice* InDevice, std::shared_ptr<VulkanRenderPass> InRenderPass, std::shared_ptr<VulkanGraphicsPipelineState> InVulkanGraphicsPipelineState);
 
 private:
-    VulkanGraphicsPipelineState* PipelineState;
+    std::shared_ptr<VulkanGraphicsPipelineState> PipelineState;
     std::shared_ptr<VulkanRenderPass> RenderPass;
     std::vector<VkVertexInputBindingDescription> VertexInputBindingDescriptions;
     std::vector<VkVertexInputAttributeDescription> VertexInputAttributeDescriptions;
@@ -38,8 +38,8 @@ private:
 class VulkanComputePipeline : public VulkanPipeline
 {
 public:
-    API VulkanComputePipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout, VulkanComputePipelineState* InComputePipelineState);
+    API VulkanComputePipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout, std::shared_ptr<VulkanComputePipelineState> InComputePipelineState);
 
 private:
-    VulkanComputePipelineState* PipelineState;
+    std::shared_ptr<VulkanComputePipelineState> PipelineState;
 };

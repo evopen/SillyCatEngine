@@ -13,7 +13,7 @@ VulkanPipeline::VulkanPipeline(VulkanDevice* InDevice)
 {
 }
 
-VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, std::shared_ptr<VulkanRenderPass> InRenderPass, VulkanGraphicsPipelineState* InVulkanGraphicsPipelineState)
+VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, std::shared_ptr<VulkanRenderPass> InRenderPass, std::shared_ptr<VulkanGraphicsPipelineState> InVulkanGraphicsPipelineState)
     : VulkanPipeline(InDevice)
     , PipelineState(InVulkanGraphicsPipelineState)
     , RenderPass(InRenderPass)
@@ -97,7 +97,7 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, std::shar
     vkCreateGraphicsPipelines(Device->GetDeviceHandle(), nullptr, 1, &PipelineInfo, nullptr, &Pipeline);
 }
 
-VulkanComputePipeline::VulkanComputePipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout, VulkanComputePipelineState* InComputePipelineState)
+VulkanComputePipeline::VulkanComputePipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout, std::shared_ptr<VulkanComputePipelineState> InComputePipelineState)
     : VulkanPipeline(InDevice)
     , PipelineState(InComputePipelineState)
 {

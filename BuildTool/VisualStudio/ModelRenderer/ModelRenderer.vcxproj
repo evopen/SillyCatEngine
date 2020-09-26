@@ -179,7 +179,6 @@
   <ItemGroup>
     <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor.frag" />
     <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor.vert" />
-    <None Include="..\..\..\App\ModelRenderer\Source\Shader\ShadingList.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
