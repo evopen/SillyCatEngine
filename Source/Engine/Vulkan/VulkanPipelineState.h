@@ -21,7 +21,7 @@ public:
     uint32_t GetStageCount() const { return static_cast<VulkanGraphicsShaderProgram*>(ShaderProgram)->GetStageCount(); }
     VkPipelineShaderStageCreateInfo* GetPipelineShaderStageCreateInfos() const { return ShaderProgram->GetPipelineShaderStageCreateInfos(); }
 
-    static std::vector<VkVertexInputBindingDescription> GetVertexInputBindingDescriptions() { return Model::GetVertexInputBindingDescriptions(); }
+    static std::vector<VkVertexInputBindingDescription> GetVertexInputBindingDescriptions() { return Sce::Model::GetVertexInputBindingDescriptions(); }
     std::vector<VkVertexInputAttributeDescription> GetVertexInputAttributeDescriptions() { return ShaderProgram->GetVertexInputAttributeDescriptions(); }
     API VkPipelineLayout GetPipelineLayoutHandle() { return ShaderProgram->GetPipelineLayoutHandle(); }
     API VkDescriptorSetLayout GetDescriptorSetLayoutHandle() { return ShaderProgram->GetDescriptorSetLayoutHandle(); }

@@ -25,6 +25,7 @@ int main()
         VulkanSemaphore RenderFinish(&device);
         VulkanMemoryManager MemoryManager(&device, instance);
         auto gui = std::make_shared<Sce::GUI>(instance, &device, &MemoryManager, windowSurface, renderPass, swapchain.GetImageCount());
+        std::shared_ptr<Sce::Model> ModelLoaded;
 
         while (!glfwWindowShouldClose(windowSurface->GetWindowHandle()))
         {
@@ -50,6 +51,26 @@ int main()
             vkCmdSetScissor(cmdBuffer.GetHandle(), 0, 1, &Scissor);
 
             gui->NewFrame();
+            ImGui::SetCurrentContext(gui->GetContext());
+
+            if (ImGui::BeginMainMenuBar())
+            {
+                if (ImGui::BeginMenu("File"))
+                {
+                    if (ImGui::MenuItem("Open"))
+                    {
+                        std::unique_ptr<nfdchar_t*> outPath = std::make_unique<nfdchar_t*>();
+                        nfdresult_t result                  = NFD_OpenDialog(nullptr, nullptr, outPath.get());
+                        if (result == NFD_OKAY)
+                        {
+                            spdlog::info("Opening {}", *outPath);
+                            ModelLoaded.reset(new Sce::Model(*outPath, &MemoryManager));
+                        }
+                    }
+                    ImGui::EndMenu();
+                }
+                ImGui::EndMainMenuBar();
+            }
             gui->Render(&cmdBuffer);
 
             //ImGui::Text("Hello, world %d", 123);
