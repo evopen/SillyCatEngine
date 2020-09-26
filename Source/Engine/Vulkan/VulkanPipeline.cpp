@@ -1,5 +1,6 @@
 #include "Engine/pch.h"
 
+#include "VulkanCommandBuffer.h"
 #include "VulkanDevice.h"
 #include "VulkanPipeline.h"
 #include "VulkanPipelineLayout.h"
@@ -18,6 +19,7 @@ VulkanPipeline::~VulkanPipeline()
     if (Pipeline != VK_NULL_HANDLE)
         vkDestroyPipeline(Device->GetDeviceHandle(), Pipeline, nullptr);
 }
+
 
 VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, std::shared_ptr<VulkanRenderPass> InRenderPass, std::shared_ptr<VulkanGraphicsPipelineState> InVulkanGraphicsPipelineState)
     : VulkanPipeline(InDevice)
@@ -101,6 +103,12 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, std::shar
     };
 
     vkCreateGraphicsPipelines(Device->GetDeviceHandle(), nullptr, 1, &PipelineInfo, nullptr, &Pipeline);
+}
+
+void VulkanGraphicsPipeline::Bind(VulkanCommandBuffer* inCmdBuffer)
+{
+    vkCmdBindPipeline(inCmdBuffer->GetHandle(), VK_PIPELINE_BIND_POINT_GRAPHICS, Pipeline);
+    inCmdBuffer->PossessObject(shared_from_this());
 }
 
 VulkanComputePipeline::VulkanComputePipeline(VulkanDevice* InDevice, VulkanPipelineLayout* InLayout, std::shared_ptr<VulkanComputePipelineState> InComputePipelineState)

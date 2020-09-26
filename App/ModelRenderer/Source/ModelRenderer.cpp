@@ -108,6 +108,7 @@ int main()
         auto gui = std::make_shared<Sce::GUI>(instance, &device, &MemoryManager, windowSurface, renderPass, swapchain.GetImageCount());
         ImGui::SetCurrentContext(gui->GetContext());
         std::shared_ptr<Sce::Model> ModelLoaded;
+        Sce::Camera Camera(glm::vec3(5, 5, 5), glm::vec3(0, 0, 0));
         SUiStatus uiStatus;
 
         while (!glfwWindowShouldClose(windowSurface->GetWindowHandle()))
@@ -149,6 +150,20 @@ int main()
             VkRect2D Scissor    = windowSurface->GetSurfaceScissor();
             vkCmdSetViewport(cmdBuffer.GetHandle(), 0, 1, &Viewport);
             vkCmdSetScissor(cmdBuffer.GetHandle(), 0, 1, &Scissor);
+            pipeline->Bind(&cmdBuffer);
+
+            if (ModelLoaded != nullptr)
+            {
+                for (size_t i = 0; i < ModelLoaded->GetMeshCount(); i++)
+                {
+                    VkBuffer VertexBuffer = ModelLoaded->GetVertexBuffer();
+                    VkBuffer ColorBuffer  = ModelLoaded->GetColorBuffer();
+                    std::vector<VkDeviceSize> Offsets(2, 0);
+                    std::vector<VkBuffer> VertexBuffers = {VertexBuffer, ColorBuffer};
+                    vkCmdBindVertexBuffers(cmdBuffer.GetHandle(), 0, static_cast<uint32_t>(VertexBuffers.size()), VertexBuffers.data(), Offsets.data());
+                    vkCmdDraw(cmdBuffer.GetHandle(), ModelLoaded->GetVertexCount(), 1, 0, 0);
+                }
+            }
 
             DrawUI(&cmdBuffer, gui, ShadingList, uiStatus);
 

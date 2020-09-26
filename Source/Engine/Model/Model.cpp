@@ -8,8 +8,9 @@
 namespace Sce
 {
 
-    Model::Model(std::filesystem::path InFilePath, VulkanMemoryManager* InMemoryManager)
-        : VertexBuffer(VK_NULL_HANDLE)
+    Model::Model(std::filesystem::path InFilePath, VulkanMemoryManager* inMemoryManager)
+        : MemoryManager(inMemoryManager)
+        , VertexBuffer(VK_NULL_HANDLE)
         , ColorBuffer(VK_NULL_HANDLE)
     {
         Assimp::Importer Importer;
