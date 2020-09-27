@@ -13,6 +13,7 @@
 #include <stb_image.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_vulkan.h>
+#include <nlohmann/json.hpp>
 
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>

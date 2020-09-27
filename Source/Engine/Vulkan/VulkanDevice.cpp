@@ -70,13 +70,20 @@ void VulkanDevice::CreateDevice()
         ++i;
     }
 
-    VkDeviceCreateInfo deviceInfo = {.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
-        .queueCreateInfoCount               = static_cast<uint32_t>(QueueInfos.size()),
-        .pQueueCreateInfos                  = QueueInfos.data(),
-        .enabledLayerCount                  = static_cast<uint32_t>(DeviceLayers.size()),
-        .ppEnabledLayerNames                = DeviceLayers.data(),
-        .enabledExtensionCount              = static_cast<uint32_t>(DeviceExtensions.size()),
-        .ppEnabledExtensionNames            = DeviceExtensions.data()};
+    VkPhysicalDeviceFeatures deviceFeatures = {
+        .fillModeNonSolid = true,
+    };
+
+    VkDeviceCreateInfo deviceInfo = {
+        .sType                   = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+        .queueCreateInfoCount    = static_cast<uint32_t>(QueueInfos.size()),
+        .pQueueCreateInfos       = QueueInfos.data(),
+        .enabledLayerCount       = static_cast<uint32_t>(DeviceLayers.size()),
+        .ppEnabledLayerNames     = DeviceLayers.data(),
+        .enabledExtensionCount   = static_cast<uint32_t>(DeviceExtensions.size()),
+        .ppEnabledExtensionNames = DeviceExtensions.data(),
+        .pEnabledFeatures        = &deviceFeatures,
+    };
 
     CheckResult(vkCreateDevice(PhysicalDevice, &deviceInfo, nullptr, &Device));
 

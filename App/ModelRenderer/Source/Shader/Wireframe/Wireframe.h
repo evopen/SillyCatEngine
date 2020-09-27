@@ -1,0 +1,51 @@
+#pragma once
+
+#include "pch.h"
+
+class WireframeShading : public Sce::Shading
+{
+public:
+    WireframeShading(VulkanDevice* inDevice, std::shared_ptr<VulkanGraphicsShaderProgram> inShaderProgram, Sce::ShadingInfo inShadingInfo, std::shared_ptr<VulkanGraphicsPipelineState>& inPipelineState, const Sce::Camera& inCamera)
+        : Shading(inDevice, inShaderProgram, inShadingInfo, inPipelineState)
+        , MVP_Buffer(VK_NULL_HANDLE)
+    {
+        MVP.View       = inCamera.GetViewMatrix();
+        MVP.Projection = inCamera.GetProjectionMatrix();
+        MVP.Model      = glm::identity<glm::mat4>();
+
+        MVP_Buffer = inDevice->GetMemoryManager()->CreateBuffer(&MVP, sizeof(S_MVP), VMA_MEMORY_USAGE_CPU_TO_GPU, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT);
+
+        VkDescriptorBufferInfo BufferInfo = {
+            .buffer = MVP_Buffer,
+            .offset = 0,
+            .range  = VK_WHOLE_SIZE,
+        };
+
+        VkWriteDescriptorSet WriteDescriptorSet = {
+            .sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
+            .dstSet          = inShaderProgram->GetDescriptorSetHandle(),
+            .dstBinding      = 0,
+            .descriptorCount = 1,
+            .descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+            .pBufferInfo     = &BufferInfo,
+        };
+        vkUpdateDescriptorSets(inDevice->GetDeviceHandle(), 1, &WriteDescriptorSet, 0, nullptr);
+    }
+
+    ~WireframeShading();
+
+private:
+    struct S_MVP
+    {
+        glm::mat4 Model;
+        glm::mat4 View;
+        glm::mat4 Projection;
+    } MVP;
+    VkBuffer MVP_Buffer;
+};
+
+inline WireframeShading::~WireframeShading()
+{
+    if (MVP_Buffer != VK_NULL_HANDLE)
+        Device->GetMemoryManager()->FreeBuffer(MVP_Buffer);
+}

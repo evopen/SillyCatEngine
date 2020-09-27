@@ -1,0 +1,8 @@
+{
+    "$schema": "../../../../Source/Engine/Render/ShadingSchema.json",
+    "name": "Wireframe",
+    "vertex_shader": "Wireframe.vert",
+    "fragment_shader": "Wireframe.frag",
+    "polygon_mode": "Line",
+    "line_width": 1.5
+}

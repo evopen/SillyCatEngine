@@ -50,6 +50,9 @@
     <None Include="vcpkg.json">
       <Filter>Project Configurations</Filter>
     </None>
+    <None Include="..\..\..\Source\Engine\Render\ShadingSchema.json">
+      <Filter>Engine\Render</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.cpp">
@@ -153,6 +156,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Source\Engine\Concurrent\Thread.cpp">
       <Filter>Engine\Concurrent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Render\Shading.cpp">
+      <Filter>Engine\Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

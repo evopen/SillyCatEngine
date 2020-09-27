@@ -1,13 +1,9 @@
 #include "pch.h"
 
-#include "Shader/BaseColor.h"
+#include "Shader/BaseColor/BaseColor.h"
+#include "Shader/VertexColor/VertexColor.h"
+#include "Shader/WireFrame/Wireframe.h"
 
-struct SShading
-{
-    std::string Name;
-    std::filesystem::path Vertex;
-    std::filesystem::path Fragment;
-};
 
 struct SUiStatus
 {
@@ -27,7 +23,7 @@ void LoadModel(std::shared_ptr<Sce::Model>& Model, VulkanMemoryManager* MemoryMa
     }
 }
 
-void DrawUI(VulkanCommandBuffer* cmdBuffer, const std::shared_ptr<Sce::GUI>& gui, const std::vector<SShading>& ShadingList, SUiStatus& status)
+void DrawUI(VulkanCommandBuffer* cmdBuffer, const std::shared_ptr<Sce::GUI>& gui, const std::vector<Sce::ShadingInfo>& ShadingList, SUiStatus& status)
 {
     ImGuiIO& io = ImGui::GetIO();
     gui->NewFrame();
@@ -52,7 +48,7 @@ void DrawUI(VulkanCommandBuffer* cmdBuffer, const std::shared_ptr<Sce::GUI>& gui
         else
             ImGui::PushStyleColor(ImGuiCol_Button, ImColor(105, 110, 135).Value);
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImColor(10, 80, 180).Value);
-        if (ImGui::Button(ShadingList[i].Name.c_str()))
+        if (ImGui::Button(ShadingList[i].name.c_str()))
         {
             status.currentShadingIndex = i;
             status.bShaderNeedUpdate   = true;
@@ -66,17 +62,16 @@ void DrawUI(VulkanCommandBuffer* cmdBuffer, const std::shared_ptr<Sce::GUI>& gui
 }
 
 
-std::vector<SShading> LoadShadingList(std::filesystem::path inJsonPath)
+std::vector<Sce::ShadingInfo> LoadShadingList(std::filesystem::path inShadingDir)
 {
-    std::vector<SShading> result;
-    std::ifstream ifs(inJsonPath);
-    auto j = nlohmann::json::parse(ifs).at("ShadingList");
-    result.resize(j.size());
-    for (size_t i = 0; i < j.size(); i++)
+    std::vector<Sce::ShadingInfo> result;
+
+    for (auto& p : std::filesystem::recursive_directory_iterator(inShadingDir))
     {
-        result[i].Name     = j[i].at("Name").get<std::string>();
-        result[i].Vertex   = j[i].at("Vertex").get<std::string>();
-        result[i].Fragment = j[i].at("Fragment").get<std::string>();
+        if (p.path().extension() == ".json")
+        {
+            result.emplace_back(Sce::ShadingInfo::LoadShadingInfo(p));
+        }
     }
     return std::move(result);
 }
@@ -86,7 +81,7 @@ int main()
     const std::filesystem::path ShaderBasePath = "App/ModelRenderer/Source/Shader";
     try
     {
-        auto ShadingList = LoadShadingList(ShaderBasePath / "ShadingList.json");
+        auto ShadingList = LoadShadingList(ShaderBasePath);
 
         auto instance = std::make_shared<VulkanInstance>(false, true);
 
@@ -101,7 +96,7 @@ int main()
         std::shared_ptr<VulkanPixelShader> pixelShader;
         std::shared_ptr<VulkanGraphicsShaderProgram> shaderProgram;
         std::shared_ptr<VulkanGraphicsPipelineState> pipelineState;
-        std::shared_ptr<Shading> shading;
+        std::shared_ptr<Sce::Shading> shading;
         VulkanRenderTargetLayout RTLayout(1);
         auto renderPass = std::make_shared<VulkanRenderPass>(&device, &RTLayout);
         std::shared_ptr<VulkanGraphicsPipeline> pipeline;
@@ -125,14 +120,19 @@ int main()
                 }
                 if (uiStatus.bShaderNeedUpdate)
                 {
-                    vertexShader.reset(new VulkanVertexShader(&device, ShaderBasePath / ShadingList[uiStatus.currentShadingIndex].Vertex));
-                    pixelShader.reset(new VulkanPixelShader(&device, ShaderBasePath / ShadingList[uiStatus.currentShadingIndex].Fragment));
+                    vertexShader.reset(new VulkanVertexShader(&device, ShadingList[uiStatus.currentShadingIndex].vertex_shader));
+                    pixelShader.reset(new VulkanPixelShader(&device, ShadingList[uiStatus.currentShadingIndex].fragment_shader));
                     shaderProgram.reset(new VulkanGraphicsShaderProgram(&device, vertexShader, pixelShader));
                     pipelineState.reset(new VulkanGraphicsPipelineState(shaderProgram));
-                    pipeline.reset(new VulkanGraphicsPipeline(&device, renderPass, pipelineState));
 
-                    if (ShadingList[uiStatus.currentShadingIndex].Name == "Base Color")
-                        shading.reset(new ShadingBaseColor(&device, shaderProgram, Camera));
+                    if (ShadingList[uiStatus.currentShadingIndex].name == "Vertex Color")
+                        shading.reset(new VertexColorShading(&device, shaderProgram, ShadingList[uiStatus.currentShadingIndex], pipelineState, Camera));
+                    else if (ShadingList[uiStatus.currentShadingIndex].name == "Base Color")
+                        shading.reset(new BaseColorShading(&device, shaderProgram, ShadingList[uiStatus.currentShadingIndex], pipelineState, Camera));
+                    else if (ShadingList[uiStatus.currentShadingIndex].name == "Wireframe")
+                        shading.reset(new WireframeShading(&device, shaderProgram, ShadingList[uiStatus.currentShadingIndex], pipelineState, Camera));
+
+                    pipeline.reset(new VulkanGraphicsPipeline(&device, renderPass, pipelineState));
 
                     uiStatus.bShaderNeedUpdate = false;
                 }
@@ -167,7 +167,7 @@ int main()
                     std::vector<VkBuffer> VertexBuffers = {VertexBuffer, ColorBuffer};
                     vkCmdBindVertexBuffers(cmdBuffer.GetHandle(), 0, static_cast<uint32_t>(VertexBuffers.size()), VertexBuffers.data(), Offsets.data());
                     VkDescriptorSet descriptorSet = shaderProgram->GetDescriptorSetHandle();
-                    vkCmdBindDescriptorSets(cmdBuffer.GetHandle(), VK_PIPELINE_BIND_POINT_GRAPHICS, shaderProgram->GetPipelineLayoutHandle(), 0, 1, &descriptorSet, 0, nullptr);
+                    shading->BindDescriptorSet(&cmdBuffer);
                     vkCmdDraw(cmdBuffer.GetHandle(), ModelLoaded->GetVertexCount(), 1, 0, 0);
                 }
             }

@@ -1,0 +1,7 @@
+{
+    "$schema": "../../../../Source/Engine/Render/ShadingSchema.json",
+    "name": "Vertex Color",
+    "vertex_shader": "VertexColor.vert",
+    "fragment_shader": "VertexColor.frag",
+    "polygon_mode": "Fill"
+}

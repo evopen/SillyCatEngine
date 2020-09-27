@@ -179,15 +179,27 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\App\ModelRenderer\Source\pch.h" />
     <ClInclude Include="..\..\..\App\ModelRenderer\Source\ShaderList.h" />
-    <ClInclude Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor.h" />
+    <ClInclude Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor\BaseColor.h" />
+    <ClInclude Include="..\..\..\App\ModelRenderer\Source\Shader\VertexColor\VertexColor.h" />
+    <ClInclude Include="..\..\..\App\ModelRenderer\Source\Shader\WireFrame\Wireframe.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor.frag" />
-    <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor.vert" />
-    <None Include="..\..\..\App\ModelRenderer\Source\Shader\WireFrame.frag" />
-    <None Include="..\..\..\App\ModelRenderer\Source\Shader\WireFrame.vert" />
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor\BaseColor.frag" />
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor\BaseColor.json" />
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor\BaseColor.vert" />
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\VertexColor\VertexColor.frag" />
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\VertexColor\VertexColor.json" />
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\VertexColor\VertexColor.vert" />
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\WireFrame\Wireframe.frag" />
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\WireFrame\Wireframe.json" />
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\WireFrame\Wireframe.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

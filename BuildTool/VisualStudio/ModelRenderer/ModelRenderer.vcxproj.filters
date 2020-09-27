@@ -7,6 +7,15 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{40d1103a-fd32-430b-a3ec-3c678455b423}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader\BaseColor">
+      <UniqueIdentifier>{ba2b7d3f-5735-437c-b484-41b8ebc754d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\VertexColor">
+      <UniqueIdentifier>{8034f90c-d640-45e2-b053-488db8ff90d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Wireframe">
+      <UniqueIdentifier>{4cd30a5e-c69e-438c-a529-89c9933100d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\App\ModelRenderer\Source\ModelRenderer.cpp">
@@ -23,22 +32,43 @@
     <ClInclude Include="..\..\..\App\ModelRenderer\Source\ShaderList.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor.h">
-      <Filter>Shader</Filter>
+    <ClInclude Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor\BaseColor.h">
+      <Filter>Shader\BaseColor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\App\ModelRenderer\Source\Shader\WireFrame\Wireframe.h">
+      <Filter>Shader\Wireframe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\App\ModelRenderer\Source\Shader\VertexColor\VertexColor.h">
+      <Filter>Shader\VertexColor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor.frag">
-      <Filter>Shader</Filter>
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor\BaseColor.frag">
+      <Filter>Shader\BaseColor</Filter>
     </None>
-    <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor.vert">
-      <Filter>Shader</Filter>
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor\BaseColor.json">
+      <Filter>Shader\BaseColor</Filter>
     </None>
-    <None Include="..\..\..\App\ModelRenderer\Source\Shader\WireFrame.vert">
-      <Filter>Shader</Filter>
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor\BaseColor.vert">
+      <Filter>Shader\BaseColor</Filter>
     </None>
-    <None Include="..\..\..\App\ModelRenderer\Source\Shader\WireFrame.frag">
-      <Filter>Shader</Filter>
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\WireFrame\Wireframe.frag">
+      <Filter>Shader\Wireframe</Filter>
+    </None>
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\WireFrame\Wireframe.json">
+      <Filter>Shader\Wireframe</Filter>
+    </None>
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\WireFrame\Wireframe.vert">
+      <Filter>Shader\Wireframe</Filter>
+    </None>
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\VertexColor\VertexColor.frag">
+      <Filter>Shader\VertexColor</Filter>
+    </None>
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\VertexColor\VertexColor.json">
+      <Filter>Shader\VertexColor</Filter>
+    </None>
+    <None Include="..\..\..\App\ModelRenderer\Source\Shader\VertexColor\VertexColor.vert">
+      <Filter>Shader\VertexColor</Filter>
     </None>
   </ItemGroup>
 </Project>

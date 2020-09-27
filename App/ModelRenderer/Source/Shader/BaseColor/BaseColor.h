@@ -2,11 +2,11 @@
 
 #include "pch.h"
 
-class ShadingBaseColor : public Shading
+class BaseColorShading : public Sce::Shading
 {
 public:
-    ShadingBaseColor(VulkanDevice* inDevice, std::shared_ptr<VulkanGraphicsShaderProgram> inShaderProgram, const Sce::Camera& inCamera)
-        : Shading(inDevice)
+    BaseColorShading(VulkanDevice* inDevice, std::shared_ptr<VulkanGraphicsShaderProgram> inShaderProgram, Sce::ShadingInfo inShadingInfo, std::shared_ptr<VulkanGraphicsPipelineState>& inPipelineState, const Sce::Camera& inCamera)
+        : Shading(inDevice, inShaderProgram, inShadingInfo, inPipelineState)
         , MVP_Buffer(VK_NULL_HANDLE)
     {
         MVP.View       = inCamera.GetViewMatrix();
@@ -32,6 +32,8 @@ public:
         vkUpdateDescriptorSets(inDevice->GetDeviceHandle(), 1, &WriteDescriptorSet, 0, nullptr);
     }
 
+    ~BaseColorShading();
+
 private:
     struct S_MVP
     {
@@ -41,3 +43,9 @@ private:
     } MVP;
     VkBuffer MVP_Buffer;
 };
+
+inline BaseColorShading::~BaseColorShading()
+{
+    if (MVP_Buffer != VK_NULL_HANDLE)
+        Device->GetMemoryManager()->FreeBuffer(MVP_Buffer);
+}

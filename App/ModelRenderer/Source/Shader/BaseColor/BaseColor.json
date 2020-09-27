@@ -1,0 +1,7 @@
+{
+    "$schema": "../../../../Source/Engine/Render/ShadingSchema.json",
+    "name": "Base Color",
+    "vertex_shader": "BaseColor.vert",
+    "fragment_shader": "BaseColor.frag",
+    "polygon_mode": "Fill"
+}

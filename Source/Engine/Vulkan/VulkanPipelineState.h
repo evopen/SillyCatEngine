@@ -26,9 +26,12 @@ public:
     API VkPipelineLayout GetPipelineLayoutHandle() { return ShaderProgram->GetPipelineLayoutHandle(); }
     API VkDescriptorSetLayout GetDescriptorSetLayoutHandle() { return ShaderProgram->GetDescriptorSetLayoutHandle(); }
 
+    API void SetPolygonMode(VkPolygonMode inPolygonMode) { PolygonMode = inPolygonMode; }
+    API VkPolygonMode GetPolygonMode() { return PolygonMode; }
 
 private:
     std::shared_ptr<VulkanGraphicsShaderProgram> ShaderProgram;
+    VkPolygonMode PolygonMode;
 };
 
 class VulkanComputePipelineState : public VulkanPipelineState

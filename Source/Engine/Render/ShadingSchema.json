@@ -1,0 +1,44 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "Shading Description",
+    "type": "object",
+    "definitions": {
+        "PolygonMode": {
+            "enum": [
+                "Fill",
+                "Line",
+                "Point"
+            ]
+        }
+    },
+    "properties": {
+        "name": {
+            "description": "Name of this shading",
+            "type": "string"
+        },
+        "vertex_shader": {
+            "description": "Vertex Shader Path",
+            "type": "string"
+        },
+        "fragment_shader": {
+            "description": "Fragment Shader Path",
+            "type": "string"
+        },
+        "polygon_mode": { 
+            "$ref": "#/definitions/PolygonMode"
+        },
+        "line_width": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "name",
+        "vertex_shader",
+        "fragment_shader",
+        "polygon_mode"
+    ],
+    "if": {
+        "properties": {"polygon_mode": {"enum":["Line"]}}
+    },
+    "then": {"required": ["line_width"]}
+}

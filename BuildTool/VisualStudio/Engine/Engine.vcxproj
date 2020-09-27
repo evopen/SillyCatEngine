@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\..\..\Source\Engine\Render\ShadingSchema.json" />
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +177,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Engine/pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\Engine\Render\Definitions.cpp" />
+    <ClCompile Include="..\..\..\Source\Engine\Render\Shading.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Texture\Texture2D.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanCommandBuffer.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanComputer.cpp" />

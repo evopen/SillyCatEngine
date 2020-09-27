@@ -6,8 +6,9 @@ VulkanPipelineState::VulkanPipelineState()
 {
 }
 
-VulkanGraphicsPipelineState::VulkanGraphicsPipelineState(std::shared_ptr<VulkanGraphicsShaderProgram>  InShaderProgram)
+VulkanGraphicsPipelineState::VulkanGraphicsPipelineState(std::shared_ptr<VulkanGraphicsShaderProgram> InShaderProgram)
     : ShaderProgram(InShaderProgram)
+    , PolygonMode(VK_POLYGON_MODE_FILL)
 {
 }
 
