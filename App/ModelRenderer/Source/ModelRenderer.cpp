@@ -163,6 +163,7 @@ int main()
                 {
                     VkBuffer VertexBuffer = ModelLoaded->GetVertexBuffer();
                     VkBuffer ColorBuffer  = ModelLoaded->GetColorBuffer();
+                    cmdBuffer.PossessObject(ModelLoaded);
                     std::vector<VkDeviceSize> Offsets(2, 0);
                     std::vector<VkBuffer> VertexBuffers = {VertexBuffer, ColorBuffer};
                     vkCmdBindVertexBuffers(cmdBuffer.GetHandle(), 0, static_cast<uint32_t>(VertexBuffers.size()), VertexBuffers.data(), Offsets.data());
