@@ -88,7 +88,7 @@ int main()
         auto [physicalDevice, physicalDeviceProperties] = VulkanDevice::SelectPhysicalDevice(instance);
         VulkanDevice device(instance, physicalDevice, false);
 
-        auto windowSurface = std::make_shared<VulkanWindowSurface>(instance, &device, "SillyCatRenderer", 800, 600);
+        auto windowSurface = std::make_shared<VulkanWindowSurface>(instance, &device, "SillyCatRenderer", 1280, 960);
         VulkanSwapchain swapchain(instance, &device, windowSurface);
         VulkanPresenter presenter(device.GetPresentQueue(), &swapchain);
         VulkanCommandBuffer cmdBuffer(&device, device.GetGraphicsQueue());
@@ -105,7 +105,7 @@ int main()
         auto gui = std::make_shared<Sce::GUI>(instance, &device, windowSurface, renderPass, swapchain.GetImageCount());
         ImGui::SetCurrentContext(gui->GetContext());
         std::shared_ptr<Sce::Model> ModelLoaded;
-        Sce::Camera Camera(glm::vec3(5, 5, 5), glm::vec3(0, 0, 0));
+        Sce::Camera Camera(glm::vec3(50, 50, 50), glm::vec3(0, 0, 0));
         SUiStatus uiStatus;
 
         while (!glfwWindowShouldClose(windowSurface->GetWindowHandle()))
@@ -159,7 +159,7 @@ int main()
 
             if (ModelLoaded != nullptr)
             {
-                for (size_t i = 0; i < ModelLoaded->GetMeshCount(); i++)
+                for (size_t i = 0; i < 1; i++)
                 {
                     VkBuffer VertexBuffer = ModelLoaded->GetVertexBuffer();
                     VkBuffer ColorBuffer  = ModelLoaded->GetColorBuffer();
@@ -167,9 +167,10 @@ int main()
                     std::vector<VkDeviceSize> Offsets(2, 0);
                     std::vector<VkBuffer> VertexBuffers = {VertexBuffer, ColorBuffer};
                     vkCmdBindVertexBuffers(cmdBuffer.GetHandle(), 0, static_cast<uint32_t>(VertexBuffers.size()), VertexBuffers.data(), Offsets.data());
+                    vkCmdBindIndexBuffer(cmdBuffer.GetHandle(), ModelLoaded->GetIndexBuffer(), 0, VK_INDEX_TYPE_UINT32);
                     VkDescriptorSet descriptorSet = shaderProgram->GetDescriptorSetHandle();
                     shading->BindDescriptorSet(&cmdBuffer);
-                    vkCmdDraw(cmdBuffer.GetHandle(), ModelLoaded->GetVertexCount(), 1, 0, 0);
+                    vkCmdDrawIndexed(cmdBuffer.GetHandle(), ModelLoaded->GetIndexCount(), 1, 0, 0, 0);
                 }
             }
 

@@ -14,17 +14,28 @@ namespace Sce
         , ColorBuffer(VK_NULL_HANDLE)
     {
         Assimp::Importer Importer;
-        const aiScene* Scene = Importer.ReadFile(InFilePath.string().c_str(), aiProcessPreset_TargetRealtime_Fast | aiProcess_Triangulate);
+        const aiScene* Scene = Importer.ReadFile(InFilePath.string().c_str(), aiProcess_Triangulate | aiProcess_OptimizeMeshes);
         if (!Scene)
         {
             throw std::runtime_error(Importer.GetErrorString());
         }
         Meshes.resize(Scene->mNumMeshes);
 
+
         for (size_t m = 0; m < Meshes.size(); ++m)
         {
-            aiMesh* Mesh           = Scene->mMeshes[m];
-            Meshes[m].Name         = Mesh->mName.C_Str();
+            aiMesh* Mesh   = Scene->mMeshes[m];
+            Meshes[m].Name = Mesh->mName.C_Str();
+
+            for (size_t f = 0; f < Mesh->mNumFaces; ++f)
+            {
+                aiFace* face = &Mesh->mFaces[f];
+                for (size_t i = 0; i < 3; i++)
+                {
+                    Meshes[m].Indices.push_back(face->mIndices[i]);
+                }
+            }
+
             unsigned VerticesCount = Mesh->mNumVertices;
 
             Meshes[m].Vertices.resize(VerticesCount);
@@ -74,7 +85,7 @@ namespace Sce
     {
         if (VertexBuffer == VK_NULL_HANDLE)
         {
-            size_t BufferSize      = sizeof(glm::vec3) * GetVertexCount();
+            size_t BufferSize      = sizeof(decltype(Mesh::Vertices)::value_type) * GetVertexCount();
             VkBuffer StagingBuffer = MemoryManager->CreateBuffer(BufferSize, VMA_MEMORY_USAGE_CPU_ONLY, VK_BUFFER_USAGE_TRANSFER_SRC_BIT);
             void* Data             = MemoryManager->MapBuffer(StagingBuffer);
             for (const auto& Mesh : Meshes)
@@ -90,17 +101,37 @@ namespace Sce
         return VertexBuffer;
     }
 
-    VkBuffer Model::GetColorBuffer()
+    VkBuffer Model::GetIndexBuffer()
     {
-        if (ColorBuffer == VK_NULL_HANDLE)
+        if (IndexBuffer == VK_NULL_HANDLE)
         {
-            size_t BufferSize      = sizeof(glm::vec4) * GetVertexCount();
+            size_t BufferSize      = sizeof(decltype(Mesh::Indices)::value_type) * GetIndexCount();
             VkBuffer StagingBuffer = MemoryManager->CreateBuffer(BufferSize, VMA_MEMORY_USAGE_CPU_ONLY, VK_BUFFER_USAGE_TRANSFER_SRC_BIT);
             void* Data             = MemoryManager->MapBuffer(StagingBuffer);
             for (const auto& Mesh : Meshes)
             {
-                std::memcpy(Data, Mesh.Colors.data(), Mesh.Colors.size() * sizeof(glm::vec4));
-                Data = static_cast<char*>(Data) + Mesh.Vertices.size() * sizeof(glm::vec4);
+                std::memcpy(Data, Mesh.Indices.data(), Mesh.Indices.size() * sizeof(decltype(Mesh::Indices)::value_type));
+                Data = static_cast<char*>(Data) + Mesh.Indices.size() * sizeof(decltype(Mesh::Indices)::value_type);
+            }
+            MemoryManager->UnMapBuffer(StagingBuffer);
+            IndexBuffer = MemoryManager->CreateBuffer(BufferSize, VMA_MEMORY_USAGE_GPU_ONLY, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT);
+            MemoryManager->CopyBuffer(StagingBuffer, IndexBuffer);
+            MemoryManager->FreeBuffer(StagingBuffer);
+        }
+        return IndexBuffer;
+    }
+
+    VkBuffer Model::GetColorBuffer()
+    {
+        if (ColorBuffer == VK_NULL_HANDLE)
+        {
+            size_t BufferSize      = sizeof(decltype(Mesh::Colors)::value_type) * GetVertexCount();
+            VkBuffer StagingBuffer = MemoryManager->CreateBuffer(BufferSize, VMA_MEMORY_USAGE_CPU_ONLY, VK_BUFFER_USAGE_TRANSFER_SRC_BIT);
+            void* Data             = MemoryManager->MapBuffer(StagingBuffer);
+            for (const auto& Mesh : Meshes)
+            {
+                std::memcpy(Data, Mesh.Colors.data(), Mesh.Colors.size() * sizeof(decltype(Mesh::Colors)::value_type));
+                Data = static_cast<char*>(Data) + Mesh.Vertices.size() * sizeof(decltype(Mesh::Colors)::value_type);
             }
             MemoryManager->UnMapBuffer(StagingBuffer);
             ColorBuffer = MemoryManager->CreateBuffer(BufferSize, VMA_MEMORY_USAGE_GPU_ONLY, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT);

@@ -38,7 +38,9 @@
         "polygon_mode"
     ],
     "if": {
-        "properties": {"polygon_mode": {"enum":["Line"]}}
+        "properties": {
+            "polygon_mode": {"enum":["Line"]}
+        }
     },
     "then": {"required": ["line_width"]}
 }
