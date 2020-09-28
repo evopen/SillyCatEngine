@@ -160,6 +160,9 @@
     <ClCompile Include="..\..\..\Source\Engine\Render\Shading.cpp">
       <Filter>Engine\Render</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Model\Mesh.cpp">
+      <Filter>Engine\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">
@@ -269,6 +272,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\Render\Shading.h">
       <Filter>Engine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Model\Mesh.h">
+      <Filter>Engine\Model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

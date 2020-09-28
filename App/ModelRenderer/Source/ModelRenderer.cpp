@@ -159,19 +159,21 @@ int main()
 
             if (ModelLoaded != nullptr)
             {
-                for (size_t i = 0; i < 1; i++)
+                for (size_t i = 0; i < ModelLoaded->GetMeshCount(); i++)
                 {
-                    VkBuffer VertexBuffer = ModelLoaded->GetVertexBuffer();
-                    VkBuffer ColorBuffer  = ModelLoaded->GetColorBuffer();
-                    cmdBuffer.PossessObject(ModelLoaded);
+                    const auto& mesh      = ModelLoaded->GetMesh(i);
+                    VkBuffer VertexBuffer = mesh.GetVertexBuffer();
+                    VkBuffer ColorBuffer  = mesh.GetColorBuffer();
+                    
                     std::vector<VkDeviceSize> Offsets(2, 0);
                     std::vector<VkBuffer> VertexBuffers = {VertexBuffer, ColorBuffer};
                     vkCmdBindVertexBuffers(cmdBuffer.GetHandle(), 0, static_cast<uint32_t>(VertexBuffers.size()), VertexBuffers.data(), Offsets.data());
-                    vkCmdBindIndexBuffer(cmdBuffer.GetHandle(), ModelLoaded->GetIndexBuffer(), 0, VK_INDEX_TYPE_UINT32);
+                    vkCmdBindIndexBuffer(cmdBuffer.GetHandle(), mesh.GetIndexBuffer(), 0, VK_INDEX_TYPE_UINT32);
                     VkDescriptorSet descriptorSet = shaderProgram->GetDescriptorSetHandle();
                     shading->BindDescriptorSet(&cmdBuffer);
-                    vkCmdDrawIndexed(cmdBuffer.GetHandle(), ModelLoaded->GetIndexCount(), 1, 0, 0, 0);
+                    vkCmdDrawIndexed(cmdBuffer.GetHandle(), mesh.GetIndexCount(), 1, 0, 0, 0);
                 }
+                cmdBuffer.PossessObject(ModelLoaded);
             }
 
             DrawUI(&cmdBuffer, gui, ShadingList, uiStatus);

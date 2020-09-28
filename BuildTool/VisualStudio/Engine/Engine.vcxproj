@@ -170,6 +170,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\Engine\GUI\GUI.cpp" />
+    <ClCompile Include="..\..\..\Source\Engine\Model\Mesh.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Model\Model.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Model\World.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\pch.cpp">
@@ -233,6 +234,7 @@
     <ClInclude Include="..\..\..\Source\Engine\Filesystem\FileUtil.h" />
     <ClInclude Include="..\..\..\Source\Engine\GUI\GUI.h" />
     <ClInclude Include="..\..\..\Source\Engine\Include\SillyCatEngine.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Model\Mesh.h" />
     <ClInclude Include="..\..\..\Source\Engine\Model\Model.h" />
     <ClInclude Include="..\..\..\Source\Engine\Model\World.h" />
     <ClInclude Include="..\..\..\Source\Engine\pch.h" />
