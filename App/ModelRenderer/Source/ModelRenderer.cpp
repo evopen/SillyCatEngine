@@ -105,7 +105,7 @@ int main()
         auto gui = std::make_shared<Sce::GUI>(instance, &device, windowSurface, renderPass, swapchain.GetImageCount());
         ImGui::SetCurrentContext(gui->GetContext());
         std::shared_ptr<Sce::Model> ModelLoaded;
-        Sce::Camera Camera(glm::vec3(50, 50, 50), glm::vec3(0, 0, 0));
+        Sce::Camera Camera(glm::vec3(0, 0, 1), glm::vec3(0, 0, 0));
         SUiStatus uiStatus;
 
         while (!glfwWindowShouldClose(windowSurface->GetWindowHandle()))

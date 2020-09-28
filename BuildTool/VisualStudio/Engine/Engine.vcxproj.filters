@@ -45,6 +45,9 @@
     <Filter Include="Engine\Concurrent">
       <UniqueIdentifier>{dc3d3bee-53e5-4d47-91b4-3657d7180987}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Input">
+      <UniqueIdentifier>{af65f8af-633a-48e9-a4fc-bf7ab7c91c7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -163,6 +166,9 @@
     <ClCompile Include="..\..\..\Source\Engine\Model\Mesh.cpp">
       <Filter>Engine\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Input\Input.cpp">
+      <Filter>Engine\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">
@@ -275,6 +281,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\Model\Mesh.h">
       <Filter>Engine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Input\Input.h">
+      <Filter>Engine\Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
