@@ -33,6 +33,7 @@ void VulkanWindowSurface::CreateWindow()
     CenterWindow();
     glfwSetWindowUserPointer(Window, this);
     glfwSetFramebufferSizeCallback(Window, StaticFramebufferResizeCallback);
+    glfwSetCursorPosCallback(Window, StaticCursorPosCallback);
 }
 
 void VulkanWindowSurface::CreateSurface()
@@ -80,6 +81,11 @@ VkRect2D VulkanWindowSurface::GetSurfaceScissor()
     };
 }
 
+void VulkanWindowSurface::InstallCursorCallback(std::function<void(GLFWwindow* window, double x, double y)> inCallback)
+{
+    CursorPosCallbackList.push_back(inCallback);
+}
+
 
 void VulkanWindowSurface::FramebufferResizeCallback(int InWidth, int InHeight)
 {
@@ -92,9 +98,23 @@ void VulkanWindowSurface::FramebufferResizeCallback(int InWidth, int InHeight)
     }
 }
 
+void VulkanWindowSurface::CursorPosCallback(GLFWwindow* window, double x, double y)
+{
+    for (auto& f : CursorPosCallbackList)
+    {
+        f(window, x, y);
+    }
+}
+
 void VulkanWindowSurface::StaticFramebufferResizeCallback(GLFWwindow* Window, int InWidth, int InHeight)
 {
     spdlog::info("new framebuffer width: {}, height: {}", InWidth, InHeight);
     VulkanWindowSurface* WindowSurface = static_cast<VulkanWindowSurface*>(glfwGetWindowUserPointer(Window));
     WindowSurface->FramebufferResizeCallback(InWidth, InHeight);
+}
+
+void VulkanWindowSurface::StaticCursorPosCallback(GLFWwindow* window, double x, double y)
+{
+    VulkanWindowSurface* WindowSurface = static_cast<VulkanWindowSurface*>(glfwGetWindowUserPointer(window));
+    WindowSurface->CursorPosCallback(window, x, y);
 }

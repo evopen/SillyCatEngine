@@ -7,9 +7,10 @@
 
 struct SUiStatus
 {
-    bool bNeedLoadModel        = false;
-    bool bShaderNeedUpdate     = true;
-    size_t currentShadingIndex = 0;
+    bool bNeedLoadModel                = false;
+    bool bShaderNeedUpdate             = true;
+    size_t currentShadingIndex         = 0;
+    spdlog::level::level_enum loglevel = spdlog::level::info;
 };
 
 void LoadModel(std::shared_ptr<Sce::Model>& Model, VulkanMemoryManager* MemoryManager)
@@ -33,6 +34,25 @@ void DrawUI(VulkanCommandBuffer* cmdBuffer, const std::shared_ptr<Sce::GUI>& gui
         if (ImGui::BeginMenu("File"))
         {
             ImGui::MenuItem("Open", nullptr, &status.bNeedLoadModel);
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Option"))
+        {
+            if (ImGui::BeginMenu("Log Level"))
+            {
+                static std::array<bool, 7> enabled;
+                static const std::vector<std::string> Names = SPDLOG_LEVEL_NAMES;
+                for (size_t i = 0; i < enabled.size(); i++)
+                {
+                    if (ImGui::MenuItem(Names[i].c_str(), nullptr, &enabled[i]))
+                    {
+                        std::for_each(enabled.begin(), enabled.end(), [](bool& enable) { enable = false; });
+                        enabled[i] = true;
+                        spdlog::set_level(static_cast<spdlog::level::level_enum>(i));
+                    }
+                }
+                ImGui::EndMenu();
+            }
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
@@ -107,6 +127,7 @@ int main()
         std::shared_ptr<Sce::Model> ModelLoaded;
         Sce::Camera Camera(glm::vec3(0, 0, 1), glm::vec3(0, 0, 0));
         SUiStatus uiStatus;
+        windowSurface->InstallCursorCallback(std::bind(&Sce::Camera::CursorPosCallback, Camera, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
         while (!glfwWindowShouldClose(windowSurface->GetWindowHandle()))
         {
@@ -164,7 +185,7 @@ int main()
                     const auto& mesh      = ModelLoaded->GetMesh(i);
                     VkBuffer VertexBuffer = mesh.GetVertexBuffer();
                     VkBuffer ColorBuffer  = mesh.GetColorBuffer();
-                    
+
                     std::vector<VkDeviceSize> Offsets(2, 0);
                     std::vector<VkBuffer> VertexBuffers = {VertexBuffer, ColorBuffer};
                     vkCmdBindVertexBuffers(cmdBuffer.GetHandle(), 0, static_cast<uint32_t>(VertexBuffers.size()), VertexBuffers.data(), Offsets.data());

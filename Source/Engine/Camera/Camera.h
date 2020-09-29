@@ -3,6 +3,8 @@
 
 #include "Engine/Platform/Platform.h"
 
+class VulkanWindowSurface;
+
 namespace Sce
 {
     class Camera
@@ -13,6 +15,8 @@ namespace Sce
         API glm::mat4 GetViewMatrix() const { return glm::lookAt(Position, Position + Front, Up); }
         API glm::mat4 GetProjectionMatrix() const { return ProjectionMatrix; }
 
+        API void CursorPosCallback(GLFWwindow* window, double x, double y);
+
         void ProcessMouseMovement(float inYawOffset, float inPitchOffset);
 
     private:
@@ -22,6 +26,8 @@ namespace Sce
         glm::vec3 Right;
         glm::vec3 WorldUp;
 
+        std::optional<float> MouseSensitivity;
+
         float Yaw;
         float Pitch;
 
@@ -30,18 +36,6 @@ namespace Sce
 
         glm::mat4 ProjectionMatrix;
 
-        void UpdateCameraVectors()
-        {
-            // Calculate the new Front vector
-            glm::vec3 front;
-            front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-            front.y = sin(glm::radians(Pitch));
-            front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-            Front   = glm::normalize(front);
-            // Also re-calculate the Right and Up vector
-            Right = glm::normalize(glm::cross(Front, WorldUp));
-            // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-            Up = glm::normalize(glm::cross(Right, Front));
-        }
+        void UpdateCameraVectors();
     };
 }

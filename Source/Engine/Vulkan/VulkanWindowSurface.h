@@ -36,6 +36,8 @@ public:
     API VkViewport GetSurfaceViewport();
     API VkRect2D GetSurfaceScissor();
 
+    API void InstallCursorCallback(std::function<void(GLFWwindow* window, double x, double y)> inCallback);
+
 
 private:
     VkSurfaceKHR Surface;
@@ -49,6 +51,10 @@ private:
 
     std::set<VulkanSwapchain*> Swapchains;
 
+    std::vector<std::function<void(GLFWwindow* window, double x, double y)>> CursorPosCallbackList;
+
     void FramebufferResizeCallback(int InWidth, int InHeight);
+    void CursorPosCallback(GLFWwindow* window, double x, double y);
     static void StaticFramebufferResizeCallback(GLFWwindow* Window, int InWidth, int InHeight);
+    static void StaticCursorPosCallback(GLFWwindow* window, double x, double y);
 };
