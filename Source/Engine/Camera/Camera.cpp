@@ -25,7 +25,7 @@ namespace Sce
         , ProjectionMatrix(glm::perspective(glm::radians(Fov), Aspect, 0.1f, 10000.f))
     {
         Front = inLookAt - Position;
-        Pitch = std::clamp(glm::degrees(acos(Front.z / glm::length(Front))), -89.0f, 89.0f);
+        Pitch = std::clamp(glm::degrees(asin(Front.y / glm::length(Front))), -89.0f, 89.0f);
         Yaw   = glm::degrees(acos(Front.x / glm::length(Front)));
         UpdateCameraVectors();
     }
@@ -43,7 +43,7 @@ namespace Sce
             }
             else
             {
-                ProcessMouseMovement((LastMousePos.x - static_cast<float>(x)) * 0.1, (static_cast<float>(y) - LastMousePos.y) * 0.1);
+                ProcessMouseMovement((LastMousePos.x - static_cast<float>(x)) * 0.08f, (static_cast<float>(y) - LastMousePos.y) * 0.08f);
             }
             LastMousePos.x = static_cast<float>(x);
             LastMousePos.y = static_cast<float>(y);
@@ -64,7 +64,6 @@ namespace Sce
 
         // Update Front, Right and Up Vectors using the updated Euler angles
         UpdateCameraVectors();
-        std::cout << Yaw << std::endl;
     }
 
     void Camera::UpdateCameraVectors()

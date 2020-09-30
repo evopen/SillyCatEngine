@@ -80,6 +80,7 @@ void DrawUI(VulkanCommandBuffer* cmdBuffer, const std::shared_ptr<Sce::GUI>& gui
 
     ImGui::End();
 
+    ImGui::SetNextWindowPos({50, 200}, ImGuiCond_Once);
     ImGui::Begin("infos", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
 
     ImGui::Text("Camera Position: %s", glm::to_string(inCamera.GetPosition()).c_str());
