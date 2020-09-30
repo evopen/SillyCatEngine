@@ -12,6 +12,16 @@ namespace Sce
     class Camera
     {
     public:
+        enum class Direction
+        {
+            Forward,
+            Backward,
+            Left,
+            Right,
+            Up,
+            Down
+        };
+
         API Camera(glm::vec3 inPosition, float inYaw, float inPitch, glm::vec3 inWorldUp = {0, 1, 0}, float inAspect = 4.0 / 3.0, float inFov = 60);
         API Camera(glm::vec3 inPosition, glm::vec3 inLookAt, glm::vec3 inWorldUp = {0, 1, 0}, float inAspect = 4.0 / 3.0, float inFov = 60);
         API glm::mat4 GetViewMatrix() const { return glm::lookAt(Position, Position + Front, Up); }
@@ -28,6 +38,8 @@ namespace Sce
         API void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
         void ProcessMouseMovement(float inYawOffset, float inPitchOffset);
+
+        API void ProcessKeyboard(Direction direction);
 
     private:
         glm::vec3 Position;

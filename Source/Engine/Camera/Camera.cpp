@@ -26,7 +26,11 @@ namespace Sce
     {
         Front = inLookAt - Position;
         Pitch = std::clamp(glm::degrees(asin(Front.y / glm::length(Front))), -89.0f, 89.0f);
-        Yaw   = glm::degrees(acos(Front.x / glm::length(Front)));
+        Yaw   = glm::degrees(asin(Front.z / glm::length(Front)));
+        if (Front.z >= 0 && Front.x < 0)
+        {
+            Yaw = 180.f - Yaw;
+        }
         UpdateCameraVectors();
     }
 
@@ -43,7 +47,7 @@ namespace Sce
             }
             else
             {
-                ProcessMouseMovement((LastMousePos.x - static_cast<float>(x)) * 0.08f, (static_cast<float>(y) - LastMousePos.y) * 0.08f);
+                ProcessMouseMovement((static_cast<float>(x) - LastMousePos.x) * 0.08f, (LastMousePos.y - static_cast<float>(y)) * 0.08f);
             }
             LastMousePos.x = static_cast<float>(x);
             LastMousePos.y = static_cast<float>(y);
@@ -76,6 +80,31 @@ namespace Sce
 
         // Update Front, Right and Up Vectors using the updated Euler angles
         UpdateCameraVectors();
+    }
+
+    void Camera::ProcessKeyboard(Direction direction)
+    {
+        switch (direction)
+        {
+        case Direction::Forward:
+            Position += Front;
+            break;
+        case Direction::Backward:
+            Position -= Front;
+            break;
+        case Direction::Left:
+            Position -= Right;
+            break;
+        case Direction::Right:
+            Position += Right;
+            break;
+        case Direction::Up:
+            Position += Up;
+            break;
+        case Direction::Down:
+            Position -= Up;
+            break;
+        }
     }
 
 
