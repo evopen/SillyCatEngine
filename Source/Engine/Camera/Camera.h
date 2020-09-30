@@ -3,6 +3,8 @@
 
 #include "Engine/Platform/Platform.h"
 
+#include <iostream>
+
 class VulkanWindowSurface;
 
 namespace Sce
@@ -14,6 +16,13 @@ namespace Sce
         API Camera(glm::vec3 inPosition, glm::vec3 inLookAt, glm::vec3 inWorldUp = {0, 1, 0}, float inAspect = 4.0 / 3.0, float inFov = 60);
         API glm::mat4 GetViewMatrix() const { return glm::lookAt(Position, Position + Front, Up); }
         API glm::mat4 GetProjectionMatrix() const { return ProjectionMatrix; }
+        API glm::vec3 GetPosition() const { return Position; }
+        API glm::vec3 GetFront() const { return Front; }
+        API glm::vec3 GetRight() const { return Right; }
+        API float GetYaw() const { return Yaw; }
+        API float GetPitch() const { return Pitch; }
+        API float GetFov() const { return Fov; }
+        API float GetAspect() const { return Aspect; }
 
         API void CursorPosCallback(GLFWwindow* window, double x, double y);
 
@@ -36,6 +45,8 @@ namespace Sce
 
         glm::mat4 ProjectionMatrix;
 
+        bool PressingRightButton;
+        glm::vec2 LastMousePos;
         void UpdateCameraVectors();
     };
 }

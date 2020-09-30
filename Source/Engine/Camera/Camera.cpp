@@ -34,6 +34,24 @@ namespace Sce
     void Camera::CursorPosCallback(GLFWwindow* window, double x, double y)
     {
         Logger::Get()->debug("MousePos:{} {}", x, y);
+
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+        {
+            if (!PressingRightButton)
+            {
+                PressingRightButton = true;
+            }
+            else
+            {
+                ProcessMouseMovement((LastMousePos.x - static_cast<float>(x)) * 0.1, (static_cast<float>(y) - LastMousePos.y) * 0.1);
+            }
+            LastMousePos.x = static_cast<float>(x);
+            LastMousePos.y = static_cast<float>(y);
+        }
+        else
+        {
+            PressingRightButton = false;
+        }
     }
 
     void Camera::ProcessMouseMovement(float inYawOffset, float inPitchOffset)
@@ -42,13 +60,11 @@ namespace Sce
         Pitch += inPitchOffset;
 
         // Make sure that when pitch is out of bounds, screen doesn't get flipped
-        if (Pitch > 89.0f)
-            Pitch = 89.0f;
-        else if (Pitch < -89.0f)
-            Pitch = -89.0f;
+        Pitch = std::clamp(Pitch, -89.f, 89.f);
 
         // Update Front, Right and Up Vectors using the updated Euler angles
         UpdateCameraVectors();
+        std::cout << Yaw << std::endl;
     }
 
     void Camera::UpdateCameraVectors()

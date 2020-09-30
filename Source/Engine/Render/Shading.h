@@ -20,8 +20,9 @@ namespace Sce
     class Shading : public std::enable_shared_from_this<Shading>
     {
     public:
+        virtual ~Shading() = default;
         API Shading(VulkanDevice* inDevice, std::shared_ptr<VulkanGraphicsShaderProgram> inShaderProgram, ShadingInfo inShadingInfo, std::shared_ptr<VulkanGraphicsPipelineState>& inPipelineState);
-
+        virtual API void UpdateDescriptor(){};
 
         API void BindDescriptorSet(VulkanCommandBuffer* inCmdBuf);
 

@@ -24,7 +24,7 @@ void LoadModel(std::shared_ptr<Sce::Model>& Model, VulkanMemoryManager* MemoryMa
     }
 }
 
-void DrawUI(VulkanCommandBuffer* cmdBuffer, const std::shared_ptr<Sce::GUI>& gui, const std::vector<Sce::ShadingInfo>& ShadingList, SUiStatus& status)
+void DrawUI(VulkanCommandBuffer* cmdBuffer, const std::shared_ptr<Sce::GUI>& gui, const std::vector<Sce::ShadingInfo>& ShadingList, const Sce::Camera& inCamera, SUiStatus& status)
 {
     ImGuiIO& io = ImGui::GetIO();
     gui->NewFrame();
@@ -79,6 +79,16 @@ void DrawUI(VulkanCommandBuffer* cmdBuffer, const std::shared_ptr<Sce::GUI>& gui
     }
 
     ImGui::End();
+
+    ImGui::Begin("infos", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
+
+    ImGui::Text("Camera Position: %s", glm::to_string(inCamera.GetPosition()).c_str());
+    ImGui::Text("Camera Front: %s", glm::to_string(inCamera.GetFront()).c_str());
+    ImGui::Text("Camera Pitch: %f", inCamera.GetPitch());
+    ImGui::Text("Camera Yaw: %f", inCamera.GetYaw());
+
+    ImGui::End();
+
     gui->Render(cmdBuffer);
 }
 
@@ -129,9 +139,9 @@ int main()
         auto gui = std::make_shared<Sce::GUI>(instance, &device, windowSurface, renderPass, swapchain.GetImageCount());
         ImGui::SetCurrentContext(gui->GetContext());
         std::shared_ptr<Sce::Model> ModelLoaded;
-        Sce::Camera Camera(glm::vec3(0, 0, 1), glm::vec3(0, 0, 0));
+        Sce::Camera Camera(glm::vec3(2, 0, 1), glm::vec3(0, 0, 0));
         SUiStatus uiStatus;
-        windowSurface->InstallCursorCallback(std::bind(&Sce::Camera::CursorPosCallback, Camera, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+        windowSurface->InstallCursorCallback(std::bind(&Sce::Camera::CursorPosCallback, &Camera, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
         while (!glfwWindowShouldClose(windowSurface->GetWindowHandle()))
         {
@@ -151,11 +161,11 @@ int main()
                     pipelineState.reset(new VulkanGraphicsPipelineState(shaderProgram));
 
                     if (ShadingList[uiStatus.currentShadingIndex].name == "Vertex Color")
-                        shading.reset(new VertexColorShading(&device, shaderProgram, ShadingList[uiStatus.currentShadingIndex], pipelineState, Camera));
+                        shading.reset(new VertexColorShading(&device, shaderProgram, ShadingList[uiStatus.currentShadingIndex], pipelineState, &Camera));
                     else if (ShadingList[uiStatus.currentShadingIndex].name == "Base Color")
-                        shading.reset(new BaseColorShading(&device, shaderProgram, ShadingList[uiStatus.currentShadingIndex], pipelineState, Camera));
+                        shading.reset(new BaseColorShading(&device, shaderProgram, ShadingList[uiStatus.currentShadingIndex], pipelineState, &Camera));
                     else if (ShadingList[uiStatus.currentShadingIndex].name == "Wireframe")
-                        shading.reset(new WireframeShading(&device, shaderProgram, ShadingList[uiStatus.currentShadingIndex], pipelineState, Camera));
+                        shading.reset(new WireframeShading(&device, shaderProgram, ShadingList[uiStatus.currentShadingIndex], pipelineState, &Camera));
 
                     pipeline.reset(new VulkanGraphicsPipeline(&device, renderPass, pipelineState));
 
@@ -195,13 +205,14 @@ int main()
                     vkCmdBindVertexBuffers(cmdBuffer.GetHandle(), 0, static_cast<uint32_t>(VertexBuffers.size()), VertexBuffers.data(), Offsets.data());
                     vkCmdBindIndexBuffer(cmdBuffer.GetHandle(), mesh.GetIndexBuffer(), 0, VK_INDEX_TYPE_UINT32);
                     VkDescriptorSet descriptorSet = shaderProgram->GetDescriptorSetHandle();
+                    shading->UpdateDescriptor();
                     shading->BindDescriptorSet(&cmdBuffer);
                     vkCmdDrawIndexed(cmdBuffer.GetHandle(), mesh.GetIndexCount(), 1, 0, 0, 0);
                 }
                 cmdBuffer.PossessObject(ModelLoaded);
             }
 
-            DrawUI(&cmdBuffer, gui, ShadingList, uiStatus);
+            DrawUI(&cmdBuffer, gui, ShadingList, Camera, uiStatus);
 
             renderPass->End();
             swapchain.CmdTransitImagePresentSrc(&cmdBuffer);

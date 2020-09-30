@@ -5,12 +5,13 @@
 class BaseColorShading : public Sce::Shading
 {
 public:
-    BaseColorShading(VulkanDevice* inDevice, std::shared_ptr<VulkanGraphicsShaderProgram> inShaderProgram, Sce::ShadingInfo inShadingInfo, std::shared_ptr<VulkanGraphicsPipelineState>& inPipelineState, const Sce::Camera& inCamera)
+    BaseColorShading(VulkanDevice* inDevice, std::shared_ptr<VulkanGraphicsShaderProgram> inShaderProgram, Sce::ShadingInfo inShadingInfo, std::shared_ptr<VulkanGraphicsPipelineState>& inPipelineState, Sce::Camera* inCamera)
         : Shading(inDevice, inShaderProgram, inShadingInfo, inPipelineState)
+        , Camera(inCamera)
         , MVP_Buffer(VK_NULL_HANDLE)
     {
-        MVP.View       = inCamera.GetViewMatrix();
-        MVP.Projection = inCamera.GetProjectionMatrix();
+        MVP.View       = inCamera->GetViewMatrix();
+        MVP.Projection = inCamera->GetProjectionMatrix();
         MVP.Model      = glm::identity<glm::mat4>();
 
         MVP_Buffer = inDevice->GetMemoryManager()->CreateBuffer(&MVP, sizeof(S_MVP), VMA_MEMORY_USAGE_CPU_TO_GPU, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT);
@@ -32,6 +33,18 @@ public:
         vkUpdateDescriptorSets(inDevice->GetDeviceHandle(), 1, &WriteDescriptorSet, 0, nullptr);
     }
 
+
+    void UpdateDescriptor() override
+    {
+        MVP.View       = Camera->GetViewMatrix();
+        MVP.Projection = Camera->GetProjectionMatrix();
+        MVP.Model      = glm::identity<glm::mat4>();
+
+        void* data = Device->GetMemoryManager()->MapBuffer(MVP_Buffer);
+        memcpy(data, &MVP, sizeof(MVP));
+        Device->GetMemoryManager()->UnMapBuffer(MVP_Buffer);
+    }
+
     ~BaseColorShading();
 
 private:
@@ -42,6 +55,7 @@ private:
         glm::mat4 Projection;
     } MVP;
     VkBuffer MVP_Buffer;
+    Sce::Camera* Camera;
 };
 
 inline BaseColorShading::~BaseColorShading()
