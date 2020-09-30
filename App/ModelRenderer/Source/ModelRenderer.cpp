@@ -4,6 +4,7 @@
 #include "Shader/VertexColor/VertexColor.h"
 #include "Shader/WireFrame/Wireframe.h"
 
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 struct SUiStatus
 {
@@ -47,8 +48,9 @@ void DrawUI(VulkanCommandBuffer* cmdBuffer, const std::shared_ptr<Sce::GUI>& gui
                     if (ImGui::MenuItem(Names[i].c_str(), nullptr, &enabled[i]))
                     {
                         std::for_each(enabled.begin(), enabled.end(), [](bool& enable) { enable = false; });
-                        enabled[i] = true;
-                        spdlog::set_level(static_cast<spdlog::level::level_enum>(i));
+                        enabled[i]      = true;
+                        status.loglevel = static_cast<spdlog::level::level_enum>(i);
+                        Sce::Logger::Get()->set_level(status.loglevel);
                     }
                 }
                 ImGui::EndMenu();
@@ -101,6 +103,9 @@ int main()
     const std::filesystem::path ShaderBasePath = "App/ModelRenderer/Source/Shader";
     try
     {
+        auto sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+        spdlog::register_logger(Sce::Logger::Setup(sink));
+
         auto ShadingList = LoadShadingList(ShaderBasePath);
 
         auto instance = std::make_shared<VulkanInstance>(false, true);

@@ -171,6 +171,7 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Source\Engine\GUI\GUI.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Input\Input.cpp" />
+    <ClCompile Include="..\..\..\Source\Engine\Logger\Logger.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Model\Mesh.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Model\Model.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Model\World.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="..\..\..\Source\Engine\GUI\GUI.h" />
     <ClInclude Include="..\..\..\Source\Engine\Include\SillyCatEngine.h" />
     <ClInclude Include="..\..\..\Source\Engine\Input\Input.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Logger\Logger.h" />
     <ClInclude Include="..\..\..\Source\Engine\Model\Mesh.h" />
     <ClInclude Include="..\..\..\Source\Engine\Model\Model.h" />
     <ClInclude Include="..\..\..\Source\Engine\Model\World.h" />

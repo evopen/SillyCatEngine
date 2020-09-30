@@ -1,7 +1,7 @@
 #include "Engine/pch.h"
 
 #include "Camera.h"
-#include "Engine/Vulkan/VulkanWindowSurface.h"
+#include "Engine/Logger/Logger.h"
 
 namespace Sce
 {
@@ -33,7 +33,7 @@ namespace Sce
 
     void Camera::CursorPosCallback(GLFWwindow* window, double x, double y)
     {
-        spdlog::warn("numerous{} {}", x, y);
+        Logger::Get()->debug("MousePos:{} {}", x, y);
     }
 
     void Camera::ProcessMouseMovement(float inYawOffset, float inPitchOffset)

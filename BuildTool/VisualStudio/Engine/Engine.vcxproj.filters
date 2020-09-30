@@ -48,6 +48,12 @@
     <Filter Include="Engine\Input">
       <UniqueIdentifier>{af65f8af-633a-48e9-a4fc-bf7ab7c91c7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Include">
+      <UniqueIdentifier>{0129973c-5488-4c14-9c39-3362ecfec0cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Logger">
+      <UniqueIdentifier>{51b564da-2670-4585-a2d8-a3be5d5d119f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -169,6 +175,9 @@
     <ClCompile Include="..\..\..\Source\Engine\Input\Input.cpp">
       <Filter>Engine\Input</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Engine\Logger\Logger.cpp">
+      <Filter>Engine\Logger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanInstance.h">
@@ -249,9 +258,6 @@
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanImageView.h">
       <Filter>Engine\Vulkan</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\Engine\Include\SillyCatEngine.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\Model\Model.h">
       <Filter>Engine\Model</Filter>
     </ClInclude>
@@ -284,6 +290,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Engine\Input\Input.h">
       <Filter>Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Include\SillyCatEngine.h">
+      <Filter>Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Engine\Logger\Logger.h">
+      <Filter>Engine\Logger</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

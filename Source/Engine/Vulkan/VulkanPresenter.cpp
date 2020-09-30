@@ -1,9 +1,11 @@
 #include "Engine/pch.h"
 
+#include "Engine/Logger/Logger.h"
 #include "VulkanPresenter.h"
 #include "VulkanQueue.h"
 #include "VulkanSemaphore.h"
 #include "VulkanSwapchain.h"
+
 
 VulkanPresenter::VulkanPresenter(VulkanQueue* InPresentQueue, VulkanSwapchain* InSwapchain)
     : PresentQueue(InPresentQueue)
@@ -24,6 +26,6 @@ void VulkanPresenter::Present(std::vector<VkSemaphore> InWaitSemaphores) const
         .pSwapchains        = Swapchains.data(),
         .pImageIndices      = Indexes.data(),
     };
-    spdlog::info("presenting image no.{}", Swapchain->GetRenderIndex());
+    Sce::Logger::Get()->debug("presenting image no.{}", Swapchain->GetRenderIndex());
     vkQueuePresentKHR(PresentQueue->GetHandle(), &PresentInfo);
 }

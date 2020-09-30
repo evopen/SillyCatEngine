@@ -27,3 +27,4 @@
 #include <Engine/GUI/GUI.h>
 #include <Engine/Concurrent/Thread.h>
 #include <Engine/Render/Shading.h>
+#include <Engine/Logger/Logger.h>
