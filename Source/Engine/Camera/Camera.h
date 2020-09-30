@@ -25,6 +25,7 @@ namespace Sce
         API float GetAspect() const { return Aspect; }
 
         API void CursorPosCallback(GLFWwindow* window, double x, double y);
+        API void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
         void ProcessMouseMovement(float inYawOffset, float inPitchOffset);
 

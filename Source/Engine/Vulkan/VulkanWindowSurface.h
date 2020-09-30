@@ -38,6 +38,7 @@ public:
 
     API void InstallCursorCallback(std::function<void(GLFWwindow* window, double x, double y)> inCallback);
     API void InstallMouseButtonCallback(std::function<void(GLFWwindow* window, int button, int action, int mods)> inCallback);
+    API void InstallKeyCallback(std::function<void(GLFWwindow* window, int key, int scancode, int action, int mods)> inCallback);
 
 
 private:
@@ -54,11 +55,14 @@ private:
 
     std::vector<std::function<void(GLFWwindow* window, double x, double y)>> CursorPosCallbackList;
     std::vector<std::function<void(GLFWwindow* window, int button, int action, int mods)>> MouseButtonCallbackList;
+    std::vector<std::function<void(GLFWwindow* window, int key, int scancode, int action, int mods)>> KeyCallbackList;
 
     void FramebufferResizeCallback(int InWidth, int InHeight);
     void CursorPosCallback(GLFWwindow* window, double x, double y);
     void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+    void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
     static void StaticFramebufferResizeCallback(GLFWwindow* Window, int InWidth, int InHeight);
     static void StaticCursorPosCallback(GLFWwindow* window, double x, double y);
     static void StaticMouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+    static void StaticKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 };

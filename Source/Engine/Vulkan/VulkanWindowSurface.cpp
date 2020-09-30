@@ -34,6 +34,7 @@ void VulkanWindowSurface::CreateWindow()
     glfwSetWindowUserPointer(Window, this);
     glfwSetFramebufferSizeCallback(Window, StaticFramebufferResizeCallback);
     glfwSetCursorPosCallback(Window, StaticCursorPosCallback);
+    glfwSetKeyCallback(Window, StaticKeyCallback);
 }
 
 void VulkanWindowSurface::CreateSurface()
@@ -91,6 +92,11 @@ void VulkanWindowSurface::InstallMouseButtonCallback(std::function<void(GLFWwind
     MouseButtonCallbackList.push_back(inCallback);
 }
 
+void VulkanWindowSurface::InstallKeyCallback(std::function<void(GLFWwindow* window, int key, int scancode, int action, int mods)> inCallback)
+{
+    KeyCallbackList.push_back(inCallback);
+}
+
 
 void VulkanWindowSurface::FramebufferResizeCallback(int InWidth, int InHeight)
 {
@@ -119,6 +125,14 @@ void VulkanWindowSurface::MouseButtonCallback(GLFWwindow* window, int button, in
     }
 }
 
+void VulkanWindowSurface::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    for (auto& f : KeyCallbackList)
+    {
+        f(window, key, scancode, action, mods);
+    }
+}
+
 void VulkanWindowSurface::StaticFramebufferResizeCallback(GLFWwindow* Window, int InWidth, int InHeight)
 {
     spdlog::info("new framebuffer width: {}, height: {}", InWidth, InHeight);
@@ -136,4 +150,10 @@ void VulkanWindowSurface::StaticMouseButtonCallback(GLFWwindow* window, int butt
 {
     VulkanWindowSurface* WindowSurface = static_cast<VulkanWindowSurface*>(glfwGetWindowUserPointer(window));
     WindowSurface->MouseButtonCallback(window, button, action, mods);
+}
+
+void VulkanWindowSurface::StaticKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    VulkanWindowSurface* WindowSurface = static_cast<VulkanWindowSurface*>(glfwGetWindowUserPointer(window));
+    WindowSurface->KeyCallback(window, key, scancode, action, mods);
 }

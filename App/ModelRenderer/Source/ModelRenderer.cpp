@@ -143,6 +143,7 @@ int main()
         Sce::Camera Camera(glm::vec3(2, 0, 1), glm::vec3(0, 0, 0));
         SUiStatus uiStatus;
         windowSurface->InstallCursorCallback(std::bind(&Sce::Camera::CursorPosCallback, &Camera, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+        windowSurface->InstallKeyCallback(std::bind(&Sce::Camera::KeyCallback, &Camera, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5));
 
         while (!glfwWindowShouldClose(windowSurface->GetWindowHandle()))
         {

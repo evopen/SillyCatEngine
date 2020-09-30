@@ -54,6 +54,18 @@ namespace Sce
         }
     }
 
+    void Camera::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+    {
+        if (key == GLFW_KEY_W && action == GLFW_PRESS)
+        {
+            Position = Position + glm::normalize(Front);
+        }
+        else if (key == GLFW_KEY_S && action == GLFW_PRESS)
+        {
+            Position = Position - glm::normalize(Front);
+        }
+    }
+
     void Camera::ProcessMouseMovement(float inYawOffset, float inPitchOffset)
     {
         Yaw += inYawOffset;
@@ -65,6 +77,7 @@ namespace Sce
         // Update Front, Right and Up Vectors using the updated Euler angles
         UpdateCameraVectors();
     }
+
 
     void Camera::UpdateCameraVectors()
     {
