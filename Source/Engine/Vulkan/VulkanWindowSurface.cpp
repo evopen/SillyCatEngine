@@ -86,6 +86,11 @@ void VulkanWindowSurface::InstallCursorCallback(std::function<void(GLFWwindow* w
     CursorPosCallbackList.push_back(inCallback);
 }
 
+void VulkanWindowSurface::InstallMouseButtonCallback(std::function<void(GLFWwindow* window, int button, int action, int mods)> inCallback)
+{
+    MouseButtonCallbackList.push_back(inCallback);
+}
+
 
 void VulkanWindowSurface::FramebufferResizeCallback(int InWidth, int InHeight)
 {
@@ -106,6 +111,14 @@ void VulkanWindowSurface::CursorPosCallback(GLFWwindow* window, double x, double
     }
 }
 
+void VulkanWindowSurface::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+    for (auto& f : MouseButtonCallbackList)
+    {
+        f(window, button, action, mods);
+    }
+}
+
 void VulkanWindowSurface::StaticFramebufferResizeCallback(GLFWwindow* Window, int InWidth, int InHeight)
 {
     spdlog::info("new framebuffer width: {}, height: {}", InWidth, InHeight);
@@ -117,4 +130,10 @@ void VulkanWindowSurface::StaticCursorPosCallback(GLFWwindow* window, double x, 
 {
     VulkanWindowSurface* WindowSurface = static_cast<VulkanWindowSurface*>(glfwGetWindowUserPointer(window));
     WindowSurface->CursorPosCallback(window, x, y);
+}
+
+void VulkanWindowSurface::StaticMouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+    VulkanWindowSurface* WindowSurface = static_cast<VulkanWindowSurface*>(glfwGetWindowUserPointer(window));
+    WindowSurface->MouseButtonCallback(window, button, action, mods);
 }

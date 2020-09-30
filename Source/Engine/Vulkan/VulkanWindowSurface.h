@@ -37,6 +37,7 @@ public:
     API VkRect2D GetSurfaceScissor();
 
     API void InstallCursorCallback(std::function<void(GLFWwindow* window, double x, double y)> inCallback);
+    API void InstallMouseButtonCallback(std::function<void(GLFWwindow* window, int button, int action, int mods)> inCallback);
 
 
 private:
@@ -52,9 +53,12 @@ private:
     std::set<VulkanSwapchain*> Swapchains;
 
     std::vector<std::function<void(GLFWwindow* window, double x, double y)>> CursorPosCallbackList;
+    std::vector<std::function<void(GLFWwindow* window, int button, int action, int mods)>> MouseButtonCallbackList;
 
     void FramebufferResizeCallback(int InWidth, int InHeight);
     void CursorPosCallback(GLFWwindow* window, double x, double y);
+    void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
     static void StaticFramebufferResizeCallback(GLFWwindow* Window, int InWidth, int InHeight);
     static void StaticCursorPosCallback(GLFWwindow* window, double x, double y);
+    static void StaticMouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 };

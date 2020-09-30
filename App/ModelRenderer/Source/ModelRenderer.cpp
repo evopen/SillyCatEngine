@@ -4,7 +4,6 @@
 #include "Shader/VertexColor/VertexColor.h"
 #include "Shader/WireFrame/Wireframe.h"
 
-#include <spdlog/sinks/stdout_color_sinks.h>
 
 struct SUiStatus
 {
