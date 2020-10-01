@@ -91,7 +91,7 @@ int main()
         MVP.Model           = glm::identity<glm::mat4>();
         VkBuffer MVP_Buffer = MemManager.CreateBuffer(&MVP, sizeof(S_MVP), VMA_MEMORY_USAGE_CPU_TO_GPU, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT);
 
-        Texture2D Texture("C:/Users/DHH/Desktop/cat/IMG_20200816_094529.jpg");
+        Texture Texture("C:/Users/DHH/Desktop/cat/IMG_20200816_094529.jpg");
         VkImage TextureImage = Texture.GetVkImageHandle(&MemManager);
 
         VkDescriptorSetLayout DescriptorSetLayout     = TrianglePipelineState.GetDescriptorSetLayoutHandle();

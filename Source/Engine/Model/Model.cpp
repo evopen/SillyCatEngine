@@ -1,9 +1,8 @@
 #include "Engine/pch.h"
 
+#include "Engine/Logger/Logger.h"
 #include "Engine/Vulkan/VulkanMemoryManager.h"
 #include "Model.h"
-
-#include <ranges>
 
 namespace Sce
 {
@@ -17,6 +16,56 @@ namespace Sce
         {
             throw std::runtime_error(Importer.GetErrorString());
         }
+
+        if (Scene->HasMeshes())
+            LoadMesh(Scene);
+
+        if (Scene->HasMaterials())
+        {
+            LoadMaterial(Scene);
+        }
+    }
+
+    Model::~Model()
+    {
+    }
+
+
+    uint32_t Model::GetVertexCount() const
+    {
+        return std::accumulate(Meshes.begin(), Meshes.end(), 0, [](uint32_t sum, const Mesh& mesh) { return sum + static_cast<uint32_t>(mesh.GetVertexCount()); });
+    }
+
+    uint32_t Model::GetIndexCount() const
+    {
+        return std::accumulate(Meshes.begin(), Meshes.end(), 0, [](uint32_t sum, const Mesh& mesh) { return sum + static_cast<uint32_t>(mesh.GetIndexCount()); });
+    }
+
+
+    std::vector<VkVertexInputBindingDescription> Model::GetVertexInputBindingDescriptions()
+    {
+
+        VkVertexInputBindingDescription VertexBindingDesc = {
+            .binding   = 0,
+            .stride    = Mesh::GetVertexStride(),
+            .inputRate = VK_VERTEX_INPUT_RATE_VERTEX,
+        };
+
+        VkVertexInputBindingDescription ColorBindingDesc = {
+            .binding   = 1,
+            .stride    = Mesh::GetColorStride(),
+            .inputRate = VK_VERTEX_INPUT_RATE_VERTEX,
+        };
+
+        std::vector<VkVertexInputBindingDescription> Descriptions(2);
+        Descriptions[0] = VertexBindingDesc;
+        Descriptions[1] = ColorBindingDesc;
+
+        return Descriptions;
+    }
+
+    void Model::LoadMesh(const aiScene* Scene)
+    {
         Meshes.reserve(Scene->mNumMeshes);
 
 
@@ -64,41 +113,12 @@ namespace Sce
         }
     }
 
-    Model::~Model()
+    void Model::LoadMaterial(const aiScene* scene)
     {
-    }
-
-
-    uint32_t Model::GetVertexCount() const
-    {
-        return std::accumulate(Meshes.begin(), Meshes.end(), 0, [](uint32_t sum, const Mesh& mesh) { return sum + static_cast<uint32_t>(mesh.GetVertexCount()); });
-    }
-
-    uint32_t Model::GetIndexCount() const
-    {
-        return std::accumulate(Meshes.begin(), Meshes.end(), 0, [](uint32_t sum, const Mesh& mesh) { return sum + static_cast<uint32_t>(mesh.GetIndexCount()); });
-    }
-
-
-    std::vector<VkVertexInputBindingDescription> Model::GetVertexInputBindingDescriptions()
-    {
-
-        VkVertexInputBindingDescription VertexBindingDesc = {
-            .binding   = 0,
-            .stride    = Mesh::GetVertexStride(),
-            .inputRate = VK_VERTEX_INPUT_RATE_VERTEX,
-        };
-
-        VkVertexInputBindingDescription ColorBindingDesc = {
-            .binding   = 1,
-            .stride    = Mesh::GetColorStride(),
-            .inputRate = VK_VERTEX_INPUT_RATE_VERTEX,
-        };
-
-        std::vector<VkVertexInputBindingDescription> Descriptions(2);
-        Descriptions[0] = VertexBindingDesc;
-        Descriptions[1] = ColorBindingDesc;
-
-        return Descriptions;
+        Materials.reserve(scene->mNumMaterials);
+        for (size_t i = 0; i < scene->mNumMaterials; ++i)
+        {
+            Materials.emplace_back(scene->mMaterials[i], scene->mTextures);
+        }
     }
 }

@@ -172,6 +172,7 @@
     <ClCompile Include="..\..\..\Source\Engine\GUI\GUI.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Input\Input.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Logger\Logger.cpp" />
+    <ClCompile Include="..\..\..\Source\Engine\Model\Material.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Model\Mesh.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Model\Model.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Model\World.cpp" />
@@ -181,7 +182,7 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Source\Engine\Render\Definitions.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Render\Shading.cpp" />
-    <ClCompile Include="..\..\..\Source\Engine\Texture\Texture2D.cpp" />
+    <ClCompile Include="..\..\..\Source\Engine\Texture\Texture.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanCommandBuffer.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanComputer.cpp" />
     <ClCompile Include="..\..\..\Source\Engine\Vulkan\VulkanDebug.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="..\..\..\Source\Engine\Include\SillyCatEngine.h" />
     <ClInclude Include="..\..\..\Source\Engine\Input\Input.h" />
     <ClInclude Include="..\..\..\Source\Engine\Logger\Logger.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Model\Material.h" />
     <ClInclude Include="..\..\..\Source\Engine\Model\Mesh.h" />
     <ClInclude Include="..\..\..\Source\Engine\Model\Model.h" />
     <ClInclude Include="..\..\..\Source\Engine\Model\World.h" />
@@ -245,7 +247,7 @@
     <ClInclude Include="..\..\..\Source\Engine\Platform\Platform.h" />
     <ClInclude Include="..\..\..\Source\Engine\Render\Definitions.h" />
     <ClInclude Include="..\..\..\Source\Engine\Render\Shading.h" />
-    <ClInclude Include="..\..\..\Source\Engine\Texture\Texture2D.h" />
+    <ClInclude Include="..\..\..\Source\Engine\Texture\Texture.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanCommandBuffer.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanComputer.h" />
     <ClInclude Include="..\..\..\Source\Engine\Vulkan\VulkanDescriptorSets.h" />

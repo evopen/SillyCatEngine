@@ -3,6 +3,7 @@
 #include "Engine/pch.h"
 
 #include "Engine/Platform/Platform.h"
+#include "Material.h"
 #include "Mesh.h"
 
 #include <numeric>
@@ -30,7 +31,11 @@ namespace Sce
 
     private:
         std::vector<Mesh> Meshes;
+        std::vector<Material> Materials;
         std::string Name;
         VulkanMemoryManager* MemoryManager;
+
+        void LoadMesh(const aiScene* Scene);
+        void LoadMaterial(const aiScene* scene);
     };
 }
