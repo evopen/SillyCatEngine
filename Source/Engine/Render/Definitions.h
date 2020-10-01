@@ -36,8 +36,16 @@ struct ShaderReflectionInfo
         size_t Size;
         uint32_t Binding;
     };
+
+    struct Sampler2DInfo
+    {
+        std::string Name;
+        uint32_t Binding;
+    };
+
     std::vector<InputInfo> InputInfos;
     std::vector<UniformBlockInfo> UniformBlockInfos;
+    std::vector<Sampler2DInfo> Sampler2DInfos;
 };
 
 

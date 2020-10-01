@@ -201,9 +201,18 @@ int main()
             {
                 for (size_t i = 0; i < ModelLoaded->GetMeshCount(); i++)
                 {
-                    const auto& mesh      = ModelLoaded->GetMesh(i);
+                    auto mesh             = ModelLoaded->GetMesh(i);
                     VkBuffer VertexBuffer = mesh->GetVertexBuffer();
-                    VkBuffer ColorBuffer  = mesh->GetColorBuffer();
+                    VkBuffer ColorBuffer;
+                    if (ShadingList[uiStatus.currentShadingIndex].name == "Base Color")
+                    {
+                        static_cast<BaseColorShading*>(shading.get())->SetMesh(mesh);
+                        ColorBuffer = mesh->GetTextureCoordBuffer();
+                    }
+                    else
+                    {
+                        ColorBuffer = mesh->GetColorBuffer();
+                    }
 
                     std::vector<VkDeviceSize> Offsets(2, 0);
                     std::vector<VkBuffer> VertexBuffers = {VertexBuffer, ColorBuffer};

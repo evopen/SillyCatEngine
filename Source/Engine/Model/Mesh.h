@@ -19,6 +19,7 @@ namespace Sce
         VkBuffer GetVertexBuffer() const { return VertexBuffer; }
         VkBuffer GetIndexBuffer() const { return IndexBuffer; }
         VkBuffer GetColorBuffer() const { return ColorBuffer.has_value() ? ColorBuffer.value() : throw std::runtime_error("no color buffer"); }
+        VkBuffer GetTextureCoordBuffer() const { return TextureCoordBuffer.has_value() ? TextureCoordBuffer.value() : throw std::runtime_error("no texture"); }
 
         std::shared_ptr<Material> GetMaterial() { return MeshMaterial; }
 
@@ -41,6 +42,7 @@ namespace Sce
         VkBuffer VertexBuffer;
         VkBuffer IndexBuffer;
         std::optional<VkBuffer> ColorBuffer;
+        std::optional<VkBuffer> TextureCoordBuffer;
 
         void CreateVertexBuffer();
         void CreateIndexBuffer();

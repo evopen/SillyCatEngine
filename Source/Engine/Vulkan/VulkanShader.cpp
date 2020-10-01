@@ -49,6 +49,17 @@ std::vector<VkDescriptorSetLayoutBinding> VulkanShader::GetDescriptorSetLayoutBi
         Bindings[i].descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
         Bindings[i].stageFlags      = ToVulkanShaderType(ShaderType);
     }
+
+    for (size_t i = 0; i < ReflectionInfo.Sampler2DInfos.size(); i++)
+    {
+        Bindings.emplace_back(VkDescriptorSetLayoutBinding{
+            .binding         = ReflectionInfo.Sampler2DInfos[i].Binding,
+            .descriptorType  = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
+            .descriptorCount = 1,
+            .stageFlags      = static_cast<VkShaderStageFlags>(ToVulkanShaderType(ShaderType)),
+        });
+    }
+
     return Bindings;
 }
 
