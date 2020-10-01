@@ -24,14 +24,14 @@ namespace Sce
         API uint32_t GetIndexCount() const;
 
         API uint32_t GetMeshCount() { return static_cast<uint32_t>(Meshes.size()); }
-        API const Mesh& GetMesh(size_t index) const { return Meshes[index]; }
+        API std::shared_ptr<Mesh> GetMesh(size_t index) const { return Meshes[index]; }
 
 
         static std::vector<VkVertexInputBindingDescription> GetVertexInputBindingDescriptions();
 
     private:
-        std::vector<Mesh> Meshes;
-        std::vector<Material> Materials;
+        std::vector<std::shared_ptr<Mesh>> Meshes;
+        std::vector<std::shared_ptr<Material>> Materials;
         std::string Name;
         VulkanMemoryManager* MemoryManager;
 

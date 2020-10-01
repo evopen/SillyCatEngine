@@ -17,13 +17,13 @@ namespace Sce
             throw std::runtime_error(Importer.GetErrorString());
         }
 
-        if (Scene->HasMeshes())
-            LoadMesh(Scene);
-
         if (Scene->HasMaterials())
         {
             LoadMaterial(Scene);
         }
+
+        if (Scene->HasMeshes())
+            LoadMesh(Scene);
     }
 
     Model::~Model()
@@ -33,12 +33,12 @@ namespace Sce
 
     uint32_t Model::GetVertexCount() const
     {
-        return std::accumulate(Meshes.begin(), Meshes.end(), 0, [](uint32_t sum, const Mesh& mesh) { return sum + static_cast<uint32_t>(mesh.GetVertexCount()); });
+        return std::accumulate(Meshes.begin(), Meshes.end(), 0, [](uint32_t sum, const std::shared_ptr<Mesh>& mesh) { return sum + static_cast<uint32_t>(mesh->GetVertexCount()); });
     }
 
     uint32_t Model::GetIndexCount() const
     {
-        return std::accumulate(Meshes.begin(), Meshes.end(), 0, [](uint32_t sum, const Mesh& mesh) { return sum + static_cast<uint32_t>(mesh.GetIndexCount()); });
+        return std::accumulate(Meshes.begin(), Meshes.end(), 0, [](uint32_t sum, const std::shared_ptr<Mesh>& mesh) { return sum + static_cast<uint32_t>(mesh->GetIndexCount()); });
     }
 
 
@@ -76,6 +76,7 @@ namespace Sce
             std::vector<uint32_t> indices;
             std::vector<glm::vec3> vertices;
             std::vector<glm::vec4> colors;
+            std::vector<glm::vec2> textureCoords;
             indices.reserve(Mesh->mNumFaces * 3);
             vertices.reserve(Mesh->mNumVertices);
             colors.reserve(Mesh->mNumVertices);
@@ -109,7 +110,17 @@ namespace Sce
                 }
             }
 
-            Meshes.emplace_back(MemoryManager, std::move(Mesh->mName.C_Str()), std::move(vertices), std::move(indices), std::move(colors));
+            if (Mesh->HasTextureCoords(0))
+            {
+                textureCoords.resize(Mesh->mNumVertices);
+                for (size_t i = 0; i < Mesh->mNumVertices; i++)
+                {
+                    textureCoords[i].x = Mesh->mTextureCoords[0][i].x;
+                    textureCoords[i].y = Mesh->mTextureCoords[0][i].y;
+                }
+            }
+
+            Meshes.emplace_back(new Sce::Mesh(MemoryManager, std::move(Mesh->mName.C_Str()), std::move(vertices), std::move(indices), std::move(colors), std::move(textureCoords), Materials[Mesh->mMaterialIndex]));
         }
     }
 
@@ -118,7 +129,7 @@ namespace Sce
         Materials.reserve(scene->mNumMaterials);
         for (size_t i = 0; i < scene->mNumMaterials; ++i)
         {
-            Materials.emplace_back(scene->mMaterials[i], scene->mTextures);
+            Materials.emplace_back(new Material(scene->mMaterials[i], scene->mTextures));
         }
     }
 }

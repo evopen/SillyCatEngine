@@ -13,8 +13,9 @@ namespace Sce
     public:
         API Material(aiMaterial* inMaterial, aiTexture** inTextures);
 
+        std::shared_ptr<Texture> GetDiffuseTexture() { return Diffuse; }
+
     private:
         std::shared_ptr<Texture> Diffuse;
-
     };
 }

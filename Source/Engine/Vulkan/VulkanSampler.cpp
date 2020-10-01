@@ -16,7 +16,7 @@ VulkanSampler::VulkanSampler(VulkanDevice* inDevice, VkFilter inFilter, VkSample
         .addressModeV            = inAddressMode,
         .addressModeW            = inAddressMode,
         .mipLodBias              = 0.0f,
-        .anisotropyEnable        = VK_TRUE,
+        .anisotropyEnable        = VK_FALSE,
         .maxAnisotropy           = 16.f,
         .compareEnable           = VK_FALSE,
         .minLod                  = 0.f,

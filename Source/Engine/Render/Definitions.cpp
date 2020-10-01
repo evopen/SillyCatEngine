@@ -34,6 +34,9 @@ VkFormat GlslBasicTypeToVkFormat(glslang::TBasicType Type, uint32_t VectorSize)
     case glslang::EbtFloat:
         switch (VectorSize)
         {
+        case 2:
+            Result = VK_FORMAT_R32G32_SFLOAT;
+            break;
         case 3:
             Result = VK_FORMAT_R32G32B32_SFLOAT;
             break;

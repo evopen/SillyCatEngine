@@ -19,9 +19,10 @@ namespace Sce
     }
 
     Texture::Texture(void* inBuffer, size_t len)
+        : Image(VK_NULL_HANDLE)
     {
         int channels;
-        uint8_t* data = stbi_load_from_memory((uint8_t*) inBuffer, len, reinterpret_cast<int*>(&Extent.width), reinterpret_cast<int*>(&Extent.height), &channels, STBI_rgb_alpha);
+        uint8_t* data = stbi_load_from_memory((uint8_t*) inBuffer, static_cast<int>(len), reinterpret_cast<int*>(&Extent.width), reinterpret_cast<int*>(&Extent.height), &channels, STBI_rgb_alpha);
         ImageData.resize(Extent.width * Extent.height * STBI_rgb_alpha);
         std::memcpy(ImageData.data(), data, Extent.width * Extent.height * STBI_rgb_alpha);
         stbi_image_free(data);

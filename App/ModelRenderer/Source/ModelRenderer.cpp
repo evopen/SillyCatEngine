@@ -144,7 +144,7 @@ int main()
         SUiStatus uiStatus;
         windowSurface->InstallCursorCallback(std::bind(&Sce::Camera::CursorPosCallback, &Camera, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
         Sce::Input Input(windowSurface);
-        Input.LinkKeyboardCameraMovement(&Camera, 0.02);
+        Input.LinkKeyboardCameraMovement(&Camera, 0.02f);
 
 
         while (!glfwWindowShouldClose(windowSurface->GetWindowHandle()))
@@ -202,17 +202,17 @@ int main()
                 for (size_t i = 0; i < ModelLoaded->GetMeshCount(); i++)
                 {
                     const auto& mesh      = ModelLoaded->GetMesh(i);
-                    VkBuffer VertexBuffer = mesh.GetVertexBuffer();
-                    VkBuffer ColorBuffer  = mesh.GetColorBuffer();
+                    VkBuffer VertexBuffer = mesh->GetVertexBuffer();
+                    VkBuffer ColorBuffer  = mesh->GetColorBuffer();
 
                     std::vector<VkDeviceSize> Offsets(2, 0);
                     std::vector<VkBuffer> VertexBuffers = {VertexBuffer, ColorBuffer};
                     vkCmdBindVertexBuffers(cmdBuffer.GetHandle(), 0, static_cast<uint32_t>(VertexBuffers.size()), VertexBuffers.data(), Offsets.data());
-                    vkCmdBindIndexBuffer(cmdBuffer.GetHandle(), mesh.GetIndexBuffer(), 0, VK_INDEX_TYPE_UINT32);
+                    vkCmdBindIndexBuffer(cmdBuffer.GetHandle(), mesh->GetIndexBuffer(), 0, VK_INDEX_TYPE_UINT32);
                     VkDescriptorSet descriptorSet = shaderProgram->GetDescriptorSetHandle();
                     shading->UpdateDescriptor();
                     shading->BindDescriptorSet(&cmdBuffer);
-                    vkCmdDrawIndexed(cmdBuffer.GetHandle(), mesh.GetIndexCount(), 1, 0, 0, 0);
+                    vkCmdDrawIndexed(cmdBuffer.GetHandle(), mesh->GetIndexCount(), 1, 0, 0, 0);
                 }
                 cmdBuffer.PossessObject(ModelLoaded);
             }

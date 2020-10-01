@@ -1,11 +1,12 @@
 #include "Engine/pch.h"
 
 #include "Engine/Vulkan/VulkanMemoryManager.h"
+#include "Material.h"
 #include "Mesh.h"
 
 namespace Sce
 {
-    Mesh::Mesh(VulkanMemoryManager* inMemoryManager, std::string inName, std::vector<glm::vec3> inVertices, std::vector<uint32_t> inIndices, std::vector<glm::vec4> inColors)
+    Mesh::Mesh(VulkanMemoryManager* inMemoryManager, std::string inName, std::vector<glm::vec3> inVertices, std::vector<uint32_t> inIndices, std::vector<glm::vec4> inColors, std::optional<std::vector<glm::vec2>> inTextureCoords, std::shared_ptr<Material> inMaterial)
         : MemoryManager(inMemoryManager)
         , Name(std::move(inName))
         , Vertices(std::move(inVertices))
@@ -13,6 +14,8 @@ namespace Sce
         , Colors(std::move(inColors))
         , VertexBuffer(VK_NULL_HANDLE)
         , IndexBuffer(VK_NULL_HANDLE)
+        , MeshMaterial(inMaterial)
+        , TextureCoords(std::move(inTextureCoords))
     {
         CreateVertexBuffer();
         CreateIndexBuffer();
