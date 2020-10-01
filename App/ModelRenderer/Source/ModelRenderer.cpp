@@ -143,28 +143,14 @@ int main()
         Sce::Camera Camera(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0));
         SUiStatus uiStatus;
         windowSurface->InstallCursorCallback(std::bind(&Sce::Camera::CursorPosCallback, &Camera, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-        //windowSurface->InstallKeyCallback(std::bind(&Sce::Camera::KeyCallback, &Camera, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5));
+        Sce::Input Input(windowSurface);
+        Input.LinkKeyboardCameraMovement(&Camera, 0.02);
+
 
         while (!glfwWindowShouldClose(windowSurface->GetWindowHandle()))
         {
             glfwPollEvents();
-
-            if (glfwGetKey(windowSurface->GetWindowHandle(), GLFW_KEY_W) == GLFW_PRESS)
-            {
-                Camera.ProcessKeyboard(Sce::Camera::Direction::Forward);
-            }
-            else if (glfwGetKey(windowSurface->GetWindowHandle(), GLFW_KEY_S) == GLFW_PRESS)
-            {
-                Camera.ProcessKeyboard(Sce::Camera::Direction::Backward);
-            }
-            else if (glfwGetKey(windowSurface->GetWindowHandle(), GLFW_KEY_A) == GLFW_PRESS)
-            {
-                Camera.ProcessKeyboard(Sce::Camera::Direction::Left);
-            }
-            else if (glfwGetKey(windowSurface->GetWindowHandle(), GLFW_KEY_D) == GLFW_PRESS)
-            {
-                Camera.ProcessKeyboard(Sce::Camera::Direction::Right);
-            }
+            Input.ProcessKeyboard();
 
             {
                 if (uiStatus.bNeedLoadModel)

@@ -3,6 +3,10 @@
 class VulkanMemoryManager;
 class VulkanWindowSurface;
 class VulkanRenderPass;
+class VulkanInstance;
+class VulkanDevice;
+class VulkanCommandBuffer;
+
 namespace Sce
 {
     class GUI : public std::enable_shared_from_this<GUI>

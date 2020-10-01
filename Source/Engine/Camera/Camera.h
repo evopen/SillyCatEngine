@@ -39,7 +39,7 @@ namespace Sce
 
         void ProcessMouseMovement(float inYawOffset, float inPitchOffset);
 
-        API void ProcessKeyboard(Direction direction);
+        API void ProcessKeyboard(Direction direction, float distance);
 
     private:
         glm::vec3 Position;

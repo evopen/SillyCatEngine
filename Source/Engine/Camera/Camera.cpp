@@ -82,27 +82,27 @@ namespace Sce
         UpdateCameraVectors();
     }
 
-    void Camera::ProcessKeyboard(Direction direction)
+    void Camera::ProcessKeyboard(Direction direction, float distance)
     {
         switch (direction)
         {
         case Direction::Forward:
-            Position += Front;
+            Position += Front * distance;
             break;
         case Direction::Backward:
-            Position -= Front;
+            Position -= Front * distance;
             break;
         case Direction::Left:
-            Position -= Right;
+            Position -= Right * distance;
             break;
         case Direction::Right:
-            Position += Right;
+            Position += Right * distance;
             break;
         case Direction::Up:
-            Position += Up;
+            Position += Up * distance;
             break;
         case Direction::Down:
-            Position -= Up;
+            Position -= Up * distance;
             break;
         }
     }
