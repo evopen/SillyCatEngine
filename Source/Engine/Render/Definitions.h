@@ -46,6 +46,7 @@ struct ShaderReflectionInfo
     std::vector<InputInfo> InputInfos;
     std::vector<UniformBlockInfo> UniformBlockInfos;
     std::vector<Sampler2DInfo> Sampler2DInfos;
+
 };
 
 

@@ -150,8 +150,9 @@ std::tuple<std::vector<unsigned>, ShaderReflectionInfo> CompileGLSL(EShaderType 
     glslang::GlslangToSpv(*Program.getIntermediate(GlslangShaderType), spirv, &SpvOptions);
     Program.buildReflection();
 
-    int InputCount        = Program.getNumPipeInputs();
-    int UniformBlockCount = Program.getNumUniformBlocks();
+    int InputCount           = Program.getNumPipeInputs();
+    int UniformBlockCount    = Program.getNumUniformBlocks();
+    int uniformVariableCount = Program.getNumUniformVariables();
 
     ShaderReflectionInfo ReflectionInfo;
     ReflectionInfo.InputInfos.resize(InputCount);
@@ -168,10 +169,30 @@ std::tuple<std::vector<unsigned>, ShaderReflectionInfo> CompileGLSL(EShaderType 
 
     for (int i = 0; i < UniformBlockCount; ++i)
     {
-        auto UniformBlockReflection              = Program.getUniformBlock(i);
-        ReflectionInfo.UniformBlockInfos[i].Name = UniformBlockReflection.name;
-        ReflectionInfo.UniformBlockInfos[i].Size = UniformBlockReflection.size;
+        auto UniformBlockReflection                 = Program.getUniformBlock(i);
+        ReflectionInfo.UniformBlockInfos[i].Name    = UniformBlockReflection.name;
+        ReflectionInfo.UniformBlockInfos[i].Size    = UniformBlockReflection.size;
         ReflectionInfo.UniformBlockInfos[i].Binding = UniformBlockReflection.getBinding();
+    }
+
+    for (int i = 0; i < uniformVariableCount; i++)
+    {
+        auto uniformReflection = Program.getUniform(i);
+        int binding            = uniformReflection.getBinding();
+        if (binding < 0)
+            continue;
+
+        switch (uniformReflection.getType()->getBasicType())
+        {
+        case glslang::EbtSampler:
+            ReflectionInfo.Sampler2DInfos.push_back({
+                uniformReflection.name,
+                static_cast<uint32_t>(uniformReflection.getBinding()),
+            });
+            break;
+        default:
+            throw std::runtime_error("unknown type");
+        }
     }
 
     return {spirv, ReflectionInfo};

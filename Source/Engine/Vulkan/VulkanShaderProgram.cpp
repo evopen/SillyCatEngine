@@ -96,7 +96,7 @@ void VulkanGraphicsShaderProgram::CreateDescriptorSetLayoutBindings()
 
     for (size_t i = 0; i < AllBindings.size(); i++)
     {
-        uint32_t Key = VertexBindings[i].binding;
+        uint32_t Key = AllBindings[i].binding;
         if (BindingMap.contains(Key))
         {
             if (BindingMap.at(Key).binding != AllBindings[i].binding || BindingMap.at(Key).descriptorType != AllBindings[i].descriptorType)
