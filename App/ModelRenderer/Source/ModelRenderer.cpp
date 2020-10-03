@@ -132,7 +132,7 @@ int main()
         std::shared_ptr<VulkanGraphicsShaderProgram> shaderProgram;
         std::shared_ptr<VulkanGraphicsPipelineState> pipelineState;
         std::shared_ptr<Sce::Shading> shading;
-        VulkanRenderTargetLayout RTLayout(1);
+        VulkanRenderTargetLayout RTLayout(1, true);
         auto renderPass = std::make_shared<VulkanRenderPass>(&device, &RTLayout);
         std::shared_ptr<VulkanGraphicsPipeline> pipeline;
         VulkanSemaphore ImageAvailable(&device);
@@ -145,6 +145,13 @@ int main()
         windowSurface->InstallCursorCallback(std::bind(&Sce::Camera::CursorPosCallback, &Camera, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
         Sce::Input Input(windowSurface);
         Input.LinkKeyboardCameraMovement(&Camera, 0.02f);
+
+        VkImage depthImage  = device.GetMemoryManager()->CreateImage(VkExtent3D{
+                                                                        .width  = windowSurface->GetWidth(),
+                                                                        .height = windowSurface->GetHeight(),
+                                                                        .depth  = 1},
+            VK_FORMAT_D32_SFLOAT, VMA_MEMORY_USAGE_GPU_ONLY, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT);
+        auto depthImageView = std::make_shared<VulkanImageView>(&device, depthImage);
 
 
         while (!glfwWindowShouldClose(windowSurface->GetWindowHandle()))
@@ -179,18 +186,19 @@ int main()
             }
 
             std::vector<std::shared_ptr<VulkanFramebuffer>> framebuffers;
-            std::vector<std::shared_ptr<VulkanImageView>> swapchainImageViews;
+            std::vector<std::shared_ptr<VulkanImageView>> imageViews;
             for (uint32_t i = 0; i < swapchain.GetImageCount(); i++)
             {
-                swapchainImageViews.emplace_back(std::make_shared<VulkanImageView>(&device, swapchain.GetImage(i)));
-                framebuffers.emplace_back(std::make_shared<VulkanFramebuffer>(&device, renderPass, std::vector<std::shared_ptr<VulkanImageView>>{swapchainImageViews[i]}, windowSurface->GetWidth(), windowSurface->GetHeight()));
+                imageViews.emplace_back(std::make_shared<VulkanImageView>(&device, swapchain.GetImage(i)));
+                framebuffers.emplace_back(std::make_shared<VulkanFramebuffer>(&device, renderPass, std::vector<std::shared_ptr<VulkanImageView>>{imageViews[i], depthImageView}, windowSurface->GetWidth(), windowSurface->GetHeight()));
             }
+
 
             swapchain.AcquireNextImage(ImageAvailable.GetHandle(), VK_NULL_HANDLE);
 
             cmdBuffer.Wait();
             cmdBuffer.Begin();
-            renderPass->Begin(&cmdBuffer, framebuffers[swapchain.GetRenderIndex()], {{0.3f, 0.3f, 0.3f, 1.0f}});
+            renderPass->Begin(&cmdBuffer, framebuffers[swapchain.GetRenderIndex()], {{0.3f, 0.3f, 0.3f, 1.0f},{1.0f, 0}});
             VkViewport Viewport = windowSurface->GetSurfaceViewport();
             VkRect2D Scissor    = windowSurface->GetSurfaceScissor();
             vkCmdSetViewport(cmdBuffer.GetHandle(), 0, 1, &Viewport);

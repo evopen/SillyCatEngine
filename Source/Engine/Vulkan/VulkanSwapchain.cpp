@@ -2,6 +2,7 @@
 
 #include "VulkanCommandBuffer.h"
 #include "VulkanDevice.h"
+#include "VulkanMemoryManager.h"
 #include "VulkanSwapchain.h"
 #include "VulkanUtil.h"
 #include "VulkanWindowSurface.h"
@@ -92,6 +93,11 @@ void VulkanSwapchain::Create()
     spdlog::info("Swapchain has {} images.", ImageCount);
     Images.resize(ImageCount);
     vkGetSwapchainImagesKHR(Device->GetDeviceHandle(), Swapchain, &ImageCount, Images.data());
+
+    for (auto& image : Images)
+    {
+        Device->GetMemoryManager()->RegisterSwapchainImage(image, SwapchainInfo);
+    }
 }
 
 void VulkanSwapchain::Destroy()

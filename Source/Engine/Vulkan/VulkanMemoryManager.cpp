@@ -117,7 +117,7 @@ VkImage VulkanMemoryManager::CreateImage(VkExtent3D inExtent, VkFormat inFormat,
 
     vmaCreateImage(Allocator, &ImageInfo, &AllocationCreateInfo, &Image, &Allocation, &AllocationInfo);
 
-    Images.insert_or_assign(Image, ImageMemoryInfo{AllocationInfo.size, Allocation, inExtent});
+    Images.insert_or_assign(Image, ImageMemoryInfo{AllocationInfo.size, Allocation, inExtent, inFormat});
     return Image;
 }
 
@@ -237,4 +237,25 @@ void VulkanMemoryManager::TransitImageLayout(VkImage inImage, VkAccessFlags inSr
     cmdBuffer.End();
     cmdBuffer.Submit();
     cmdBuffer.Wait();
+}
+
+VkFormat VulkanMemoryManager::GetImageFormat(VkImage inImage)
+{
+    return Images.at(inImage).Format;
+}
+
+void VulkanMemoryManager::RegisterSwapchainImage(VkImage inImage, const VkSwapchainCreateInfoKHR& inInfo)
+{
+    Images.insert_or_assign(inImage,
+        ImageMemoryInfo{
+            .Capacity   = 0,
+            .Allocation = 0,
+            .Extent =
+                {
+                    .width  = inInfo.imageExtent.width,
+                    .height = inInfo.imageExtent.height,
+                    .depth  = 1,
+                },
+            .Format = inInfo.imageFormat,
+        });
 }

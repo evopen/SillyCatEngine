@@ -26,6 +26,8 @@ public:
     API void FreeBuffer(VkBuffer InBuffer);
     API VkDescriptorPool GetDescriptorPoolHandle() { return DescriptorPool; }
     API void TransitImageLayout(VkImage inImage, VkAccessFlags inSrcAccessMask, VkAccessFlags inDstAccessMask, VkPipelineStageFlags inSrcStage, VkPipelineStageFlags inDstStage, VkImageLayout inOldLayout, VkImageLayout inNewLayout);
+    API VkFormat GetImageFormat(VkImage inImage);
+    void RegisterSwapchainImage(VkImage inImage, const VkSwapchainCreateInfoKHR& inInfo);
 
 private:
     VulkanDevice* Device;
@@ -45,6 +47,7 @@ private:
         size_t Capacity;
         VmaAllocation Allocation;
         VkExtent3D Extent;
+        VkFormat Format;
     };
 
 

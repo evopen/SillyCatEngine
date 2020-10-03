@@ -16,6 +16,8 @@ public:
 
     VulkanRenderTargetLayout* GetRenderTargetLayout() { return RTLayout; }
 
+    bool HasDepthBuffer();
+
 private:
     VkRenderPass RenderPass;
     VulkanDevice* Device;

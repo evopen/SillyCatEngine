@@ -71,6 +71,13 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, std::shar
         .rasterizationSamples = VK_SAMPLE_COUNT_1_BIT,
     };
 
+    VkPipelineDepthStencilStateCreateInfo DepthStencilInfo = {
+        .sType            = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO,
+        .depthTestEnable  = VK_TRUE,
+        .depthWriteEnable = VK_TRUE,
+        .depthCompareOp   = VK_COMPARE_OP_LESS,
+    };
+
     std::vector<VkPipelineColorBlendAttachmentState> ColorBlendStates(RenderPass->GetRenderTargetLayout()->GetColorAttachmentReferenceCount());
     for (auto& State : ColorBlendStates)
     {
@@ -95,7 +102,7 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(VulkanDevice* InDevice, std::shar
         .pViewportState      = &ViewportInfo,
         .pRasterizationState = &RasterizationInfo,
         .pMultisampleState   = &MultisampleInfo,
-        .pDepthStencilState  = nullptr,
+        .pDepthStencilState  = RenderPass->HasDepthBuffer() ? &DepthStencilInfo : nullptr,
         .pColorBlendState    = &ColorBlendInfo,
         .pDynamicState       = &DynamicStateInfo,
         .layout              = PipelineState->GetPipelineLayoutHandle(),

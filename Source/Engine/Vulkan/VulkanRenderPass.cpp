@@ -64,3 +64,8 @@ void VulkanRenderPass::End()
         vkCmdEndRenderPass(BeganInCmdBuf.value()->GetHandle());
     }
 }
+
+bool VulkanRenderPass::HasDepthBuffer()
+{
+    return RTLayout->GetDepthStencilAttachmentReference() ? true : false;
+}
