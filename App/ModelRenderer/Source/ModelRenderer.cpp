@@ -214,7 +214,7 @@ int main()
                     VkBuffer ColorBuffer;
                     if (ShadingList[uiStatus.currentShadingIndex].name == "Base Color")
                     {
-                        static_cast<BaseColorShading*>(shading.get())->SetMesh(mesh);
+                        std::dynamic_pointer_cast<BaseColorShading>(shading)->SetMesh(mesh);
                         ColorBuffer = mesh->GetTextureCoordBuffer();
                     }
                     else

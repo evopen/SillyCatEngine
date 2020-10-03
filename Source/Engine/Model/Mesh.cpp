@@ -54,7 +54,7 @@ namespace Sce
 
     void Mesh::CreateTextureCoordBuffer()
     {
-        const size_t BufferSize = sizeof(decltype(TextureCoords)::value_type) * GetVertexCount();
+        const size_t BufferSize = sizeof(glm::vec2) * GetVertexCount();
 
         TextureCoordBuffer = MemoryManager->CreateBuffer(TextureCoords->data(), BufferSize, VMA_MEMORY_USAGE_GPU_ONLY, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT);
     }
