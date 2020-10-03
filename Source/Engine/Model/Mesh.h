@@ -47,5 +47,6 @@ namespace Sce
         void CreateVertexBuffer();
         void CreateIndexBuffer();
         void CreateColorBuffer();
+        void CreateTextureCoordBuffer();
     };
 }

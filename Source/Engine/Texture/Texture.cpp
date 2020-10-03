@@ -35,7 +35,7 @@ namespace Sce
         if (Image == VK_NULL_HANDLE)
         {
             // automatically convert from uint to float
-            Image = inMemManager->CreateImage(ImageData, Extent, VK_FORMAT_R8G8B8A8_SRGB, VMA_MEMORY_USAGE_GPU_ONLY, VK_IMAGE_USAGE_SAMPLED_BIT, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+            Image = inMemManager->CreateImage(ImageData, Extent, VK_FORMAT_B8G8R8A8_SRGB, VMA_MEMORY_USAGE_GPU_ONLY, VK_IMAGE_USAGE_SAMPLED_BIT, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
         }
         return Image;
     }

@@ -20,6 +20,7 @@ namespace Sce
         CreateVertexBuffer();
         CreateIndexBuffer();
         CreateColorBuffer();
+        CreateTextureCoordBuffer();
     }
 
     Mesh::~Mesh()
@@ -39,7 +40,7 @@ namespace Sce
 
     void Mesh::CreateIndexBuffer()
     {
-        const size_t BufferSize = sizeof(decltype(Indices)::value_type) * GetVertexCount();
+        const size_t BufferSize = sizeof(decltype(Indices)::value_type) * GetIndexCount();
 
         IndexBuffer = MemoryManager->CreateBuffer(Indices.data(), BufferSize, VMA_MEMORY_USAGE_GPU_ONLY, VK_BUFFER_USAGE_INDEX_BUFFER_BIT);
     }
@@ -49,5 +50,12 @@ namespace Sce
         const size_t BufferSize = sizeof(decltype(Colors)::value_type) * GetVertexCount();
 
         ColorBuffer = MemoryManager->CreateBuffer(Colors.data(), BufferSize, VMA_MEMORY_USAGE_GPU_ONLY, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT);
+    }
+
+    void Mesh::CreateTextureCoordBuffer()
+    {
+        const size_t BufferSize = sizeof(decltype(TextureCoords)::value_type) * GetVertexCount();
+
+        TextureCoordBuffer = MemoryManager->CreateBuffer(TextureCoords->data(), BufferSize, VMA_MEMORY_USAGE_GPU_ONLY, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT);
     }
 }
