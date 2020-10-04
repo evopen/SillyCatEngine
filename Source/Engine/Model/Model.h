@@ -27,7 +27,7 @@ namespace Sce
         API std::shared_ptr<Mesh> GetMesh(size_t index) const { return Meshes[index]; }
 
 
-        static std::vector<VkVertexInputBindingDescription> GetVertexInputBindingDescriptions();
+        static std::vector<VkVertexInputBindingDescription> GetVertexInputBindingDescriptions(bool bindVertex, bool bindColor, bool bindTextureCoord);
 
     private:
         std::vector<std::shared_ptr<Mesh>> Meshes;

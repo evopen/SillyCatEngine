@@ -26,6 +26,7 @@ namespace Sce
         static constexpr uint32_t GetVertexStride() { return sizeof(decltype(Vertices)::value_type); }
         static constexpr uint32_t GetColorStride() { return sizeof(decltype(Colors)::value_type); }
         static constexpr uint32_t GetIndexStride() { return sizeof(decltype(Indices)::value_type); }
+        static constexpr uint32_t GetTextureCoordStride() { return sizeof(glm::vec2); }
 
 
     private:

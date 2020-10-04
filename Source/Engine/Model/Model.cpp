@@ -42,24 +42,36 @@ namespace Sce
     }
 
 
-    std::vector<VkVertexInputBindingDescription> Model::GetVertexInputBindingDescriptions()
+    std::vector<VkVertexInputBindingDescription> Model::GetVertexInputBindingDescriptions(bool bindVertex, bool bindColor, bool bindTextureCoord)
     {
+        std::vector<VkVertexInputBindingDescription> Descriptions;
 
-        VkVertexInputBindingDescription VertexBindingDesc = {
-            .binding   = 0,
-            .stride    = Mesh::GetVertexStride(),
-            .inputRate = VK_VERTEX_INPUT_RATE_VERTEX,
-        };
+        if (bindVertex)
+        {
+            Descriptions.emplace_back(VkVertexInputBindingDescription{
+                .binding   = 0,
+                .stride    = Mesh::GetVertexStride(),
+                .inputRate = VK_VERTEX_INPUT_RATE_VERTEX,
+            });
+        }
 
-        VkVertexInputBindingDescription ColorBindingDesc = {
-            .binding   = 1,
-            .stride    = Mesh::GetColorStride(),
-            .inputRate = VK_VERTEX_INPUT_RATE_VERTEX,
-        };
+        if (bindColor)
+        {
+            Descriptions.emplace_back(VkVertexInputBindingDescription{
+                .binding   = 1,
+                .stride    = Mesh::GetColorStride(),
+                .inputRate = VK_VERTEX_INPUT_RATE_VERTEX,
+            });
+        }
 
-        std::vector<VkVertexInputBindingDescription> Descriptions(2);
-        Descriptions[0] = VertexBindingDesc;
-        Descriptions[1] = ColorBindingDesc;
+        if (bindTextureCoord)
+        {
+            Descriptions.emplace_back(VkVertexInputBindingDescription{
+                .binding   = 2,
+                .stride    = Mesh::GetTextureCoordStride(),
+                .inputRate = VK_VERTEX_INPUT_RATE_VERTEX,
+            });
+        }
 
         return Descriptions;
     }
