@@ -29,9 +29,6 @@
     <ClInclude Include="..\..\..\App\ModelRenderer\Source\pch.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\App\ModelRenderer\Source\ShaderList.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor\BaseColor.h">
       <Filter>Shader\BaseColor</Filter>
     </ClInclude>

@@ -178,7 +178,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\App\ModelRenderer\Source\pch.h" />
-    <ClInclude Include="..\..\..\App\ModelRenderer\Source\ShaderList.h" />
     <ClInclude Include="..\..\..\App\ModelRenderer\Source\Shader\BaseColor\BaseColor.h" />
     <ClInclude Include="..\..\..\App\ModelRenderer\Source\Shader\VertexColor\VertexColor.h" />
     <ClInclude Include="..\..\..\App\ModelRenderer\Source\Shader\WireFrame\Wireframe.h" />
